@@ -134,29 +134,29 @@ if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
     },
   ])
 
-  const users = await User.bulkCreate([
-    {
-      fname: 'Frank',
-      lname: 'Stank',
-      uname: 'Varuna',
-      password: 'manwecookingsomesteaks', // dont forget to obfuscate
-      isAdmin: true,
-    },
-    {
-      fname: 'Steven',
-      lname: 'The Vegan',
-      uname: 'SheepL0v3r',
-      password: 'manweNOTcookingsomesteaks',
-      isAdmin: false,
-    },
-    {
-      fname: 'Baleigh',
-      lname: 'Ames',
-      uname: "World's_hottest_girlfriend",
-      password: 'iwanttocooksteakstoo',
-      isAdmin: false,
-    },
-  ])
+  // const users = await User.bulkCreate([
+  //   {
+  //     fname: 'Frank',
+  //     lname: 'Stank',
+  //     uname: 'Varuna',
+  //     password: 'manwecookingsomesteaks', // dont forget to obfuscate
+  //     isAdmin: true,
+  //   },
+  //   {
+  //     fname: 'Steven',
+  //     lname: 'The Vegan',
+  //     uname: 'SheepL0v3r',
+  //     password: 'manweNOTcookingsomesteaks',
+  //     isAdmin: false,
+  //   },
+  //   {
+  //     fname: 'Baleigh',
+  //     lname: 'Ames',
+  //     uname: "World's_hottest_girlfriend",
+  //     password: 'iwanttocooksteakstoo',
+  //     isAdmin: false,
+  //   },
+  // ])
   console.log('Finished syncing database!')
   await sequelize.close()
 }

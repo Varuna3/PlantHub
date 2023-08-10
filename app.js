@@ -1,22 +1,31 @@
 import express from 'express'
+import { session } from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
-import axios from 'axios'
 import { Plant, User, Count, Op } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
 
 //middleware
 const app = express()
-// bcrypt.genSalt(10, (e, salt))
 
 app.use(morgan('dev'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(express.static('public'))
+app.use(
+  session({
+    secret: 'L3TM30UT-1MSTUCK1NY0URP0CK3T',
+    cookie: { secure: true },
+  })
+)
 
 ViteExpress.config({ printViteDevServerHost: true })
 
 //routes
+app.post('/api/login', async (req, res) => {
+  const { uname, password } = req.body
+})
+
 app.get('/api/plants', async (req, res) => {
   const plants = await Plant.findAll()
   res.send(plants)
@@ -27,7 +36,7 @@ app.get('/api/plantsById/:id', async (req, res) => {
   res.send(plant)
 })
 
-app.get('/api/users/', async (req, res) => {
+app.post('/api/users/', async (req, res) => {
   const users = await User.findAll({ include: Plant })
   res.send(users)
 })
@@ -58,14 +67,16 @@ app.post('/api/users/create', async (req, res) => {
         .send('Error: Password must be at least 8 characters in length.')
     } else {
       try {
-        const user = await User.create({
-          fname,
-          lname,
-          uname,
-          password,
-          isAdmin: false,
+        bcrypt.hash(password, 10, async (err, passwordHash) => {
+          const user = await User.create({
+            fname,
+            lname,
+            uname,
+            passwordHash,
+            isAdmin: false,
+          })
+          res.send(`User ${user.uname} successfully created.`)
         })
-        res.send(`User ${user.uname} successfully created.`)
       } catch (e) {
         switch (e.errors[0].message) {
           case 'uname must be unique':
