@@ -3,6 +3,7 @@ import url from 'url'
 import util from 'util'
 
 const sequelize = new Sequelize('postgresql:///planthub')
+const Op = Sequelize.Op
 
 class Plant extends Model {
   [util.inspect.custom]() {
@@ -70,7 +71,7 @@ User.init(
       type: DataTypes.STRING,
       unique: true,
     },
-    password: {
+    passwordHash: {
       allowNull: false,
       type: DataTypes.STRING,
     },
@@ -160,4 +161,4 @@ if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   await sequelize.close()
 }
 
-export { Plant, User, Count }
+export { Plant, User, Count, Op }
