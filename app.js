@@ -49,10 +49,11 @@ app.post('/api/users/create', async (req, res) => {
       password,
       isAdmin: false,
     })
-    res.send(user)
+    res.send(`User ${user.uname} successfully created.`)
   } catch (e) {
     if (e.errors[0].message === 'uname must be unique')
       res.status(400).send('Error: Username already taken. Please try again.')
+    else res.status(400).send(`Error: ${e.errors[0].message}`)
   }
 })
 
