@@ -41,14 +41,19 @@ app.post('/api/plants/create', async (req, res) => {
 
 app.post('/api/users/create', async (req, res) => {
   const { fname, lname, uname, password } = req.body
-  const user = await User.create({
-    fname,
-    lname,
-    uname,
-    password,
-    isAdmin: false,
-  })
-  res.send(user)
+  try {
+    const user = await User.create({
+      fname,
+      lname,
+      uname,
+      password,
+      isAdmin: false,
+    })
+    res.send(user)
+  } catch (e) {
+    if (e.errors[0].message === 'uname must be unique')
+      res.status(400).send('Error: Username already taken. Please try again.')
+  }
 })
 
 //open server
