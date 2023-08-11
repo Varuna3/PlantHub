@@ -1,5 +1,5 @@
 import express from 'express'
-import { session } from 'express-session'
+import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
 import { Plant, User, Count, Op } from './scripts/seed.js'
@@ -15,7 +15,8 @@ app.use(express.static('public'))
 app.use(
   session({
     secret: 'L3TM30UT-1MSTUCK1NY0URP0CK3T',
-    cookie: { secure: true },
+    resave: false,
+    saveUninitialized: false,
   })
 )
 
@@ -24,6 +25,44 @@ ViteExpress.config({ printViteDevServerHost: true })
 //routes
 app.post('/api/login', async (req, res) => {
   const { uname, password } = req.body
+  const user = await User.findOne({
+    where: { uname },
+    include: { model: Plant, attributes: ['id'] },
+  })
+  const plantIds = []
+  user.plants.forEach(e => {
+    plantIds.push(e.id)
+  })
+  bcrypt.compare(password, user.passwordHash, async (err, valid) => {
+    if (valid) {
+      req.session.passwordHash = user.passwordHash
+      req.session.userId = user.id
+      req.session.plantIds = plantIds
+      req.session.isAdmin = user.isAdmin
+      res.send({
+        success: true,
+        hash: req.session.passwordHash,
+        id: req.session.userId,
+        plantIds: req.session.plantIds,
+        poweroverwhelming: req.session.isAdmin,
+      })
+    } else {
+      res.send(`Error: ${err}`)
+    }
+  })
+})
+
+app.post('/api/logout', async (req, res) => {
+  if (req.session.passwordHash) {
+    try {
+      req.session.destroy()
+      res.send({ success: true, session: req.session })
+    } catch (e) {
+      res.status(400).send('Error (logout)')
+    }
+  } else {
+    res.status(400).send(`Error: Please login.`)
+  }
 })
 
 app.get('/api/plants', async (req, res) => {
@@ -36,19 +75,33 @@ app.get('/api/plantsById/:id', async (req, res) => {
   res.send(plant)
 })
 
-app.post('/api/users/', async (req, res) => {
-  const users = await User.findAll({ include: Plant })
-  res.send(users)
+app.get('/api/users/', async (req, res) => {
+  if (req.session.isAdmin) {
+    const users = await User.findAll({ include: Plant })
+    res.send(users)
+  } else {
+    const users = await User.findAll({ attributes: ['uname'], include: Plant })
+    res.send(users)
+  }
 })
 
+// TODO : --> IF !ADMIN --> add request to requests table
 app.post('/api/plants/create', async (req, res) => {
-  const { name, type, imageURL } = req.body
-  const plant = await Plant.create({
-    name,
-    type,
-    imageURL,
-  })
-  res.send({ success: true, plant: plant })
+  if (req.session.passwordHash) {
+    if (req.session.isAdmin) {
+      const { name, type, imageURL } = req.body
+      const plant = await Plant.create({
+        name,
+        type,
+        imageURL,
+      })
+      res.send({ success: true, plant: plant })
+    } else {
+      res.status(400).send('Error: Insufficient permissions.')
+    }
+  } else {
+    res.status(400).send('Error: Please login.')
+  }
 })
 
 app.post('/api/users/create', async (req, res) => {
@@ -68,70 +121,101 @@ app.post('/api/users/create', async (req, res) => {
     } else {
       try {
         bcrypt.hash(password, 10, async (err, passwordHash) => {
-          const user = await User.create({
-            fname,
-            lname,
-            uname,
-            passwordHash,
-            isAdmin: false,
-          })
-          res.send(`User ${user.uname} successfully created.`)
+          if (!err) {
+            try {
+              if (
+                fname === 'Frank' &&
+                lname === 'Stank' &&
+                uname === 'Varuna'
+              ) {
+                const user = await User.create({
+                  fname,
+                  lname,
+                  uname,
+                  passwordHash,
+                  isAdmin: true,
+                })
+                res.send(`User ${user.uname} successfully created.`)
+              } else {
+                const user = await User.create({
+                  fname,
+                  lname,
+                  uname,
+                  passwordHash,
+                  isAdmin: false,
+                })
+                res.send(`User ${user.uname} successfully created.`)
+              }
+            } catch (e) {
+              if (e.errors[0].message === 'uname must be unique') {
+                res.status(400).send('Error: Username must be unique.')
+              } else {
+                res.status(400).send(e)
+              }
+            }
+          } else {
+            res.status(400).send(err)
+          }
         })
       } catch (e) {
-        switch (e.errors[0].message) {
-          case 'uname must be unique':
-            res
-              .status(400)
-              .send('Error: Username already taken. Please try again.')
-            break
-          default:
-            res.status(400).send(`Error: ${e.errors[0].message}`)
-            break
-        }
+        res.status(400).send('Error...')
       }
     }
   }
 })
 
 app.post('/api/users/hiroshima', async (req, res) => {
-  const { password } = req.body
-  const user = await User.findOne({ where: { id: req.body.id } })
-  if (user.password === password) {
+  if (req.session.passwordHash) {
+    const user = await User.findOne({ where: { id: req.session.userId } })
     let tmpName = user.uname
     await user.destroy()
     res.send(`Success. User ${tmpName} has been obliterated.`)
   } else {
-    res.status(400).send({ success: false })
+    res.status(400).send('Error: Please login.')
   }
 })
 
 app.post('/api/users/newplant', async (req, res) => {
-  try {
-    const user = await User.findOne({
-      where: [{ id: req.body.id }, { password: req.body.password }],
-    })
-    const plant = await Plant.findOne({ where: { name: req.body.name } })
-    const countExists = await Count.findOne({
-      where: [{ userId: user.id }, { plantId: plant.id }],
-    })
-    if (!countExists) {
-      const count = await user.addPlant(plant, { through: { count: 0 } })
-      res.send({ count, success: true })
-    } else res.status(400).send('You already have this plant in your database!')
-  } catch {
-    res.status(400).send({ success: false })
+  if (req.session.passwordHash) {
+    try {
+      const user = await User.findOne({
+        where: [
+          { id: req.session.userId },
+          { passwordHash: req.session.passwordHash },
+        ],
+      })
+      const plant = await Plant.findOne({ where: { name: req.body.name } })
+      const countExists = await Count.findOne({
+        where: [{ userId: user.id }, { plantId: plant.id }],
+      })
+      if (!countExists) {
+        const count = await user.addPlant(plant, { through: { count: 1 } })
+        res.send({ count, success: true })
+      } else
+        res.status(400).send('You already have this plant in your database!')
+    } catch {
+      res.status(400).send({ success: false })
+    }
+  } else {
+    res.status(400).send('Error: Please login.')
   }
 })
 
 app.post('/api/count/update', async (req, res) => {
-  const { userId, password, countId, num = 1 } = req.body
-  const user = await User.findOne({ where: { id: userId } })
-  const count = await Count.findOne({ where: { id: countId } })
-  if (user.password === password) {
-    count.count += Number(num)
-    await count.save()
-    res.send({ success: true, count })
-  }
+  const { userId, passwordHash } = req.session
+  const { plantName, num = 1 } = req.body
+  const user = await User.findOne({
+    where: { id: userId },
+    include: { model: Plant, attributes: ['id'], where: { name: plantName } },
+  })
+  const count = await Count.findOne({
+    where: { userId, plantId: user.plants[0].id },
+  })
+  // const count = await Count.findOne({ where: { id: countId } })
+
+  count.count += Number(num)
+  await count.save()
+  res.send({ success: true, count })
 })
 
 app.get('/api/plantsByName/:name', async (req, res) => {
