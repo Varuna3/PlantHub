@@ -1,9 +1,31 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+} from 'react-router-dom'
+import LoginPage from './LoginPage.jsx'
+import SignUpPage from './components/SignUpPage.jsx'
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: (
+      <>
+        <LoginPage />
+      </>
+    ),
+    children: [
+      {
+        path: '/SignUp',
+        element: <SignUpPage />,
+      },
+    ],
+  },
+])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <RouterProvider router={router} />
 )

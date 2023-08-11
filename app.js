@@ -29,27 +29,31 @@ app.post('/api/login', async (req, res) => {
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
   })
-  const plantIds = []
-  user.plants.forEach(e => {
-    plantIds.push(e.id)
-  })
-  bcrypt.compare(password, user.passwordHash, async (err, valid) => {
-    if (valid) {
-      req.session.passwordHash = user.passwordHash
-      req.session.userId = user.id
-      req.session.plantIds = plantIds
-      req.session.isAdmin = user.isAdmin
-      res.send({
-        success: true,
-        hash: req.session.passwordHash,
-        id: req.session.userId,
-        plantIds: req.session.plantIds,
-        poweroverwhelming: req.session.isAdmin,
-      })
-    } else {
-      res.send(`Error: ${err}`)
-    }
-  })
+  if (user) {
+    const plantIds = []
+    user.plants.forEach(e => {
+      plantIds.push(e.id)
+    })
+    bcrypt.compare(password, user.passwordHash, async (err, valid) => {
+      if (valid) {
+        req.session.passwordHash = user.passwordHash
+        req.session.userId = user.id
+        req.session.plantIds = plantIds
+        req.session.isAdmin = user.isAdmin
+        res.send({
+          success: true,
+          hash: req.session.passwordHash,
+          id: req.session.userId,
+          plantIds: req.session.plantIds,
+          poweroverwhelming: req.session.isAdmin,
+        })
+      } else {
+        res.send(`Error: ${err}`)
+      }
+    })
+  } else {
+    res.status(400).send('Error: User not found in database.')
+  }
 })
 
 app.post('/api/logout', async (req, res) => {

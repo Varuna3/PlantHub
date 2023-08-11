@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js -w app.js",
+    "dev": "nodemon app.js -w app.js -w src/",
     "superinit": "npm run initdb && npm run seed",
     "initdb": "dropdb --if-exists planthub && createdb planthub",
     "seed": "node scripts/seed.js",
@@ -22,6 +22,7 @@
     "pg": "^8.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.15.0",
     "sequelize": "^6.32.1",
     "url": "^0.11.1",
     "util": "^0.12.5",
