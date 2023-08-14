@@ -1,6 +1,6 @@
 const Password = ({ password, setPassword }) => {
   return (
-    <>
+    <div>
       <label htmlFor='Password'>Password:</label>
       <input
         id='Password'
@@ -8,7 +8,7 @@ const Password = ({ password, setPassword }) => {
         value={password}
         onChange={e => setPassword(e.target.value)}
       ></input>
-    </>
+    </div>
   )
 }
 

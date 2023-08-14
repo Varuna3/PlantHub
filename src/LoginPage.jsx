@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('')
 
   return (
-    <>
+    <div id='LoginPage'>
       <form
         action='/'
         onSubmit={async e => {
@@ -19,13 +19,20 @@ const LoginPage = () => {
           const res = await axios.post('/api/login', { uname, password })
           console.log({ poweroverwhelming: res.data.poweroverwhelming })
         }}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
       >
         <Username uname={uname} setUname={setUname} />
         <Password pasword={password} setPassword={setPassword} />
         <SignIn />
       </form>
-      <Link to='./SignUp'>SignUp</Link>
-    </>
+      <Link to='./SignUp'>
+        <button>Sign Up</button>
+      </Link>
+    </div>
   )
 }
 

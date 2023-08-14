@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+}
+
+#LoginPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+#SignUpPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}

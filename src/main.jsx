@@ -1,3 +1,4 @@
+import './main.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
@@ -17,12 +18,11 @@ const router = createBrowserRouter([
         <LoginPage />
       </>
     ),
-    children: [
-      {
-        path: '/SignUp',
-        element: <SignUpPage />,
-      },
-    ],
+    children: [],
+  },
+  {
+    path: '/SignUp',
+    element: <SignUpPage />,
   },
 ])
 

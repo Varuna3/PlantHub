@@ -1,6 +1,6 @@
 const Username = ({ uname, setUname }) => {
   return (
-    <>
+    <div>
       <label htmlFor='Username'>Username:</label>
       <input
         id='Username'
@@ -8,7 +8,7 @@ const Username = ({ uname, setUname }) => {
         value={uname}
         onChange={e => setUname(e.target.value)}
       ></input>
-    </>
+    </div>
   )
 }
 
