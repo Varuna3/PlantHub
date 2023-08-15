@@ -24,22 +24,28 @@ ViteExpress.config({ printViteDevServerHost: true })
 
 //routes
 app.post('/api/login', async (req, res) => {
-  const { uname, password } = req.body
+  let { uname, password } = req.body
+  console.log(uname, password)
   const user = await User.findOne({
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
   })
-  if (user) {
-    const plantIds = []
-    user.plants.forEach(e => {
-      plantIds.push(e.id)
-    })
+  if (user && user.uname && user.passwordHash) {
+    // const plantIds = []
+    // user.plants.forEach(e => {
+    //   plantIds.push(e.id)
+    // })
     bcrypt.compare(password, user.passwordHash, async (err, valid) => {
       if (valid) {
+        const plantIds = []
+        user.plants.forEach(e => {
+          plantIds.push(e.id)
+        })
         req.session.passwordHash = user.passwordHash
         req.session.userId = user.id
         req.session.plantIds = plantIds
         req.session.isAdmin = user.isAdmin
+        req.session.imageURL = user.imageURL
         res.send({
           success: true,
           hash: req.session.passwordHash,
@@ -48,11 +54,19 @@ app.post('/api/login', async (req, res) => {
           poweroverwhelming: req.session.isAdmin,
         })
       } else {
-        res.send(`Error: ${err}`)
+        res.status(400).send(`Error: Authentication failed.`)
       }
     })
   } else {
     res.status(400).send('Error: User not found in database.')
+  }
+})
+
+app.post('/api/hellothere', (req, res) => {
+  if (req.session.userId) {
+    res.json({ Youare: 'goodtogo' })
+  } else {
+    res.json({ Youare: 'notgoodtogo' })
   }
 })
 
@@ -89,6 +103,34 @@ app.get('/api/users/', async (req, res) => {
   }
 })
 
+app.post('/api/users/', async (req, res) => {
+  if (req.session.userId) {
+    if (req.session.isAdmin) {
+      const user = await User.findOne({
+        where: { id: req.session.userId },
+        include: Plant,
+      })
+      res.send(user)
+    } else {
+      const user = await User.findOne({
+        attributes: ['uname'],
+        where: { id: req.session.userId },
+      })
+      res.send(user)
+    }
+  } else {
+    res.status(400).send('wrong, try again')
+  }
+})
+
+app.post('/api/users/picture', async (req, res) => {
+  if (req.session.imageURL) {
+    res.send(req.session.imageURL)
+  } else {
+    res.status(400).send('Error: no image URL in session.')
+  }
+})
+
 // TODO : --> IF !ADMIN --> add request to requests table
 app.post('/api/plants/create', async (req, res) => {
   if (req.session.passwordHash) {
@@ -109,10 +151,11 @@ app.post('/api/plants/create', async (req, res) => {
 })
 
 app.post('/api/users/create', async (req, res) => {
-  const { fname, lname, uname, password } = req.body
+  const { fname, lname, imageURL, uname, password } = req.body
   if (
     fname.length === 0 ||
     lname.length === 0 ||
+    imageURL.length === 0 ||
     uname.length === 0 ||
     password.length === 0
   )
@@ -135,6 +178,7 @@ app.post('/api/users/create', async (req, res) => {
                 const user = await User.create({
                   fname,
                   lname,
+                  imageURL,
                   uname,
                   passwordHash,
                   isAdmin: true,
@@ -144,6 +188,7 @@ app.post('/api/users/create', async (req, res) => {
                 const user = await User.create({
                   fname,
                   lname,
+                  imageURL,
                   uname,
                   passwordHash,
                   isAdmin: false,

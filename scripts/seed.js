@@ -66,6 +66,10 @@ User.init(
       allowNull: false,
       type: DataTypes.STRING(50),
     },
+    imageURL: {
+      allowNull: false,
+      type: DataTypes.STRING(300),
+    },
     uname: {
       allowNull: false,
       type: DataTypes.STRING,
