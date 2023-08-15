@@ -136,6 +136,13 @@ if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
       imageURL:
         'https://tracks-trails.com/wp-content/uploads/2020/02/General_Sherman_tree_looking_up-scaled.jpg',
     },
+    {
+      name: 'Yarrow',
+      type: 'herb',
+      imageURL: `https://encrypted-tbn2.gstatic.com/licensed-
+image?q=tbn:ANd9GcQ0edchxOtjHGPTMZU6HT8cW0A67ahaL0w83dvYfFLDtPwxFTz
+BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
+    },
   ])
 
   // const users = await User.bulkCreate([

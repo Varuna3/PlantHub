@@ -15,7 +15,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     axios.post('/api/hellothere').then(({ data }) => {
-      if (data.Youare === 'goodtogo') nav('/Home')
+      if (data.Youare === 'goodtogo') nav('/Profile')
     })
   }, [])
 
@@ -33,7 +33,7 @@ const LoginPage = () => {
           if (res.data && res.data.success === true) {
             setAuthFailed(false)
             console.log({ poweroverwhelming: res.data.poweroverwhelming })
-            nav('/Home')
+            nav('/Profile')
           } else {
             setAuthFailed(true)
           }

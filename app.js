@@ -31,10 +31,6 @@ app.post('/api/login', async (req, res) => {
     include: { model: Plant, attributes: ['id'] },
   })
   if (user && user.uname && user.passwordHash) {
-    // const plantIds = []
-    // user.plants.forEach(e => {
-    //   plantIds.push(e.id)
-    // })
     bcrypt.compare(password, user.passwordHash, async (err, valid) => {
       if (valid) {
         const plantIds = []
@@ -115,6 +111,7 @@ app.post('/api/users/', async (req, res) => {
       const user = await User.findOne({
         attributes: ['uname'],
         where: { id: req.session.userId },
+        include: Plant,
       })
       res.send(user)
     }
@@ -240,8 +237,7 @@ app.post('/api/users/newplant', async (req, res) => {
       if (!countExists) {
         const count = await user.addPlant(plant, { through: { count: 1 } })
         res.send({ count, success: true })
-      } else
-        res.status(400).send('You already have this plant in your database!')
+      } else res.send('You already have this plant in your database!')
     } catch {
       res.status(400).send({ success: false })
     }
@@ -268,10 +264,15 @@ app.post('/api/count/update', async (req, res) => {
 })
 
 app.get('/api/plantsByName/:name', async (req, res) => {
-  const plants = await Plant.findAll({
-    where: { name: { [Op.like]: `%${req.params.name}%` } },
-  })
-  res.send(plants)
+  if (req.params.name.length > 0) {
+    const plants = await Plant.findAll({
+      where: { name: { [Op.like]: `%${req.params.name}%` } },
+    })
+    res.send(plants)
+  } else {
+    const plants = await Plant.findAll()
+    res.send(plants)
+  }
 })
 
 app.get('/api/plantsByType/:type', async (req, res) => {

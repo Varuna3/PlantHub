@@ -5,7 +5,7 @@ const NewPlantButton = () => {
     <>
       <Link to='/NewPlant'>
         <button style={{ width: '100px', height: '50px' }}>
-          <p>New Plant</p>
+          <p style={{ margin: 0 }}>Add New Plant to Profile</p>
         </button>
       </Link>
     </>

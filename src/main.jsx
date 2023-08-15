@@ -9,7 +9,7 @@ import {
 } from 'react-router-dom'
 import LoginPage from './LoginPage'
 import SignUpPage from './components/SignUpPage'
-import HomePage from './components/HomePage'
+import ProfilePage from './components/ProfilePage'
 import NewPlantPage from './components/NewPlantPage'
 
 const router = createBrowserRouter([
@@ -27,8 +27,8 @@ const router = createBrowserRouter([
     element: <SignUpPage />,
   },
   {
-    path: '/Home',
-    element: <HomePage />,
+    path: '/Profile',
+    element: <ProfilePage />,
   },
   {
     path: '/NewPlant',

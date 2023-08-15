@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import HomePageHeader from './HomePageComponents/HomePageHeader'
 
-const HomePage = () => {
+const ProfilePage = () => {
   const [user, setUser] = useState([])
   const [plants, setPlants] = useState([])
 
@@ -44,4 +44,4 @@ const HomePage = () => {
   )
 }
 
-export default HomePage
+export default ProfilePage
