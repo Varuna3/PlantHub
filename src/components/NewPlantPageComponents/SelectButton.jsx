@@ -5,7 +5,7 @@ const SelectButton = ({ setSelectedPlant, plant }) => {
   return (
     <>
       <button
-        style={{ display: 'flex' }}
+        id='selectButton'
         onClick={() => {
           setSelectedPlant(plant)
         }}

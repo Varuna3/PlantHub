@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import ViteExpress from 'vite-express'
 import { Plant, User, Count, Request, Op } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
+import axios from 'axios'
 
 //middleware
 const app = express()
@@ -298,19 +299,32 @@ app.get('/api/plants/hottest', async (req, res) => {
 
 app.post('/api/plants/newplant/request', async (req, res) => {
   if (req.session.passwordHash) {
-    if (req.session.isAdmin) {
-      await axios.post('/api/Aiur/approve', { id: req.body.id })
-      res.send('Success! (Admin)')
+    const check = await Plant.findOne({ where: { name: `${req.body.name}` } })
+    if (!check) {
+      if (req.session.isAdmin) {
+        try {
+          await Plant.create({
+            name: req.body.name,
+            type: req.body.type,
+            imageURL: req.body.imageURL,
+          })
+          res.send('Success! (admin)')
+        } catch {
+          res.send(false)
+        }
+      } else {
+        await Request.create({
+          name: req.body.name,
+          type: req.body.type,
+          imageURL: req.body.imageURL,
+        })
+        res.send('Success!')
+      }
     } else {
-      await Request.create({
-        name: req.body.name,
-        type: req.body.type,
-        imageURL: req.body.imageURL,
-      })
-      res.send('Success!')
+      res.send('Please Log in.')
     }
   } else {
-    res.send('Please Log in.')
+    res.send(false)
   }
 })
 app.post('/api/Aiur/', (req, res) => {

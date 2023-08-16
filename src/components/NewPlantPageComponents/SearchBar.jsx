@@ -1,12 +1,13 @@
 import SearchButton from './SearchButton'
 import { useState } from 'react'
 import HomeButton from './HomeButton'
+import PlantRequestButton from './PlantRequestButton'
 
 const SearchBar = ({ plants, setPlants }) => {
   const [query, setQuery] = useState('')
 
   return (
-    <>
+    <div id='searchBar'>
       <form>
         <input
           type='text'
@@ -16,9 +17,10 @@ const SearchBar = ({ plants, setPlants }) => {
           }}
         />
         <SearchButton query={query} setPlants={setPlants} />
-        <HomeButton />
       </form>
-    </>
+      <HomeButton />
+      <PlantRequestButton />
+    </div>
   )
 }
 

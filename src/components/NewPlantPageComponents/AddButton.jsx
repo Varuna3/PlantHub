@@ -26,6 +26,8 @@ const AddButton = ({ selectedPlant }) => {
             } else {
               setError(true)
             }
+          } else {
+            setError(true)
           }
         }}
       >

@@ -12,6 +12,7 @@ import SignUpPage from './components/SignUpPage'
 import ProfilePage from './components/ProfilePage'
 import NewPlantPage from './components/NewPlantPage'
 import Aiur from './components/Aiur'
+import PlantRequestPage from './components/PlantRequestPage'
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: '/Aiur',
     element: <Aiur />,
+  },
+  {
+    path: '/PlantRequest',
+    element: <PlantRequestPage />,
   },
 ])
 
