@@ -21,6 +21,7 @@ const ProfilePage = () => {
       if (data.Youare !== 'goodtogo') nav('/')
     })
   }, [])
+
   let arr = undefined
   if (plants.length > 0) {
     arr = plants.map(e => {

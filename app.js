@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
-import { Plant, User, Count, Op } from './scripts/seed.js'
+import { Plant, User, Count, Request, Op } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
 
 //middleware
@@ -294,6 +294,59 @@ app.get('/api/plants/hottest', async (req, res) => {
   })
   const plant = await Plant.findByPk(highestCount.dataValues.plantId)
   res.send({ user, plant })
+})
+
+app.post('/api/plants/newplant/request', async (req, res) => {
+  if (req.session.passwordHash) {
+    if (req.session.isAdmin) {
+      await axios.post('/api/Aiur/approve', { id: req.body.id })
+      res.send('Success! (Admin)')
+    } else {
+      await Request.create({
+        name: req.body.name,
+        type: req.body.type,
+        imageURL: req.body.imageURL,
+      })
+      res.send('Success!')
+    }
+  } else {
+    res.send('Please Log in.')
+  }
+})
+app.post('/api/Aiur/', (req, res) => {
+  if (req.session.isAdmin) {
+    res.send(true)
+  } else {
+    res.send(false)
+  }
+})
+app.post('/api/Aiur/requests', async (req, res) => {
+  if (req.session.isAdmin) {
+    res.send(await Request.findAll())
+  } else {
+    res.send(false)
+  }
+})
+app.post('/api/Aiur/approve/', async (req, res) => {
+  if (req.session.isAdmin) {
+    const { id, name, type, imageURL } = req.body
+    const request = await Request.findByPk(id)
+    if (request) await request.destroy()
+    Plant.create({ name, type, imageURL })
+    res.send('Success!')
+  } else {
+    res.send(false)
+  }
+})
+app.post('/api/Aiur/deny/', async (req, res) => {
+  if (req.session.isAdmin) {
+    const { id, name, type, imageURL } = req.body
+    const request = await Request.findByPk(id)
+    await request.destroy()
+    res.send('Success!')
+  } else {
+    res.send(false)
+  }
 })
 
 //open server

@@ -25,7 +25,13 @@ body {
 }
 
 .PlantImage {
-  max-width: 100px;
+  height: 100px;
+}
+
+.CardButton {
+  height: 50px;
+  width: 50px;
+  border-radius: 50px;
 }
 
 .test-box {
@@ -41,4 +47,14 @@ body {
   flex-direction: column;
   align-items: center;
   padding-bottom: 20px;
+}
+
+img {
+  height: 100px;
+  border-radius: 20px;
+}
+
+button {
+  height: 50px;
+  width: 100px;
 }

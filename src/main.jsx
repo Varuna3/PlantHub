@@ -11,6 +11,7 @@ import LoginPage from './LoginPage'
 import SignUpPage from './components/SignUpPage'
 import ProfilePage from './components/ProfilePage'
 import NewPlantPage from './components/NewPlantPage'
+import Aiur from './components/Aiur'
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: '/NewPlant',
     element: <NewPlantPage />,
+  },
+  {
+    path: '/Aiur',
+    element: <Aiur />,
   },
 ])
 

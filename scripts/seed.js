@@ -24,6 +24,12 @@ class Count extends Model {
   }
 }
 
+class Request extends Model {
+  [util.inspect.custom]() {
+    return this.toJSON()
+  }
+}
+
 Plant.init(
   {
     id: {
@@ -33,6 +39,7 @@ Plant.init(
     },
     name: {
       allowNull: false,
+      unique: true,
       type: DataTypes.STRING(35),
     },
     type: {
@@ -110,6 +117,34 @@ Count.init(
   }
 )
 
+Request.init(
+  {
+    id: {
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+    },
+    name: {
+      allowNull: false,
+      unique: true,
+      type: DataTypes.STRING(50),
+    },
+    type: {
+      allowNull: false,
+      type: DataTypes.STRING(50),
+    },
+    imageURL: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+  },
+  {
+    modelName: 'request',
+    sequelize,
+    timestamps: false,
+  }
+)
+
 Plant.belongsToMany(User, { through: Count })
 User.belongsToMany(Plant, { through: Count })
 
@@ -144,32 +179,8 @@ image?q=tbn:ANd9GcQ0edchxOtjHGPTMZU6HT8cW0A67ahaL0w83dvYfFLDtPwxFTz
 BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
     },
   ])
-
-  // const users = await User.bulkCreate([
-  //   {
-  //     fname: 'Frank',
-  //     lname: 'Stank',
-  //     uname: 'Varuna',
-  //     password: 'manwecookingsomesteaks', // dont forget to obfuscate
-  //     isAdmin: true,
-  //   },
-  //   {
-  //     fname: 'Steven',
-  //     lname: 'The Vegan',
-  //     uname: 'SheepL0v3r',
-  //     password: 'manweNOTcookingsomesteaks',
-  //     isAdmin: false,
-  //   },
-  //   {
-  //     fname: 'Baleigh',
-  //     lname: 'Ames',
-  //     uname: "World's_hottest_girlfriend",
-  //     password: 'iwanttocooksteakstoo',
-  //     isAdmin: false,
-  //   },
-  // ])
   console.log('Finished syncing database!')
   await sequelize.close()
 }
 
-export { Plant, User, Count, Op }
+export { Plant, User, Count, Request, Op }
