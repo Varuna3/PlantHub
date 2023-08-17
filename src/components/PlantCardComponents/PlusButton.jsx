@@ -1,4 +1,4 @@
-const PlusButton = ({ name, increment, counts }) => {
+const PlusButton = ({ name, increment }) => {
   return (
     <button
       onClick={() => {

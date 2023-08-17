@@ -26,7 +26,6 @@ const ProfilePage = () => {
         tmp[`${e.name}`] = Number(e.count.count)
       })
       setCounts({ ...tmp })
-      console.log(counts)
     })
   }, [])
   let arr = undefined
@@ -40,6 +39,7 @@ const ProfilePage = () => {
           type={e.type}
           img={e.imageURL}
           increment={increment}
+          decrement={decrement}
         />
       )
     })
@@ -49,6 +49,11 @@ const ProfilePage = () => {
   function increment(name) {
     const tmp = { ...counts }
     tmp[`${name}`]++
+    setCounts({ ...tmp })
+  }
+  function decrement(name) {
+    const tmp = { ...counts }
+    tmp[`${name}`]--
     setCounts({ ...tmp })
   }
   return (

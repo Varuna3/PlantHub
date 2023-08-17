@@ -1,6 +1,7 @@
 import PlusButton from './PlusButton'
+import MinusButton from './MinusButton'
 
-const PlantCard = ({ name, counts, type, img, increment }) => {
+const PlantCard = ({ name, counts, type, img, increment, decrement }) => {
   let count = counts[`${name}`]
 
   return (
@@ -11,6 +12,7 @@ const PlantCard = ({ name, counts, type, img, increment }) => {
       <p>Count: {count}</p>
       <div>
         <PlusButton name={name} increment={increment} counts={counts} />
+        <MinusButton name={name} decrement={decrement} />
       </div>
     </div>
   )
