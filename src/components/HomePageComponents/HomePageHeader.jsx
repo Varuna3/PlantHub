@@ -4,8 +4,9 @@ import axios from 'axios'
 import NewPlantButton from './HeaderComponents/NewPlantButton'
 import ProfileButton from './HeaderComponents/ProfileButton'
 import AdminButton from '../AdminPageComponents/AdminButton'
+import SaveButton from './HeaderComponents/SaveButton'
 
-const HomePageHeader = ({ user }) => {
+const HomePageHeader = ({ user, counts }) => {
   const [admin, setAdmin] = useState(false)
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const HomePageHeader = ({ user }) => {
     <div style={{ border: '2px solid green' }}>
       <NewPlantButton></NewPlantButton>
       {admin ? <AdminButton /> : <></>}
+      <SaveButton counts={counts} />
       <ProfileButton user={user}></ProfileButton>
     </div>
   )

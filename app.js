@@ -157,12 +157,10 @@ app.post('/api/users/create', async (req, res) => {
     uname.length === 0 ||
     password.length === 0
   )
-    res.status(400).send('Error: Please fill out all information.')
+    res.send({ Error: 'null values' })
   else {
     if (password.length < 8) {
-      res
-        .status(400)
-        .send('Error: Password must be at least 8 characters in length.')
+      res.send({ Error: 'password' })
     } else {
       try {
         bcrypt.hash(password, 10, async (err, passwordHash) => {
@@ -195,7 +193,7 @@ app.post('/api/users/create', async (req, res) => {
               }
             } catch (e) {
               if (e.errors[0].message === 'uname must be unique') {
-                res.status(400).send('Error: Username must be unique.')
+                res.send({ Error: 'unique uname' })
               } else {
                 res.status(400).send(e)
               }
@@ -247,8 +245,13 @@ app.post('/api/users/newplant', async (req, res) => {
   }
 })
 
+app.post('/api/counts', async (req, res) => {
+  const counts = await Count.findAll({ where: { userId: req.session.userId } })
+  res.send(counts)
+})
+
 app.post('/api/count/update', async (req, res) => {
-  const { userId, passwordHash } = req.session
+  const { userId } = req.session
   const { plantName, num = 1 } = req.body
   const user = await User.findOne({
     where: { id: userId },
@@ -257,9 +260,8 @@ app.post('/api/count/update', async (req, res) => {
   const count = await Count.findOne({
     where: { userId, plantId: user.plants[0].id },
   })
-  // const count = await Count.findOne({ where: { id: countId } })
 
-  count.count += Number(num)
+  count.count = Number(num)
   await count.save()
   res.send({ success: true, count })
 })

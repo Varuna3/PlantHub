@@ -9,7 +9,9 @@ const SearchBar = ({ plants, setPlants }) => {
   return (
     <div id='searchBar'>
       <form>
+        <label htmlFor='query'>Search for Plants: </label>
         <input
+          id='query'
           type='text'
           value={query}
           onChange={e => {

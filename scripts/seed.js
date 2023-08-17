@@ -178,6 +178,12 @@ if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
 image?q=tbn:ANd9GcQ0edchxOtjHGPTMZU6HT8cW0A67ahaL0w83dvYfFLDtPwxFTz
 BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
     },
+    {
+      name: 'Canna Lily',
+      type: 'flower',
+      imageURL:
+        'https://www.edenbrothers.com/cdn/shop/products/canna-lily-cleopatra-1.jpg?v=1654542216',
+    },
   ])
   console.log('Finished syncing database!')
   await sequelize.close()
