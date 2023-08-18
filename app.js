@@ -209,7 +209,7 @@ app.post('/api/users/create', async (req, res) => {
 })
 
 app.post('/api/users/update/password', async (req, res) => {
-  console.log(req.session)
+  // console.log(req.session)
   const { userId } = req.session
   const { oldPassword, newPassword } = req.body
   const user = await User.findByPk(userId)
@@ -218,17 +218,69 @@ app.post('/api/users/update/password', async (req, res) => {
     if (valid) {
       bcrypt.hash(newPassword, 10, async (err, passwordHash) => {
         if (!err) {
-          user.passwordHash = passwordHash
-          await user.save()
-          res.send({ Success: true })
+          if (newPassword.length > 7) {
+            user.passwordHash = passwordHash
+            await user.save()
+            res.send({ Success: true })
+          } else {
+            res.send({ Error: 'Password must be longer than 8 characters.' })
+          }
         } else {
-          res.status(400).send('Password Hash Error')
+          res.send({ Error: 'Password Hash Error. Please try again.' })
         }
       })
     } else {
       res.send({ Error: 'Incorrect Password.' })
     }
   })
+})
+
+app.post('/api/users/update/username', async (req, res) => {
+  const { userId } = req.session
+  const { newUsername } = req.body
+  if (newUsername.length > 0) {
+    const user = await User.findByPk(userId)
+    if (user.id) {
+      try {
+        user.uname = newUsername
+        await user.save()
+        res.send({ Success: true })
+      } catch (e) {
+        if (e.errors[0].message === 'uname must be unique') {
+          res.send({ Error: 'Username already taken.' })
+        } else {
+          res.status(400).send(e)
+        }
+      }
+    } else {
+      res.send({ Error: 'Something went drastically wrong.' })
+    }
+  } else {
+    res.send({ Error: 'Please enter a value into the box.' })
+  }
+})
+
+app.post('/api/users/update/imageURL', async (req, res) => {
+  const { userId } = req.session
+  const { imageURL } = req.body
+  if (imageURL.length > 0) {
+    const user = await User.findByPk(userId)
+    if (user.id) {
+      try {
+        console.log(user)
+        console.log(imageURL)
+        user.imageURL = imageURL
+        await user.save()
+        res.send({ Success: true })
+      } catch {
+        res.send({
+          Error: 'Something went catastrophically. (/update/imageURL)',
+        })
+      }
+    }
+  } else {
+    res.send({ Error: 'Please enter a value into the box.' })
+  }
 })
 
 app.post('/api/users/hiroshima', async (req, res) => {

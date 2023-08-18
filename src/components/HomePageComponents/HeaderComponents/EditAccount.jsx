@@ -1,19 +1,34 @@
 import { useState } from 'react'
 
+import axios from 'axios'
+
 const EditAccount = () => {
   const [open, setOpen] = useState(false)
   const [editItem, setEditItem] = useState('')
   const [value, setValue] = useState('')
   const [oldPass, setOldPass] = useState('')
+  const [Errored, setErrored] = useState(false)
+  const [Error, setError] = useState('')
 
   function menu(open) {
     if (open) {
       return (
-        <div className='test-box' style={{ width: '250px' }}>
+        <div
+          style={{
+            width: '250px',
+            height: 'auto',
+            border: Errored ? '4px solid red' : '2px solid green',
+            background: Errored ? 'rgb(255, 240, 240)' : 'rgb(240, 255, 240)',
+          }}
+        >
+          <p style={{ margin: 0, color: Errored ? 'red' : 'black' }}>
+            {Errored ? `${Error}` : 'Select an option.'}
+          </p>
           <div style={{ width: '200px', display: 'flex' }}>
             <button
               className='menuButton'
               onClick={() => {
+                setValue('')
                 setEditItem('Username')
               }}
             >
@@ -22,6 +37,7 @@ const EditAccount = () => {
             <button
               className='menuButton'
               onClick={() => {
+                setValue('')
                 setEditItem('Password')
               }}
             >
@@ -30,6 +46,7 @@ const EditAccount = () => {
             <button
               className='menuButton'
               onClick={() => {
+                setValue('')
                 setEditItem('ImageURL')
               }}
             >
@@ -47,7 +64,7 @@ const EditAccount = () => {
   function textBox(option) {
     if (option.length > 0) {
       return (
-        <form>
+        <form autoComplete='off'>
           {option === 'Password' ? oldPassword() : <></>}
           <label htmlFor={`${option}`}>{`New ${option}:`}</label>
           <input
@@ -60,8 +77,56 @@ const EditAccount = () => {
           />
           <button
             style={{ width: 65, height: 20 }}
-            onClick={e => {
+            onClick={async e => {
               e.preventDefault()
+              switch (option) {
+                case 'Username': {
+                  const { data } = await axios.post(
+                    '/api/users/update/username',
+                    { newUsername: value }
+                  )
+                  if (data.Error) {
+                    setErrored(true)
+                    setError(data.Error)
+                  } else {
+                    setOpen(false)
+                  }
+                  break
+                }
+                case 'Password': {
+                  const { data } = await axios.post(
+                    '/api/users/update/password',
+                    {
+                      oldPassword: oldPass,
+                      newPassword: value,
+                    }
+                  )
+                  if (data.Error) {
+                    setErrored(true)
+                    setError(data.Error)
+                  } else {
+                    setOpen(false)
+                  }
+                  break
+                }
+                case 'ImageURL':
+                  {
+                    const { data } = await axios.post(
+                      '/api/users/update/imageURL',
+                      { imageURL: value }
+                    )
+                    if (data.Error) {
+                      setErrored(true)
+                      setError(data.Error)
+                    } else {
+                      setOpen(false)
+                    }
+                  }
+                  break
+                default:
+                  console.log('Something probably went wrong.' + option)
+                  break
+              }
             }}
           >
             Submit
@@ -94,6 +159,8 @@ const EditAccount = () => {
       <div>
         <button
           onClick={() => {
+            setErrored(false)
+            setError('')
             setEditItem('')
             setOpen(!open)
           }}
