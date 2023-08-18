@@ -109,6 +109,18 @@ const EditAccount = () => {
                   }
                   break
                 }
+                case 'ImageURL': {
+                  const { data } = await axios.post(
+                    '/api/users/update/imageURL',
+                    { imageURL: value }
+                  )
+                  if (data.Error) {
+                    setErrored(true)
+                    setError(data.Error)
+                  } else {
+                    setOpen(false)
+                  }
+                }
                 default:
                   console.log('Something probably went wrong.' + option)
                   break

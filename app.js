@@ -268,12 +268,14 @@ app.post('/api/users/update/imageURL', async (req, res) => {
     const user = await User.findByPk(userId)
     if (user.id) {
       try {
+        console.log(user)
+        console.log(imageURL)
         user.imageURL = imageURL
         await user.save()
         res.send({ Success: true })
       } catch {
         res.send({
-          Error: 'Something went catastrophically. (/update/imageURL',
+          Error: 'Something went catastrophically. (/update/imageURL)',
         })
       }
     }
