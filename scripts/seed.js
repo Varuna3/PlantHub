@@ -75,7 +75,7 @@ User.init(
     },
     imageURL: {
       allowNull: false,
-      type: DataTypes.STRING(300),
+      type: DataTypes.STRING(1000),
     },
     uname: {
       allowNull: false,
