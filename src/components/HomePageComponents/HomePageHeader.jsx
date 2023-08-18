@@ -21,7 +21,7 @@ const HomePageHeader = ({ user, counts }) => {
       <NewPlantButton></NewPlantButton>
       {admin ? <AdminButton /> : <></>}
       <SaveButton counts={counts} />
-      {/* <EditAccount /> */}
+      <EditAccount />
       <ProfileButton user={user}></ProfileButton>
     </div>
   )
