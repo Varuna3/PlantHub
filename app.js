@@ -102,14 +102,21 @@ app.get('/api/users/', async (req, res) => {
 app.post('/api/users/', async (req, res) => {
   if (req.session.userId) {
     if (req.session.isAdmin) {
-      const user = await User.findOne({
-        where: { id: req.session.userId },
-        include: Plant,
-      })
-      res.send(user)
+      if (req.body.userId) {
+        const user = await User.findOne({
+          where: { id: req.session.userId },
+          include: Plant,
+        })
+        res.send(user)
+      } else {
+        const user = await User.findOne({
+          where: { id: req.session.userId },
+          include: Plant,
+        })
+        res.send(user)
+      }
     } else {
       const user = await User.findOne({
-        attributes: ['uname'],
         where: { id: req.session.userId },
         include: Plant,
       })
@@ -148,11 +155,13 @@ app.post('/api/plants/create', async (req, res) => {
 })
 
 app.post('/api/users/create', async (req, res) => {
-  const { fname, lname, imageURL, uname, password } = req.body
+  const { fname, lname, uname, password } = req.body
+  let { imageURL } = req.body
+  // if (!imageURL.includes('http'))
+  // imageURL = `https://cdna.artstation.com/p/assets/images/images/055/656/820/large/gaston-real-soulrender-warlock-color-final.jpg?1667449572`
   if (
     fname.length === 0 ||
     lname.length === 0 ||
-    imageURL.length === 0 ||
     uname.length === 0 ||
     password.length === 0
   )
@@ -188,7 +197,9 @@ app.post('/api/users/create', async (req, res) => {
                   passwordHash,
                   isAdmin: false,
                 })
-                res.send(`User ${user.uname} successfully created.`)
+                res.send(
+                  user.imageURL + `User ${user.uname} successfully created.`
+                )
               }
             } catch (e) {
               if (e.errors[0].message === 'uname must be unique') {

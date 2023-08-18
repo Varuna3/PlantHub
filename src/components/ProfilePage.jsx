@@ -18,6 +18,7 @@ const ProfilePage = () => {
       if (data.Youare !== 'goodtogo' || loggedIn === false) nav('/')
     })
     axios.post('/api/users').then(({ data }) => {
+      console.log(data)
       setUser(data)
       if (data.plants) {
         setPlants([...data.plants])

@@ -12,7 +12,7 @@ const ProfileButton = ({ user }) => {
     <>
       <img
         style={{ width: '100px', height: '100px', borderRadius: '100%' }}
-        src={`${user.imageURL}`}
+        src={url}
         onClick={() => {
           console.log('Ping')
         }}
