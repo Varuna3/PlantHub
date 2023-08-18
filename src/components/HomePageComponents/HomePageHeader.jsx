@@ -5,6 +5,7 @@ import NewPlantButton from './HeaderComponents/NewPlantButton'
 import ProfileButton from './HeaderComponents/ProfileButton'
 import AdminButton from '../AdminPageComponents/AdminButton'
 import SaveButton from './HeaderComponents/SaveButton'
+import EditAccount from './HeaderComponents/EditAccount'
 
 const HomePageHeader = ({ user, counts }) => {
   const [admin, setAdmin] = useState(false)
@@ -16,10 +17,11 @@ const HomePageHeader = ({ user, counts }) => {
   }, [])
 
   return (
-    <div style={{ border: '2px solid green' }}>
+    <div style={{ border: '2px solid green', display: 'flex' }}>
       <NewPlantButton></NewPlantButton>
       {admin ? <AdminButton /> : <></>}
       <SaveButton counts={counts} />
+      {/* <EditAccount /> */}
       <ProfileButton user={user}></ProfileButton>
     </div>
   )

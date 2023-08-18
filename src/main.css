@@ -73,3 +73,8 @@ button {
   display: flex;
   border: 2px orange solid;
 }
+
+.menuButton {
+  height: 30px;
+  width: 100px;
+}

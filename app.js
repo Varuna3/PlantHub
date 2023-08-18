@@ -209,6 +209,29 @@ app.post('/api/users/create', async (req, res) => {
   }
 })
 
+app.post('/api/users/update/password', async (req, res) => {
+  console.log(req.session)
+  const { userId } = req.session
+  const { oldPassword, newPassword } = req.body
+  const user = await User.findByPk(userId)
+
+  bcrypt.compare(oldPassword, user.passwordHash, async (err, valid) => {
+    if (valid) {
+      bcrypt.hash(newPassword, 10, async (err, passwordHash) => {
+        if (!err) {
+          user.passwordHash = passwordHash
+          await user.save()
+          res.send({ Success: true })
+        } else {
+          res.status(400).send('Password Hash Error')
+        }
+      })
+    } else {
+      res.send({ Error: 'Incorrect Password.' })
+    }
+  })
+})
+
 app.post('/api/users/hiroshima', async (req, res) => {
   if (req.session.passwordHash) {
     const user = await User.findOne({ where: { id: req.session.userId } })
