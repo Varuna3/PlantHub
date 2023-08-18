@@ -157,8 +157,8 @@ app.post('/api/plants/create', async (req, res) => {
 app.post('/api/users/create', async (req, res) => {
   const { fname, lname, uname, password } = req.body
   let { imageURL } = req.body
-  // if (!imageURL.includes('http'))
-  // imageURL = `https://cdna.artstation.com/p/assets/images/images/055/656/820/large/gaston-real-soulrender-warlock-color-final.jpg?1667449572`
+  if (!imageURL.includes('http'))
+    imageURL = `https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg`
   if (
     fname.length === 0 ||
     lname.length === 0 ||
