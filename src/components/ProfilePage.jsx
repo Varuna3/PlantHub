@@ -9,25 +9,26 @@ const ProfilePage = () => {
   const [user, setUser] = useState([])
   const [plants, setPlants] = useState([])
   const [counts, setCounts] = useState([])
+  const [loggedIn, setLoggedIn] = useState(true)
 
   const nav = useNavigate()
 
   useEffect(() => {
     axios.post('/api/hellothere').then(({ data }) => {
-      if (data.Youare !== 'goodtogo') nav('/')
+      if (data.Youare !== 'goodtogo' || loggedIn === false) nav('/')
     })
     axios.post('/api/users').then(({ data }) => {
       setUser(data)
       if (data.plants) {
         setPlants([...data.plants])
+        const tmp = {}
+        data.plants.forEach(e => {
+          tmp[`${e.name}`] = Number(e.count.count)
+        })
+        setCounts({ ...tmp })
       }
-      const tmp = {}
-      data.plants.forEach(e => {
-        tmp[`${e.name}`] = Number(e.count.count)
-      })
-      setCounts({ ...tmp })
     })
-  }, [])
+  }, [loggedIn])
   let arr = undefined
   if (plants.length > 0) {
     arr = plants.map(e => {
@@ -58,7 +59,11 @@ const ProfilePage = () => {
   }
   return (
     <>
-      <HomePageHeader user={user} counts={counts}></HomePageHeader>
+      <HomePageHeader
+        user={user}
+        counts={counts}
+        setLoggedIn={setLoggedIn}
+      ></HomePageHeader>
       <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>{arr}</div>
     </>
   )
