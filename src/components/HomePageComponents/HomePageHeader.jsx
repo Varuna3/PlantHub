@@ -7,7 +7,7 @@ import AdminButton from '../AdminPageComponents/AdminButton'
 import SaveButton from './HeaderComponents/SaveButton'
 import EditAccount from './HeaderComponents/EditAccount'
 
-const HomePageHeader = ({ user, counts }) => {
+const HomePageHeader = ({ user, counts, setLoggedIn }) => {
   const [admin, setAdmin] = useState(false)
 
   useEffect(() => {
@@ -23,6 +23,14 @@ const HomePageHeader = ({ user, counts }) => {
       <SaveButton counts={counts} />
       {/* <EditAccount /> */}
       <ProfileButton user={user}></ProfileButton>
+      <button
+        onClick={async () => {
+          await axios.post('/api/logout')
+          setLoggedIn(false)
+        }}
+      >
+        Logout
+      </button>
     </div>
   )
 }

@@ -117,7 +117,7 @@ app.post('/api/users/', async (req, res) => {
       res.send(user)
     }
   } else {
-    res.status(400).send('wrong, try again')
+    res.send('wrong, try again')
   }
 })
 
