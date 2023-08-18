@@ -16,7 +16,11 @@ const SaveButton = ({ counts }) => {
   return (
     <>
       <button
-        style={{ backgroundColor: isSaved ? 'green' : 'white' }}
+        style={{
+          backgroundColor: isSaved
+            ? 'rgb(100, 255, 100)'
+            : 'rgb(220, 220, 220)',
+        }}
         onClick={async () => {
           const res = await save(counts)
           if (res.success) {

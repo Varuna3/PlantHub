@@ -4,7 +4,6 @@ import morgan from 'morgan'
 import ViteExpress from 'vite-express'
 import { Plant, User, Count, Request, Op } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
-import axios from 'axios'
 
 //middleware
 const app = express()
