@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 const FriendsPage = () => {
   const [user, setUser] = useState({})
-  const [friendIds, setFriendIds] = useState([])
+  const [friends, setFriends] = useState([])
 
   const nav = useNavigate()
 
@@ -13,28 +13,34 @@ const FriendsPage = () => {
       if (data.Youare !== 'goodtogo') nav('/')
     })
     axios.post('/api/users/').then(({ data }) => {
-      // data.forEach(e => {
-      //   for (const key in e) {
-      //     setFriendIds([...friendIds, e[key]])
-      //   }
-      // })
-      console.log(data)
+      let tmp = data.friends.map(e => {
+        return (
+          <div key={e.id} className='user-card'>
+            <h1>{e.uname}</h1>
+            <p>{e.fname}</p>
+            <p>{e.lname}</p>
+            <img src={e.imageURL} />
+          </div>
+        )
+      })
+      setFriends(tmp)
     })
   }, [])
 
-  // console.log('aa', friendIds)
-
   return (
-    <div>
-      <button
-        onClick={() => {
-          nav('/')
-        }}
-      >
-        Home
-      </button>
-      <button onClick={() => {}}>Add Friend</button>
-    </div>
+    <>
+      <div>
+        <button
+          onClick={() => {
+            nav('/')
+          }}
+        >
+          Home
+        </button>
+        <button onClick={() => {}}>Add Friend</button>
+      </div>
+      <div className='friends-container'>{friends}</div>
+    </>
   )
 }
 

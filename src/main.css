@@ -79,3 +79,11 @@ button {
   height: 30px;
   width: 100px;
 }
+
+.friends-container {
+  display: flex;
+}
+
+.user-card {
+  border: 2px solid green;
+}

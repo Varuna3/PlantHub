@@ -25,7 +25,6 @@ ViteExpress.config({ printViteDevServerHost: true })
 //routes
 app.post('/api/login', async (req, res) => {
   let { uname, password } = req.body
-  console.log(uname, password)
   const user = await User.findOne({
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
@@ -91,12 +90,12 @@ app.get('/api/plantsById/:id', async (req, res) => {
 
 app.get('/api/users/', async (req, res) => {
   if (req.session.isAdmin) {
-    const users = await User.findAll({ include: [Plant, 'user2'] })
+    const users = await User.findAll({ include: [Plant, 'friends'] })
     res.send(users)
   } else {
     const users = await User.findAll({
-      attributes: ['uname'],
-      include: [Plant, 'user2'],
+      attributes: ['uname', 'fname', 'lname', 'imageURL'],
+      include: [Plant, 'friends'],
     })
     res.send(users)
   }
@@ -107,21 +106,22 @@ app.post('/api/users/', async (req, res) => {
     if (req.session.isAdmin) {
       if (req.body.userId) {
         const user = await User.findOne({
-          where: { id: req.session.userId },
-          include: [Plant, 'user2'],
+          where: { id: req.body.userId },
+          include: [Plant, 'friends'],
         })
         res.send(user)
       } else {
         const user = await User.findOne({
           where: { id: req.session.userId },
-          include: [Plant, 'user2'],
+          include: [Plant, 'friends'],
         })
         res.send(user)
       }
     } else {
       const user = await User.findOne({
+        attributes: ['uname', 'fname', 'lname', 'imageURL'],
         where: { id: req.session.userId },
-        include: Plant,
+        include: [Plant, 'friends'],
       })
       res.send(user)
     }
@@ -151,7 +151,6 @@ app.post('/api/users/', async (req, res) => {
 
 app.post('/api/friends/requests/create', async (req, res) => {
   if (req.session.userId) {
-    console.log(req.session.userId, req.body.userId)
     if (req.body.userId == req.session.userId) {
       res.send({ Error: 'You cannot friend yourself.' })
     } else {
@@ -184,9 +183,16 @@ app.post('/api/friends/requests/approve', async (req, res) => {
     const friend = await Friend.findOne({
       where: { friendId: req.session.userId, userId: req.body.userId },
     })
-    friend.status = 'approved'
-    await friend.save()
-    res.send({ Success: true })
+    if (friend) {
+      friend.status = 'approved'
+      await friend.save()
+      const user = await User.findByPk(req.session.userId)
+      const user2 = await User.findByPk(req.body.userId)
+      await user.addFriend(user2, { through: { status: 'approved' } })
+      res.send({ Success: true })
+    } else {
+      res.send('Something went drastically wrong.')
+    }
   } else {
     res.send({ Error: 'Please login.' })
   }
@@ -315,7 +321,6 @@ app.post('/api/users/create', async (req, res) => {
 })
 
 app.post('/api/users/update/password', async (req, res) => {
-  // console.log(req.session)
   const { userId } = req.session
   const { oldPassword, newPassword } = req.body
   const user = await User.findByPk(userId)
@@ -373,8 +378,6 @@ app.post('/api/users/update/imageURL', async (req, res) => {
     const user = await User.findByPk(userId)
     if (user.id) {
       try {
-        console.log(user)
-        console.log(imageURL)
         user.imageURL = imageURL
         await user.save()
         res.send({ Success: true })
