@@ -127,7 +127,7 @@ app.post('/api/users/', async (req, res) => {
   }
 })
 
-app.post('/api/friends/request', async (req, res) => {
+app.post('/api/friends/requests/create', async (req, res) => {
   if (req.session.userId) {
     console.log(req.session.userId, req.body.userId)
     if (req.body.userId == req.session.userId) {
@@ -157,6 +157,49 @@ app.post('/api/friends/request', async (req, res) => {
   }
 })
 
+app.post('/api/friends/requests/approve', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { user2Id: req.session.userId, userId: req.body.userId },
+    })
+    friend.status = 'approved'
+    await friend.save()
+    res.send({ Success: true })
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/requests/deny', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { user2Id: req.session.userId, userId: req.body.userId },
+    })
+    if (friend.status === 'pending') {
+      await friend.destroy()
+      res.send({ Success: true })
+    } else res.send({ Error: 'Already approved.' })
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/remove', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { user2Id: req.session.userId, userId: req.body.userId },
+    })
+    if (friend) {
+      await friend.destroy()
+      res.send({ Success: true })
+    } else {
+      res.send({ Error: "Friend doesn't exist." })
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
 app.post('/api/users/picture', async (req, res) => {
   if (req.session.imageURL) {
     res.send(req.session.imageURL)
@@ -177,10 +220,10 @@ app.post('/api/plants/create', async (req, res) => {
       })
       res.send({ success: true, plant: plant })
     } else {
-      res.status(400).send('Error: Insufficient permissions.')
+      res.send({ Error: 'Please login.' })
     }
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -331,7 +374,7 @@ app.post('/api/users/hiroshima', async (req, res) => {
     await user.destroy()
     res.send(`Success. User ${tmpName} has been obliterated.`)
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -356,7 +399,7 @@ app.post('/api/users/newplant', async (req, res) => {
       res.status(400).send({ success: false })
     }
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -438,7 +481,7 @@ app.post('/api/plants/newplant/request', async (req, res) => {
         res.send('Success!')
       }
     } else {
-      res.send('Please Log in.')
+      res.send({ Error: 'Please login.' })
     }
   } else {
     res.send(false)
