@@ -173,7 +173,7 @@ Request.init(
 Plant.belongsToMany(User, { through: Count })
 User.belongsToMany(Plant, { through: Count })
 
-User.belongsToMany(User, { as: 'user2', through: Friend })
+User.belongsToMany(User, { as: 'friends', through: Friend })
 
 // !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run superinit || node scripts/seed.js
 if (process.argv[1] === url.fileURLToPath(import.meta.url)) {

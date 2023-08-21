@@ -12,15 +12,29 @@ const FriendsPage = () => {
     axios.post('/api/hellothere').then(({ data }) => {
       if (data.Youare !== 'goodtogo') nav('/')
     })
-    axios.post('/api/friends/get').then(({ data }) => {
-      setFriendIds([...data])
+    axios.post('/api/users/').then(({ data }) => {
+      // data.forEach(e => {
+      //   for (const key in e) {
+      //     setFriendIds([...friendIds, e[key]])
+      //   }
+      // })
+      console.log(data)
     })
   }, [])
 
+  // console.log('aa', friendIds)
+
   return (
-    <>
-      <div className='test-box'></div>
-    </>
+    <div>
+      <button
+        onClick={() => {
+          nav('/')
+        }}
+      >
+        Home
+      </button>
+      <button onClick={() => {}}>Add Friend</button>
+    </div>
   )
 }
 

@@ -91,10 +91,13 @@ app.get('/api/plantsById/:id', async (req, res) => {
 
 app.get('/api/users/', async (req, res) => {
   if (req.session.isAdmin) {
-    const users = await User.findAll({ include: Plant, include: Friend })
+    const users = await User.findAll({ include: [Plant, 'user2'] })
     res.send(users)
   } else {
-    const users = await User.findAll({ attributes: ['uname'], include: Plant })
+    const users = await User.findAll({
+      attributes: ['uname'],
+      include: [Plant, 'user2'],
+    })
     res.send(users)
   }
 })
@@ -105,13 +108,13 @@ app.post('/api/users/', async (req, res) => {
       if (req.body.userId) {
         const user = await User.findOne({
           where: { id: req.session.userId },
-          include: Plant,
+          include: [Plant, 'user2'],
         })
         res.send(user)
       } else {
         const user = await User.findOne({
           where: { id: req.session.userId },
-          include: Plant,
+          include: [Plant, 'user2'],
         })
         res.send(user)
       }
@@ -127,25 +130,24 @@ app.post('/api/users/', async (req, res) => {
   }
 })
 
-app.post('/api/friends/get', async (req, res) => {
-  if (req.session.userId) {
-    let arr = []
-    let friends = await Friend.findAll({
-      attributes: ['user2Id'],
-      where: { userId: req.session.userId, status: 'approved' },
-    })
-    arr = [...friends]
-    friends = await Friend.findAll({
-      attributes: ['userId'],
-      where: { user2Id: req.session.userId, status: 'approved' },
-    })
-    arr = [...arr, ...friends]
-    console.log(arr)
-    res.send(arr)
-  } else {
-    res.send({ Error: 'Please login.' })
-  }
-})
+// app.post('/api/friends/get', async (req, res) => {
+//   if (req.session.userId) {
+//     let arr = []
+//     let friends = await Friend.findAll({
+//       attributes: ['user2Id'],
+//       where: { userId: req.session.userId, status: 'approved' },
+//     })
+//     arr = [...friends]
+//     friends = await Friend.findAll({
+//       attributes: ['userId'],
+//       where: { user2Id: req.session.userId, status: 'approved' },
+//     })
+//     arr = [...arr, ...friends]
+//     res.send(arr)
+//   } else {
+//     res.send({ Error: 'Please login.' })
+//   }
+// })
 
 app.post('/api/friends/requests/create', async (req, res) => {
   if (req.session.userId) {
@@ -154,20 +156,20 @@ app.post('/api/friends/requests/create', async (req, res) => {
       res.send({ Error: 'You cannot friend yourself.' })
     } else {
       const exists = await Friend.findOne({
-        where: { userId: req.session.userId, user2Id: req.body.userId },
+        where: { userId: req.session.userId, friendId: req.body.userId },
       })
       if (exists) {
         res.send({ Error: 'You are already friends with this person!' })
       } else {
         const exists2 = await Friend.findOne({
-          where: { userId: req.body.userId, user2Id: req.session.userId },
+          where: { userId: req.body.userId, friendId: req.session.userId },
         })
         if (exists2) {
           res.send({ Error: 'You are already friends with this person!' })
         } else {
           const user = await User.findByPk(req.session.userId)
           const user2 = await User.findByPk(req.body.userId)
-          await user.addUser2(user2, { through: { status: 'pending' } })
+          await user.addFriend(user2, { through: { status: 'pending' } })
           res.send({ Success: true })
         }
       }
@@ -180,7 +182,7 @@ app.post('/api/friends/requests/create', async (req, res) => {
 app.post('/api/friends/requests/approve', async (req, res) => {
   if (req.session.userId) {
     const friend = await Friend.findOne({
-      where: { user2Id: req.session.userId, userId: req.body.userId },
+      where: { friendId: req.session.userId, userId: req.body.userId },
     })
     friend.status = 'approved'
     await friend.save()
@@ -193,7 +195,7 @@ app.post('/api/friends/requests/approve', async (req, res) => {
 app.post('/api/friends/requests/deny', async (req, res) => {
   if (req.session.userId) {
     const friend = await Friend.findOne({
-      where: { user2Id: req.session.userId, userId: req.body.userId },
+      where: { friendId: req.session.userId, userId: req.body.userId },
     })
     if (friend.status === 'pending') {
       await friend.destroy()
@@ -207,7 +209,7 @@ app.post('/api/friends/requests/deny', async (req, res) => {
 app.post('/api/friends/remove', async (req, res) => {
   if (req.session.userId) {
     const friend = await Friend.findOne({
-      where: { user2Id: req.session.userId, userId: req.body.userId },
+      where: { friendId: req.session.userId, userId: req.body.userId },
     })
     if (friend) {
       await friend.destroy()
