@@ -30,6 +30,12 @@ class Request extends Model {
   }
 }
 
+class Friend extends Model {
+  [util.inspect.custom]() {
+    return this.toJSON()
+  }
+}
+
 Plant.init(
   {
     id: {
@@ -117,6 +123,25 @@ Count.init(
   }
 )
 
+Friend.init(
+  {
+    id: {
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+    },
+    status: {
+      allowNull: false,
+      type: DataTypes.STRING(20),
+    },
+  },
+  {
+    modelName: 'friend',
+    sequelize,
+    timestamps: false,
+  }
+)
+
 Request.init(
   {
     id: {
@@ -148,7 +173,9 @@ Request.init(
 Plant.belongsToMany(User, { through: Count })
 User.belongsToMany(Plant, { through: Count })
 
-// !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run dev || node scripts/seed.js
+User.belongsToMany(User, { as: 'user2', through: Friend })
+
+// !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run superinit || node scripts/seed.js
 if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   console.log('Syncing database...')
   await sequelize.sync({ force: true })
@@ -213,4 +240,4 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
   await sequelize.close()
 }
 
-export { Plant, User, Count, Request, Op }
+export { Plant, User, Count, Request, Friend, Op }

@@ -2,7 +2,7 @@ import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
-import { Plant, User, Count, Request, Op } from './scripts/seed.js'
+import { Plant, User, Count, Request, Friend, Op } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
 
 //middleware
@@ -124,6 +124,36 @@ app.post('/api/users/', async (req, res) => {
     }
   } else {
     res.send('wrong, try again')
+  }
+})
+
+app.post('/api/friends/request', async (req, res) => {
+  if (req.session.userId) {
+    console.log(req.session.userId, req.body.userId)
+    if (req.body.userId == req.session.userId) {
+      res.send({ Error: 'You cannot friend yourself.' })
+    } else {
+      const exists = await Friend.findOne({
+        where: { userId: req.session.userId, user2Id: req.body.userId },
+      })
+      if (exists) {
+        res.send({ Error: 'You are already friends with this person!' })
+      } else {
+        const exists2 = await Friend.findOne({
+          where: { userId: req.body.userId, user2Id: req.session.userId },
+        })
+        if (exists2) {
+          res.send({ Error: 'You are already friends with this person!' })
+        } else {
+          const user = await User.findByPk(req.session.userId)
+          const user2 = await User.findByPk(req.body.userId)
+          await user.addUser2(user2, { through: { status: 'pending' } })
+          res.send({ Success: true })
+        }
+      }
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
   }
 })
 
