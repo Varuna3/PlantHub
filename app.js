@@ -91,7 +91,7 @@ app.get('/api/plantsById/:id', async (req, res) => {
 
 app.get('/api/users/', async (req, res) => {
   if (req.session.isAdmin) {
-    const users = await User.findAll({ include: Plant })
+    const users = await User.findAll({ include: Plant, include: Friend })
     res.send(users)
   } else {
     const users = await User.findAll({ attributes: ['uname'], include: Plant })
@@ -124,6 +124,26 @@ app.post('/api/users/', async (req, res) => {
     }
   } else {
     res.send('wrong, try again')
+  }
+})
+
+app.post('/api/friends/get', async (req, res) => {
+  if (req.session.userId) {
+    let arr = []
+    let friends = await Friend.findAll({
+      attributes: ['user2Id'],
+      where: { userId: req.session.userId, status: 'approved' },
+    })
+    arr = [...friends]
+    friends = await Friend.findAll({
+      attributes: ['userId'],
+      where: { user2Id: req.session.userId, status: 'approved' },
+    })
+    arr = [...arr, ...friends]
+    console.log(arr)
+    res.send(arr)
+  } else {
+    res.send({ Error: 'Please login.' })
   }
 })
 

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import NewPlantButton from './HeaderComponents/NewPlantButton'
@@ -16,6 +17,8 @@ const HomePageHeader = ({ user, counts, setLoggedIn }) => {
     })
   }, [])
 
+  const nav = useNavigate()
+
   return (
     <div style={{ border: '2px solid green', display: 'flex' }}>
       <NewPlantButton></NewPlantButton>
@@ -23,6 +26,13 @@ const HomePageHeader = ({ user, counts, setLoggedIn }) => {
       <SaveButton counts={counts} />
       <EditAccount />
       <ProfileButton user={user}></ProfileButton>
+      <button
+        onClick={() => {
+          nav('/Friends')
+        }}
+      >
+        Friends
+      </button>
       <button
         onClick={async () => {
           await axios.post('/api/logout')
