@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
+import AddFriendPage from './FriendsPageComponents/AddFriendPage'
+
 const FriendsPage = () => {
   const [user, setUser] = useState({})
   const [friends, setFriends] = useState([])
+  const [addingFriend, setAddingFriend] = useState(false)
 
   const nav = useNavigate()
 
@@ -37,9 +40,17 @@ const FriendsPage = () => {
         >
           Home
         </button>
-        <button onClick={() => {}}>Add Friend</button>
+        <button
+          onClick={() => {
+            setAddingFriend(!addingFriend)
+          }}
+        >
+          Add Friend
+        </button>
       </div>
-      <div className='friends-container'>{friends}</div>
+      <div className='friends-container'>
+        {addingFriend ? <AddFriendPage /> : friends}
+      </div>
     </>
   )
 }

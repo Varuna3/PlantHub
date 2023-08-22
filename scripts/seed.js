@@ -240,4 +240,4 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
   await sequelize.close()
 }
 
-export { Plant, User, Count, Request, Friend, Op }
+export { Plant, User, Count, Request, Friend, Op, sequelize }

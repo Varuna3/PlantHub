@@ -2,7 +2,15 @@ import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
-import { Plant, User, Count, Request, Friend, Op } from './scripts/seed.js'
+import {
+  Plant,
+  User,
+  Count,
+  Request,
+  Friend,
+  Op,
+  sequelize,
+} from './scripts/seed.js'
 import bcrypt from 'bcrypt'
 
 //middleware
@@ -94,8 +102,27 @@ app.get('/api/users/', async (req, res) => {
     res.send(users)
   } else {
     const users = await User.findAll({
-      attributes: ['uname', 'fname', 'lname', 'imageURL'],
+      attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
       include: [Plant, 'friends'],
+    })
+    res.send(users)
+  }
+})
+
+app.get('/api/users/:uname', async (req, res) => {
+  if (req.session.isAdmin) {
+    const users = await User.findAll({
+      where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
+        [Op.like]: `%${req.params.uname}%`,
+      }),
+    })
+    res.send(users)
+  } else {
+    const users = await User.findAll({
+      where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
+        [Op.like]: `%${req.params.uname}%`,
+      }),
+      attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
     })
     res.send(users)
   }
@@ -129,25 +156,6 @@ app.post('/api/users/', async (req, res) => {
     res.send('wrong, try again')
   }
 })
-
-// app.post('/api/friends/get', async (req, res) => {
-//   if (req.session.userId) {
-//     let arr = []
-//     let friends = await Friend.findAll({
-//       attributes: ['user2Id'],
-//       where: { userId: req.session.userId, status: 'approved' },
-//     })
-//     arr = [...friends]
-//     friends = await Friend.findAll({
-//       attributes: ['userId'],
-//       where: { user2Id: req.session.userId, status: 'approved' },
-//     })
-//     arr = [...arr, ...friends]
-//     res.send(arr)
-//   } else {
-//     res.send({ Error: 'Please login.' })
-//   }
-// })
 
 app.post('/api/friends/requests/create', async (req, res) => {
   if (req.session.userId) {
