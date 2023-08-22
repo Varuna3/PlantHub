@@ -3,10 +3,12 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 import AddFriendPage from './FriendsPageComponents/AddFriendPage'
+import FriendRequestsPage from './FriendRequestsPage/FriendRequestsPage'
 
 const FriendsPage = () => {
   const [friends, setFriends] = useState([])
-  const [addingFriend, setAddingFriend] = useState(false)
+  const [content, setContent] = useState('friends')
+  const [reqCount, setReqCount] = useState(0)
   const [error, setError] = useState('')
 
   const nav = useNavigate()
@@ -22,6 +24,9 @@ const FriendsPage = () => {
         setError(data.Error)
       }
     })
+    axios
+      .post('/api/friends/get', { type: 'count' })
+      .then(({ data }) => setReqCount(data))
   }, [])
 
   const arr = friends.map(e => {
@@ -48,18 +53,59 @@ const FriendsPage = () => {
         </button>
         <button
           onClick={() => {
-            setAddingFriend(!addingFriend)
+            setContent('friends')
           }}
         >
-          {addingFriend ? 'Friends' : 'Add Friend'}
+          Friends
         </button>
-        <button>Requests</button>
+        <button
+          onClick={() => {
+            setContent('adding')
+          }}
+        >
+          Add Friend
+        </button>
+        <button
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onClick={() => {
+            setContent('requests')
+          }}
+        >
+          <div
+            style={
+              reqCount > 0
+                ? {
+                    color: 'red',
+                    border: '2px solid red',
+                    borderRadius: 10,
+                    width: 15,
+                    height: 15,
+                    position: 'absolute',
+                    marginBottom: 25,
+                  }
+                : {}
+            }
+          >
+            {reqCount > 0 ? reqCount : undefined}
+          </div>
+          Requests
+        </button>
       </div>
       <h1 style={{ color: 'red' }}>
         {error.length > 0 ? `Error: ${error}` : undefined}
       </h1>
-      <div className='friends-container'>
-        {addingFriend ? <AddFriendPage /> : arr}
+      <div className='users-container'>
+        {content === 'adding' ? (
+          <AddFriendPage />
+        ) : content === 'friends' ? (
+          arr
+        ) : (
+          <FriendRequestsPage />
+        )}
       </div>
     </>
   )

@@ -175,14 +175,14 @@ app.post('/api/friends/get', async (req, res) => {
       res.send(arr)
     } else if (req.body.type === 'pending') {
       const ids = await Friend.findAll({
-        attributes: ['friendId'],
-        where: { status: 'pending', userId: req.session.userId },
+        attributes: ['userId'],
+        where: { status: 'pending', friendId: req.session.userId },
       })
       const arr = []
       for (let i = 0; i < ids.length; i++) {
         const user = await User.findOne({
           attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
-          where: { id: ids[i].friendId },
+          where: { id: ids[i].userId },
         })
         arr.push(user)
       }
@@ -190,9 +190,9 @@ app.post('/api/friends/get', async (req, res) => {
     } else if (req.body.type === 'count') {
       const ids = await Friend.findAll({
         attributes: ['friendId'],
-        where: { status: 'pending', userId: req.session.userId },
+        where: { status: 'pending', friendId: req.session.userId },
       })
-      res.send(ids.length)
+      res.send(`${ids.length}`)
     } else {
       res.send({ Error: 'Please specify a type of GET.' })
     }
