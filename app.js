@@ -159,19 +159,43 @@ app.post('/api/users/', async (req, res) => {
 
 app.post('/api/friends/get', async (req, res) => {
   if (req.session.userId) {
-    const ids = await Friend.findAll({
-      attributes: ['friendId'],
-      where: { status: 'approved', userId: req.session.userId },
-    })
-    const arr = []
-    for (let i = 0; i < ids.length; i++) {
-      const user = await User.findOne({
-        attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
-        where: { id: ids[i].friendId },
+    if (req.body.type === 'approved') {
+      const ids = await Friend.findAll({
+        attributes: ['friendId'],
+        where: { status: 'approved', userId: req.session.userId },
       })
-      arr.push(user)
+      const arr = []
+      for (let i = 0; i < ids.length; i++) {
+        const user = await User.findOne({
+          attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+          where: { id: ids[i].friendId },
+        })
+        arr.push(user)
+      }
+      res.send(arr)
+    } else if (req.body.type === 'pending') {
+      const ids = await Friend.findAll({
+        attributes: ['friendId'],
+        where: { status: 'pending', userId: req.session.userId },
+      })
+      const arr = []
+      for (let i = 0; i < ids.length; i++) {
+        const user = await User.findOne({
+          attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+          where: { id: ids[i].friendId },
+        })
+        arr.push(user)
+      }
+      res.send(arr)
+    } else if (req.body.type === 'count') {
+      const ids = await Friend.findAll({
+        attributes: ['friendId'],
+        where: { status: 'pending', userId: req.session.userId },
+      })
+      res.send(ids.length)
+    } else {
+      res.send({ Error: 'Please specify a type of GET.' })
     }
-    res.send(arr)
   } else {
     res.send({ Error: 'Please login.' })
   }

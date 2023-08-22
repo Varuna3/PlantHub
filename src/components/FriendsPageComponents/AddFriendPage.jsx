@@ -6,6 +6,30 @@ const AddFriendPage = () => {
   const [users, setUsers] = useState([])
   const [error, setError] = useState(false)
 
+  useEffect(() => {
+    axios.get(`/api/users/${uname}`).then(({ data }) => {
+      const tmp = data.map(e => {
+        return (
+          <div key={e.id} className='user-card'>
+            <h1>{e.uname}</h1>
+            <img src={e.imageURL} />
+            <p>
+              {e.fname} {e.lname}
+            </p>
+            <button
+              onClick={() => {
+                handleClickEvent(e)
+              }}
+            >
+              Send Request
+            </button>
+          </div>
+        )
+      })
+      setUsers(tmp)
+    })
+  }, [])
+
   async function handleClickEvent(e) {
     console.log(e)
     const { data } = await axios.post('/api/friends/requests/create', {
