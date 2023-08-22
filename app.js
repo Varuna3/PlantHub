@@ -157,6 +157,26 @@ app.post('/api/users/', async (req, res) => {
   }
 })
 
+app.post('/api/friends/get', async (req, res) => {
+  if (req.session.userId) {
+    const ids = await Friend.findAll({
+      attributes: ['friendId'],
+      where: { status: 'approved', userId: req.session.userId },
+    })
+    const arr = []
+    for (let i = 0; i < ids.length; i++) {
+      const user = await User.findOne({
+        attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+        where: { id: ids[i].friendId },
+      })
+      arr.push(user)
+    }
+    res.send(arr)
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
 app.post('/api/friends/requests/create', async (req, res) => {
   if (req.session.userId) {
     if (req.body.userId == req.session.userId) {

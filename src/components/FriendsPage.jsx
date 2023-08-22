@@ -7,6 +7,7 @@ import AddFriendPage from './FriendsPageComponents/AddFriendPage'
 const FriendsPage = () => {
   const [user, setUser] = useState({})
   const [friends, setFriends] = useState([])
+  const [cards, setCards] = useState([])
   const [addingFriend, setAddingFriend] = useState(false)
 
   const nav = useNavigate()
@@ -15,20 +16,35 @@ const FriendsPage = () => {
     axios.post('/api/hellothere').then(({ data }) => {
       if (data.Youare !== 'goodtogo') nav('/')
     })
-    axios.post('/api/users/').then(({ data }) => {
-      let tmp = data.friends.map(e => {
-        return (
-          <div key={e.id} className='user-card'>
-            <h1>{e.uname}</h1>
-            <p>{e.fname}</p>
-            <p>{e.lname}</p>
-            <img src={e.imageURL} />
-          </div>
-        )
-      })
-      setFriends(tmp)
+    // axios.post('/api/users/').then(({ data }) => {
+    //   let tmp = data.friends.map(e => {
+    //     return (
+    //       <div key={e.id} className='user-card'>
+    //         <h1>{e.uname}</h1>
+    //         <p>{e.fname}</p>
+    //         <p>{e.lname}</p>
+    //         <img src={e.imageURL} />
+    //       </div>
+    //     )
+    //   })
+    //   setFriends(tmp)
+    // })
+    axios.post('/api/friends/get').then(({ data }) => {
+      setFriends([...data])
     })
   }, [])
+
+  const arr = friends.map(e => {
+    return (
+      <div key={e.id} className='user-card'>
+        <h1>{e.uname}</h1>
+        <p>
+          {e.fname} {e.lname}
+        </p>
+        <img src={e.imageURL} alt='' />
+      </div>
+    )
+  })
 
   return (
     <>
@@ -49,7 +65,7 @@ const FriendsPage = () => {
         </button>
       </div>
       <div className='friends-container'>
-        {addingFriend ? <AddFriendPage /> : friends}
+        {addingFriend ? <AddFriendPage /> : arr}
       </div>
     </>
   )

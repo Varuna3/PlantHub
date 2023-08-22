@@ -6,6 +6,16 @@ const AddFriendPage = () => {
   const [users, setUsers] = useState([])
   const [error, setError] = useState(false)
 
+  async function handleClickEvent(e) {
+    console.log(e)
+    const { data } = await axios.post('/api/friends/requests/create', {
+      userId: e.id,
+    })
+    if (data.Error) {
+      console.log(data.Error)
+    }
+  }
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column' }}>
       <form action=''>
@@ -32,12 +42,8 @@ const AddFriendPage = () => {
                     {e.fname} {e.lname}
                   </p>
                   <button
-                    onClick={async () => {
-                      console.log(e)
-                      const { data } = await axios.post(
-                        '/api/friends/requests/create',
-                        { userId: e.id }
-                      )
+                    onClick={() => {
+                      handleClickEvent(e)
                     }}
                   >
                     Send Request
