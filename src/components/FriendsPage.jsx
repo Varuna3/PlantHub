@@ -104,7 +104,7 @@ const FriendsPage = () => {
         ) : content === 'friends' ? (
           arr
         ) : (
-          <FriendRequestsPage />
+          <FriendRequestsPage reqCount={reqCount} setReqCount={setReqCount} />
         )}
       </div>
     </>

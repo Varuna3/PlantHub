@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-const RequestCard = ({ e, reqs, setReqs }) => {
+const RequestCard = ({ e, reqCount, setReqCount }) => {
   const [status, setStatus] = useState('pending')
 
   if (status === 'pending') {
@@ -17,7 +17,7 @@ const RequestCard = ({ e, reqs, setReqs }) => {
             style={{ width: 50, height: 50, backgroundColor: 'green' }}
             onClick={async () => {
               setStatus('approved')
-              setReqs(reqs - 1)
+              setReqCount(reqCount - 1)
               await axios.post('/api/friends/requests/approve', {
                 userId: e.id,
               })
@@ -27,7 +27,7 @@ const RequestCard = ({ e, reqs, setReqs }) => {
             style={{ width: 50, height: 50, backgroundColor: 'red' }}
             onClick={async () => {
               setStatus('denied')
-              setReqs(reqs - 1)
+              setReqCount(reqCount - 1)
               await axios.post('/api/friends/requests/deny', { userId: e.id })
             }}
           ></button>
