@@ -469,8 +469,15 @@ app.post('/api/users/newplant', async (req, res) => {
         where: [{ userId: user.id }, { plantId: plant.id }],
       })
       if (!countExists) {
-        const count = await user.addPlant(plant, { through: { count: 1 } })
-        res.send({ count, success: true })
+        if (req.body.count) {
+          const count = await user.addPlant(plant, {
+            through: { count: req.body.count },
+          })
+          res.send({ count, success: true })
+        } else {
+          const count = await user.addPlant(plant, { through: { count: 1 } })
+          res.send({ count, success: true })
+        }
       } else res.send('You already have this plant in your database!')
     } catch {
       res.status(400).send({ success: false })
@@ -499,6 +506,19 @@ app.post('/api/count/update', async (req, res) => {
   count.count = Number(num)
   await count.save()
   res.send({ success: true, count })
+})
+
+app.post('/api/count/delete', async (req, res) => {
+  if (req.session.userId) {
+    const plant = await Plant.findOne({ where: { name: req.body.name } })
+    const count = await Count.findOne({
+      where: { userId: req.session.userId, plantId: plant.id },
+    })
+    await count.destroy()
+    res.send({ Success: true })
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
 })
 
 app.get('/api/plantsByName/:name', async (req, res) => {
