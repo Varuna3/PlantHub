@@ -319,14 +319,21 @@ app.post('/api/users/newplant', async (req, res) => {
         where: [{ userId: user.id }, { plantId: plant.id }],
       })
       if (!countExists) {
-        const count = await user.addPlant(plant, { through: { count: 1 } })
-        res.send({ count, success: true })
+        if (req.body.count) {
+          const count = await user.addPlant(plant, {
+            through: { count: req.body.count },
+          })
+          res.send({ count, success: true })
+        } else {
+          const count = await user.addPlant(plant, { through: { count: 1 } })
+          res.send({ count, success: true })
+        }
       } else res.send('You already have this plant in your database!')
     } catch {
       res.status(400).send({ success: false })
     }
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
