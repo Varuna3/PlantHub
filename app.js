@@ -103,7 +103,7 @@ app.get('/api/users/', async (req, res) => {
   } else {
     const users = await User.findAll({
       attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
-      include: [Plant, 'friends'],
+      include: [Plant],
     })
     res.send(users)
   }
@@ -111,14 +111,14 @@ app.get('/api/users/', async (req, res) => {
 
 app.get('/api/users/:uname', async (req, res) => {
   if (req.session.isAdmin) {
-    const users = await User.findAll({
+    const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
         [Op.like]: `%${req.params.uname}%`,
       }),
     })
     res.send(users)
   } else {
-    const users = await User.findAll({
+    const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
         [Op.like]: `%${req.params.uname}%`,
       }),

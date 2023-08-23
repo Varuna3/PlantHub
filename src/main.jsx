@@ -51,7 +51,7 @@ const router = createBrowserRouter([
     element: <FriendsPage />,
   },
   {
-    path: '/Visit',
+    path: '/Visit/:uname',
     element: <VisitFriendPage />,
   },
 ])

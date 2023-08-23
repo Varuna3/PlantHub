@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import AddFriendPage from './FriendsPageComponents/AddFriendPage'
 import FriendRequestsPage from './FriendRequestsPage/FriendRequestsPage'
+import FriendCard from './FriendsPageComponents/FriendCard'
 
 const FriendsPage = () => {
   const [friends, setFriends] = useState([])
@@ -31,13 +32,14 @@ const FriendsPage = () => {
 
   const arr = friends.map(e => {
     return (
-      <div key={e.id} className='user-card'>
-        <h1>{e.uname}</h1>
-        <p>
-          {e.fname} {e.lname}
-        </p>
-        <img src={e.imageURL} alt='' />
-      </div>
+      <FriendCard
+        key={e.id}
+        id={e.id}
+        uname={e.uname}
+        fname={e.fname}
+        lname={e.lname}
+        imageURL={e.imageURL}
+      ></FriendCard>
     )
   })
 
