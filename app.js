@@ -113,16 +113,18 @@ app.get('/api/users/:uname', async (req, res) => {
   if (req.session.isAdmin) {
     const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
-        [Op.like]: `%${req.params.uname}%`,
+        [Op.like]: `%${req.params.uname.toLowerCase()}%`,
       }),
+      include: Plant,
     })
     res.send(users)
   } else {
     const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
-        [Op.like]: `%${req.params.uname}%`,
+        [Op.like]: `%${req.params.uname.toLowerCase()}%`,
       }),
       attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+      include: Plant,
     })
     res.send(users)
   }
