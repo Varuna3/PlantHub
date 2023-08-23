@@ -212,11 +212,15 @@ app.post('/api/friends/requests/create', async (req, res) => {
       if (exists) {
         res.send({ Error: 'You are already friends with this person!' })
       } else {
-        const exists2 = await Friend.findOne({
+        const friend = await Friend.findOne({
           where: { userId: req.body.userId, friendId: req.session.userId },
         })
-        if (exists2) {
-          res.send({ Error: 'You are already friends with this person!' })
+        if (friend) {
+          friend.status = 'approved'
+          await friend.save()
+          const user = await User.findByPk(req.session.userId)
+          const user2 = await User.findByPk(req.body.userId)
+          await user.addFriend(user2, { through: { status: 'approved' } })
         } else {
           const user = await User.findByPk(req.session.userId)
           const user2 = await User.findByPk(req.body.userId)
