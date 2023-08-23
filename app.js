@@ -358,6 +358,19 @@ app.post('/api/count/update', async (req, res) => {
   res.send({ success: true, count })
 })
 
+app.post('/api/count/delete', async (req, res) => {
+  if (req.session.userId) {
+    const plant = await Plant.findOne({ where: { name: req.body.name } })
+    const count = await Count.findOne({
+      where: { userId: req.session.userId, plantId: plant.id },
+    })
+    await count.destroy()
+    res.send({ Success: true })
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
 app.get('/api/plantsByName/:name', async (req, res) => {
   if (req.params.name.length > 0) {
     const plants = await Plant.findAll({
