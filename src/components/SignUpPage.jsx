@@ -35,7 +35,6 @@ const SignUpPage = () => {
             uname,
             password,
           })
-          console.log(data)
           if (data.Error) {
             setError(true)
             switch (data.Error) {

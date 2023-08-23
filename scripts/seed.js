@@ -30,6 +30,12 @@ class Request extends Model {
   }
 }
 
+class Friend extends Model {
+  [util.inspect.custom]() {
+    return this.toJSON()
+  }
+}
+
 Plant.init(
   {
     id: {
@@ -117,6 +123,25 @@ Count.init(
   }
 )
 
+Friend.init(
+  {
+    id: {
+      primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+    },
+    status: {
+      allowNull: false,
+      type: DataTypes.STRING(20),
+    },
+  },
+  {
+    modelName: 'friend',
+    sequelize,
+    timestamps: false,
+  }
+)
+
 Request.init(
   {
     id: {
@@ -148,7 +173,9 @@ Request.init(
 Plant.belongsToMany(User, { through: Count })
 User.belongsToMany(Plant, { through: Count })
 
-// !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run dev || node scripts/seed.js
+User.belongsToMany(User, { as: 'friends', through: Friend })
+
+// !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run superinit || node scripts/seed.js
 if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   console.log('Syncing database...')
   await sequelize.sync({ force: true })
@@ -184,9 +211,33 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
       imageURL:
         'https://www.edenbrothers.com/cdn/shop/products/canna-lily-cleopatra-1.jpg?v=1654542216',
     },
+    {
+      name: 'Dandelion',
+      type: 'weed',
+      imageURL:
+        'https://images.squarespace-cdn.com/content/v1/54fbb611e4b0d7c1e151d22a/1653960196494-2YRSA0WT5Z4LS635NKFB/Dandelion+Seeds.jpg?format=1500w',
+    },
+    {
+      name: 'St. John Wort',
+      type: 'herb',
+      imageURL:
+        'https://sowtrueseed.com/cdn/shop/products/Herb_St.JohnsWort_2_pixabay@2x.jpg?v=1595031555',
+    },
+    {
+      name: 'Nettle',
+      type: 'herb',
+      imageURL:
+        'https://snakeriverseeds.com/cdn/shop/products/StingingNettle2_1200x1200.jpg?v=1621888649',
+    },
+    {
+      name: 'Juniper',
+      type: 'herb',
+      imageURL:
+        'https://www.treehugger.com/thmb/1cVkYsAm_HaZpy7F5_GasOSheMc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-946028290-0a3e92ad30be42fc90c74d223f15267b.jpg',
+    },
   ])
   console.log('Finished syncing database!')
   await sequelize.close()
 }
 
-export { Plant, User, Count, Request, Op }
+export { Plant, User, Count, Request, Friend, Op, sequelize }

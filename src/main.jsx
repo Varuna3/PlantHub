@@ -13,6 +13,8 @@ import ProfilePage from './components/ProfilePage'
 import NewPlantPage from './components/NewPlantPage'
 import Aiur from './components/Aiur'
 import PlantRequestPage from './components/PlantRequestPage'
+import FriendsPage from './components/FriendsPage'
+import VisitFriendPage from './components/VisitFriendPage'
 
 const router = createBrowserRouter([
   {
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
   {
     path: '/PlantRequest',
     element: <PlantRequestPage />,
+  },
+  {
+    path: '/Friends',
+    element: <FriendsPage />,
+  },
+  {
+    path: '/Visit',
+    element: <VisitFriendPage />,
   },
 ])
 

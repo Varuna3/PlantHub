@@ -6,6 +6,7 @@ body {
 }
 
 img {
+  object-fit: cover;
   height: 100px;
   border-radius: 20px;
 }
@@ -78,4 +79,25 @@ button {
 .menuButton {
   height: 30px;
   width: 100px;
+}
+
+.users-container {
+  display: flex;
+}
+
+h1 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 130px;
+  height: 250px;
+  border: 2px solid rgb(149, 0, 255);
 }

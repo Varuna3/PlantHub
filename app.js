@@ -2,7 +2,15 @@ import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
-import { Plant, User, Count, Request, Op } from './scripts/seed.js'
+import {
+  Plant,
+  User,
+  Count,
+  Request,
+  Friend,
+  Op,
+  sequelize,
+} from './scripts/seed.js'
 import bcrypt from 'bcrypt'
 
 //middleware
@@ -25,7 +33,6 @@ ViteExpress.config({ printViteDevServerHost: true })
 //routes
 app.post('/api/login', async (req, res) => {
   let { uname, password } = req.body
-  console.log(uname, password)
   const user = await User.findOne({
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
@@ -91,10 +98,32 @@ app.get('/api/plantsById/:id', async (req, res) => {
 
 app.get('/api/users/', async (req, res) => {
   if (req.session.isAdmin) {
-    const users = await User.findAll({ include: Plant })
+    const users = await User.findAll({ include: [Plant, 'friends'] })
     res.send(users)
   } else {
-    const users = await User.findAll({ attributes: ['uname'], include: Plant })
+    const users = await User.findAll({
+      attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+      include: [Plant, 'friends'],
+    })
+    res.send(users)
+  }
+})
+
+app.get('/api/users/:uname', async (req, res) => {
+  if (req.session.isAdmin) {
+    const users = await User.findAll({
+      where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
+        [Op.like]: `%${req.params.uname}%`,
+      }),
+    })
+    res.send(users)
+  } else {
+    const users = await User.findAll({
+      where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
+        [Op.like]: `%${req.params.uname}%`,
+      }),
+      attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+    })
     res.send(users)
   }
 })
@@ -104,26 +133,150 @@ app.post('/api/users/', async (req, res) => {
     if (req.session.isAdmin) {
       if (req.body.userId) {
         const user = await User.findOne({
-          where: { id: req.session.userId },
-          include: Plant,
+          where: { id: req.body.userId },
+          include: [Plant, 'friends'],
         })
         res.send(user)
       } else {
         const user = await User.findOne({
           where: { id: req.session.userId },
-          include: Plant,
+          include: [Plant, 'friends'],
         })
         res.send(user)
       }
     } else {
       const user = await User.findOne({
+        attributes: ['uname', 'fname', 'lname', 'imageURL'],
         where: { id: req.session.userId },
-        include: Plant,
+        include: [Plant, 'friends'],
       })
       res.send(user)
     }
   } else {
     res.send('wrong, try again')
+  }
+})
+
+app.post('/api/friends/get', async (req, res) => {
+  if (req.session.userId) {
+    if (req.body.type === 'approved') {
+      const ids = await Friend.findAll({
+        attributes: ['friendId'],
+        where: { status: 'approved', userId: req.session.userId },
+      })
+      const arr = []
+      for (let i = 0; i < ids.length; i++) {
+        const user = await User.findOne({
+          attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+          where: { id: ids[i].friendId },
+        })
+        arr.push(user)
+      }
+      res.send(arr)
+    } else if (req.body.type === 'pending') {
+      const ids = await Friend.findAll({
+        attributes: ['userId'],
+        where: { status: 'pending', friendId: req.session.userId },
+      })
+      const arr = []
+      for (let i = 0; i < ids.length; i++) {
+        const user = await User.findOne({
+          attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+          where: { id: ids[i].userId },
+        })
+        arr.push(user)
+      }
+      res.send(arr)
+    } else if (req.body.type === 'count') {
+      const ids = await Friend.findAll({
+        attributes: ['friendId'],
+        where: { status: 'pending', friendId: req.session.userId },
+      })
+      res.send(`${ids.length}`)
+    } else {
+      res.send({ Error: 'Please specify a type of GET.' })
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/requests/create', async (req, res) => {
+  if (req.session.userId) {
+    if (req.body.userId == req.session.userId) {
+      res.send({ Error: 'You cannot friend yourself.' })
+    } else {
+      const exists = await Friend.findOne({
+        where: { userId: req.session.userId, friendId: req.body.userId },
+      })
+      if (exists) {
+        res.send({ Error: 'You are already friends with this person!' })
+      } else {
+        const exists2 = await Friend.findOne({
+          where: { userId: req.body.userId, friendId: req.session.userId },
+        })
+        if (exists2) {
+          res.send({ Error: 'You are already friends with this person!' })
+        } else {
+          const user = await User.findByPk(req.session.userId)
+          const user2 = await User.findByPk(req.body.userId)
+          await user.addFriend(user2, { through: { status: 'pending' } })
+          res.send({ Success: true })
+        }
+      }
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/requests/approve', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { friendId: req.session.userId, userId: req.body.userId },
+    })
+    if (friend) {
+      friend.status = 'approved'
+      await friend.save()
+      const user = await User.findByPk(req.session.userId)
+      const user2 = await User.findByPk(req.body.userId)
+      await user.addFriend(user2, { through: { status: 'approved' } })
+      res.send({ Success: true })
+    } else {
+      res.send('Something went drastically wrong.')
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/requests/deny', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { friendId: req.session.userId, userId: req.body.userId },
+    })
+    if (friend.status === 'pending') {
+      await friend.destroy()
+      res.send({ Success: true })
+    } else res.send({ Error: 'Already approved.' })
+  } else {
+    res.send({ Error: 'Please login.' })
+  }
+})
+
+app.post('/api/friends/remove', async (req, res) => {
+  if (req.session.userId) {
+    const friend = await Friend.findOne({
+      where: { friendId: req.session.userId, userId: req.body.userId },
+    })
+    if (friend) {
+      await friend.destroy()
+      res.send({ Success: true })
+    } else {
+      res.send({ Error: "Friend doesn't exist." })
+    }
+  } else {
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -147,10 +300,10 @@ app.post('/api/plants/create', async (req, res) => {
       })
       res.send({ success: true, plant: plant })
     } else {
-      res.status(400).send('Error: Insufficient permissions.')
+      res.send({ Error: 'Please login.' })
     }
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -220,7 +373,6 @@ app.post('/api/users/create', async (req, res) => {
 })
 
 app.post('/api/users/update/password', async (req, res) => {
-  // console.log(req.session)
   const { userId } = req.session
   const { oldPassword, newPassword } = req.body
   const user = await User.findByPk(userId)
@@ -278,8 +430,6 @@ app.post('/api/users/update/imageURL', async (req, res) => {
     const user = await User.findByPk(userId)
     if (user.id) {
       try {
-        console.log(user)
-        console.log(imageURL)
         user.imageURL = imageURL
         await user.save()
         res.send({ Success: true })
@@ -301,7 +451,7 @@ app.post('/api/users/hiroshima', async (req, res) => {
     await user.destroy()
     res.send(`Success. User ${tmpName} has been obliterated.`)
   } else {
-    res.status(400).send('Error: Please login.')
+    res.send({ Error: 'Please login.' })
   }
 })
 
@@ -428,7 +578,7 @@ app.post('/api/plants/newplant/request', async (req, res) => {
         res.send('Success!')
       }
     } else {
-      res.send('Please Log in.')
+      res.send({ Error: 'Please login.' })
     }
   } else {
     res.send(false)
