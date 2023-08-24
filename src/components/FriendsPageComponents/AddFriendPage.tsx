@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { Component, ReactElement, useEffect, useState } from 'react'
 import axios from 'axios'
 
-const AddFriendPage = () => {
+const AddFriendPage = (): ReactElement => {
   const [uname, setUname] = useState('')
   const [users, setUsers] = useState([])
   const [error, setError] = useState(false)
 
   useEffect(() => {
     axios.get(`/api/users/${uname}`).then(({ data }) => {
-      const tmp = data.map(e => {
+      const tmp = data.map((e: any): ReactElement => {
         return (
           <div key={e.id} className='user-card'>
             <h1>{e.uname}</h1>
@@ -30,7 +30,15 @@ const AddFriendPage = () => {
     })
   }, [])
 
-  async function handleClickEvent(e) {
+  interface element {
+    id: number
+    uname: string
+    fname: string
+    lname: string
+    imageURL: string
+  }
+
+  async function handleClickEvent(e: element): Promise<any> {
     console.log(e)
     const { data } = await axios.post('/api/friends/requests/create', {
       userId: e.id,
@@ -57,7 +65,7 @@ const AddFriendPage = () => {
           onClick={async e => {
             e.preventDefault()
             const { data } = await axios.get(`/api/users/${uname}`)
-            const tmp = data.map(e => {
+            const tmp = data.map((e: element) => {
               return (
                 <div key={e.id} className='user-card'>
                   <h1>{e.uname}</h1>

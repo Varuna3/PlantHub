@@ -1,6 +1,14 @@
 import { useNavigate } from 'react-router-dom'
 
-const FriendCard = ({ id, uname, fname, lname, imageURL }) => {
+interface props {
+  id: number
+  uname: string
+  fname: string
+  lname: string
+  imageURL: string
+}
+
+const FriendCard = ({ id, uname, fname, lname, imageURL }: props) => {
   const nav = useNavigate()
 
   return (
