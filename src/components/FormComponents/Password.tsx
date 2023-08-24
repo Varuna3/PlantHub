@@ -1,4 +1,11 @@
-const Password = ({ password, setPassword }) => {
+import React from 'react'
+
+interface props {
+  password: string
+  setPassword: Function
+}
+
+const Password = ({ password, setPassword }: props) => {
   return (
     <div>
       <label htmlFor='Password'>Password:</label>

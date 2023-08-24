@@ -1,4 +1,11 @@
-const FirstName = ({ fname, setFname }) => {
+import React, { EventHandler } from 'react'
+
+interface props {
+  fname: string
+  setFname: Function
+}
+
+const FirstName = ({ fname, setFname }: props) => {
   return (
     <div>
       <label htmlFor='FirstName'>First Name: </label>

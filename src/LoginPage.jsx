@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 
-import Username from './components/FormComponents/Username.jsx'
-import Password from './components/FormComponents/Password.jsx'
-import SignIn from './components/FormComponents/SignIn.jsx'
+import Username from './components/FormComponents/Username.tsx'
+import Password from './components/FormComponents/Password.tsx'
+import SignIn from './components/FormComponents/SignIn.tsx'
 
 const LoginPage = () => {
   const [uname, setUname] = useState('')
