@@ -1,7 +1,22 @@
 import axios from 'axios'
+import React from 'react'
 import { useState } from 'react'
 
-const RequestCard = ({ e, reqCount, setReqCount }) => {
+interface element {
+  id: number
+  uname: string
+  fname: string
+  lname: string
+  imageURL: string
+}
+
+interface props {
+  e: element
+  reqCount: number
+  setReqCount: Function
+}
+
+const RequestCard = ({ e, reqCount, setReqCount }: props) => {
   const [status, setStatus] = useState('pending')
 
   if (status === 'pending') {

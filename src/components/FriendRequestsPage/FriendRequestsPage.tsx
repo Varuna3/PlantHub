@@ -1,20 +1,35 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import RequestCard from './RequestCard'
+import RequestCard from './RequestCard.tsx'
+import React from 'react'
 
-const FriendRequestsPage = ({ reqCount, setReqCount }) => {
+interface props {
+  reqCount: number
+  setReqCount: Function
+  data: any
+}
+
+interface element {
+  uname: string
+  fname: string
+  lname: string
+  imageURL: string
+  id: number
+}
+
+const FriendRequestsPage = ({ reqCount, setReqCount }: props) => {
   const [reqs, setReqs] = useState([])
 
   useEffect(() => {
     axios.post('/api/friends/get', { type: 'pending' }).then(({ data }) => {
-      setReqs([...data])
+      setReqs(data)
     })
   }, [])
 
-  let arr = []
+  let arr: any = []
 
   if (reqs.length > 0) {
-    arr = reqs.map(e => {
+    arr = reqs.map((e: element) => {
       return (
         <RequestCard
           e={e}
