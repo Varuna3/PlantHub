@@ -7,8 +7,8 @@ import Username from './FormComponents/Username.jsx'
 import Password from './FormComponents/Password.jsx'
 import LastName from './FormComponents/LastName.jsx'
 import ProfilePictureURL from './FormComponents/ProfilePictureURL.jsx'
-import CreateUser from './FormComponents/CreateUser.jsx'
-import ErrorMessage from './FormComponents/ErrorMessage.jsx'
+import CreateUser from './FormComponents/CreateUser.tsx'
+import ErrorMessage from './FormComponents/ErrorMessage.tsx'
 
 const SignUpPage = () => {
   const [fname, setFname] = useState('')
