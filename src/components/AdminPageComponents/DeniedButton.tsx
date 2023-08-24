@@ -1,4 +1,10 @@
-const DeniedButton = ({ setStatus }) => {
+import React from 'react'
+
+interface props {
+  setStatus: Function
+}
+
+const DeniedButton = ({ setStatus }: props) => {
   return (
     <>
       <button

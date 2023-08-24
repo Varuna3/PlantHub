@@ -3,11 +3,19 @@ import axios from 'axios'
 
 import ApproveButton from './ApproveButton'
 import DeniedButton from './DeniedButton'
+import React from 'react'
 
-const RequestCard = ({ id, name, type, imageURL }) => {
+interface props {
+  id: number
+  name: string
+  type: string
+  imageURL: string
+}
+
+const RequestCard = ({ id, name, type, imageURL }: props) => {
   const [status, setStatus] = useState('pending')
 
-  async function approve({ id, name, type, imageURL }) {
+  async function approve({ id, name, type, imageURL }: props) {
     await axios.post('/api/Aiur/approve', { id, name, type, imageURL })
   }
 
@@ -28,7 +36,6 @@ const RequestCard = ({ id, name, type, imageURL }) => {
       <p>Denid</p>
     </div>
   ) : (
-    // ) : (
     <div style={{ border: '2px solid green' }}>
       <p>{name}</p>
       <p>{type}</p>
