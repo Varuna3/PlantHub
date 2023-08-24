@@ -6,7 +6,7 @@ const SelectButton = ({ setSelectedPlant, plant }) => {
     <>
       <button
         id='selectButton'
-        onClick={() => {
+        onMouseUp={() => {
           setSelectedPlant(plant)
         }}
       >
