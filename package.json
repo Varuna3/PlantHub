@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --exec 'node --loader ts-node/esm app.ts' -w app.ts -w src/",
+    "devts": "nodemon --exec 'node --loader ts-node/esm app.ts' -w app.ts -w src/",
+    "devjs": "nodemon app.js -w app.js -w src/",
     "superinit": "npm run initdb && npm run seed",
     "initdb": "dropdb --if-exists planthub && createdb planthub",
     "seed": "node --loader ts-node/esm scripts/seed.ts",

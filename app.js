@@ -10,7 +10,7 @@ import {
   Friend,
   Op,
   sequelize,
-} from './scripts/seed.js'
+} from './scripts/seed.ts'
 import bcrypt from 'bcrypt'
 
 //middleware

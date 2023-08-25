@@ -3,21 +3,37 @@ import url from 'url'
 import util from 'util'
 //@ts-ignore
 const sequelize = new Sequelize('postgresql:///planthub')
+
 const Op = sequelize.Op
 
 class Plant extends Model {
+  id!: number
+  name!: string
+  type!: string
+  imageURL!: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class User extends Model {
+  id!: number
+  uname!: string
+  fname!: string
+  lname!: string
+  passwordHash!: string
+  imageURL!: string
+  plants!: Plant[]
+  isAdmin!: boolean
+  addFriend!: Function
+  addPlant!: Function;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class Count extends Model {
+  count!: number;
   // --> THIS IS AN ASSOCIATION TABLE
   [util.inspect.custom]() {
     return this.toJSON()
@@ -25,12 +41,18 @@ class Count extends Model {
 }
 
 class Request extends Model {
+  name!: string
+  type!: string
+  imageURL!: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class Friend extends Model {
+  userId!: number
+  friendId!: number
+  status!: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }

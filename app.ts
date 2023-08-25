@@ -33,19 +33,19 @@ app.use(
 ViteExpress.config({ printViteDevServerHost: true })
 
 //interfaces
-interface user {
-  User: any
-  uname: string
-  fname: string
-  lname: string
-  password: string
-  passwordHash: string
-  imageURL: string
+declare module 'express-session' {
+  interface SessionData {
+    passwordHash: string
+    userId: number
+    plantIds: number[]
+    isAdmin: boolean
+    imageURL: string
+  }
 }
 
 //routes
 app.post('/api/login', async (req, res) => {
-  let { uname, password }: user = req.body
+  let { uname, password } = req.body
   const user = await User.findOne({
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
@@ -53,8 +53,8 @@ app.post('/api/login', async (req, res) => {
   if (user && user.uname && user.passwordHash) {
     bcrypt.compare(password, user.passwordHash, async (err, valid) => {
       if (valid) {
-        const plantIds = []
-        user.plants.forEach(e => {
+        const plantIds: number[] = []
+        user.plants.forEach((e: any) => {
           plantIds.push(e.id)
         })
         req.session.passwordHash = user.passwordHash
@@ -89,8 +89,9 @@ app.post('/api/hellothere', (req, res) => {
 app.post('/api/logout', async (req, res) => {
   if (req.session.passwordHash) {
     try {
-      req.session.destroy()
-      res.send({ success: true, session: req.session })
+      req.session.destroy(() =>
+        res.send({ success: true, session: req.session })
+      )
     } catch (e) {
       res.status(400).send('Error (logout)')
     }
@@ -235,11 +236,13 @@ app.post('/api/friends/requests/create', async (req, res) => {
           await friend.save()
           const user = await User.findByPk(req.session.userId)
           const user2 = await User.findByPk(req.body.userId)
-          await user.addFriend(user2, { through: { status: 'approved' } })
+          if (user && user2)
+            await user.addFriend(user2, { through: { status: 'approved' } })
         } else {
           const user = await User.findByPk(req.session.userId)
           const user2 = await User.findByPk(req.body.userId)
-          await user.addFriend(user2, { through: { status: 'pending' } })
+          if (user && user2)
+            await user.addFriend(user2, { through: { status: 'pending' } })
           res.send({ Success: true })
         }
       }
@@ -259,7 +262,8 @@ app.post('/api/friends/requests/approve', async (req, res) => {
       await friend.save()
       const user = await User.findByPk(req.session.userId)
       const user2 = await User.findByPk(req.body.userId)
-      await user.addFriend(user2, { through: { status: 'approved' } })
+      if (user && user2)
+        await user.addFriend(user2, { through: { status: 'approved' } })
       res.send({ Success: true })
     } else {
       res.send('Something went drastically wrong.')
@@ -274,10 +278,12 @@ app.post('/api/friends/requests/deny', async (req, res) => {
     const friend = await Friend.findOne({
       where: { friendId: req.session.userId, userId: req.body.userId },
     })
-    if (friend.status === 'pending') {
-      await friend.destroy()
-      res.send({ Success: true })
-    } else res.send({ Error: 'Already approved.' })
+    if (friend) {
+      if (friend.status === 'pending') {
+        await friend.destroy()
+        res.send({ Success: true })
+      } else res.send({ Error: 'Already approved.' })
+    }
   } else {
     res.send({ Error: 'Please login.' })
   }
@@ -373,7 +379,7 @@ app.post('/api/users/create', async (req, res) => {
                   user.imageURL + `User ${user.uname} successfully created.`
                 )
               }
-            } catch (e) {
+            } catch (e: any) {
               if (e.errors[0].message === 'uname must be unique') {
                 res.send({ Error: 'unique uname' })
               } else {
@@ -396,25 +402,27 @@ app.post('/api/users/update/password', async (req, res) => {
   const { oldPassword, newPassword } = req.body
   const user = await User.findByPk(userId)
 
-  bcrypt.compare(oldPassword, user.passwordHash, async (err, valid) => {
-    if (valid) {
-      bcrypt.hash(newPassword, 10, async (err, passwordHash) => {
-        if (!err) {
-          if (newPassword.length > 7) {
-            user.passwordHash = passwordHash
-            await user.save()
-            res.send({ Success: true })
+  if (user) {
+    bcrypt.compare(oldPassword, user.passwordHash, async (err, valid) => {
+      if (valid) {
+        bcrypt.hash(newPassword, 10, async (err, passwordHash) => {
+          if (!err) {
+            if (newPassword.length > 7) {
+              user.passwordHash = passwordHash
+              await user.save()
+              res.send({ Success: true })
+            } else {
+              res.send({ Error: 'Password must be longer than 8 characters.' })
+            }
           } else {
-            res.send({ Error: 'Password must be longer than 8 characters.' })
+            res.send({ Error: 'Password Hash Error. Please try again.' })
           }
-        } else {
-          res.send({ Error: 'Password Hash Error. Please try again.' })
-        }
-      })
-    } else {
-      res.send({ Error: 'Incorrect Password.' })
-    }
-  })
+        })
+      } else {
+        res.send({ Error: 'Incorrect Password.' })
+      }
+    })
+  }
 })
 
 app.post('/api/users/update/username', async (req, res) => {
@@ -422,20 +430,22 @@ app.post('/api/users/update/username', async (req, res) => {
   const { newUsername } = req.body
   if (newUsername.length > 0) {
     const user = await User.findByPk(userId)
-    if (user.id) {
-      try {
-        user.uname = newUsername
-        await user.save()
-        res.send({ Success: true })
-      } catch (e) {
-        if (e.errors[0].message === 'uname must be unique') {
-          res.send({ Error: 'Username already taken.' })
-        } else {
-          res.status(400).send(e)
+    if (user) {
+      if (user.id) {
+        try {
+          user.uname = newUsername
+          await user.save()
+          res.send({ Success: true })
+        } catch (e: any) {
+          if (e.errors[0].message === 'uname must be unique') {
+            res.send({ Error: 'Username already taken.' })
+          } else {
+            res.status(400).send(e)
+          }
         }
+      } else {
+        res.send({ Error: 'Something went drastically wrong.' })
       }
-    } else {
-      res.send({ Error: 'Something went drastically wrong.' })
     }
   } else {
     res.send({ Error: 'Please enter a value into the box.' })
@@ -447,15 +457,17 @@ app.post('/api/users/update/imageURL', async (req, res) => {
   const { imageURL } = req.body
   if (imageURL.length > 0) {
     const user = await User.findByPk(userId)
-    if (user.id) {
-      try {
-        user.imageURL = imageURL
-        await user.save()
-        res.send({ Success: true })
-      } catch {
-        res.send({
-          Error: 'Something went catastrophically. (/update/imageURL)',
-        })
+    if (user) {
+      if (user.id) {
+        try {
+          user.imageURL = imageURL
+          await user.save()
+          res.send({ Success: true })
+        } catch {
+          res.send({
+            Error: 'Something went catastrophically. (/update/imageURL)',
+          })
+        }
       }
     }
   } else {
@@ -466,9 +478,11 @@ app.post('/api/users/update/imageURL', async (req, res) => {
 app.post('/api/users/hiroshima', async (req, res) => {
   if (req.session.passwordHash) {
     const user = await User.findOne({ where: { id: req.session.userId } })
-    let tmpName = user.uname
-    await user.destroy()
-    res.send(`Success. User ${tmpName} has been obliterated.`)
+    if (user) {
+      let tmpName = user.uname
+      await user.destroy()
+      res.send(`Success. User ${tmpName} has been obliterated.`)
+    }
   } else {
     res.send({ Error: 'Please login.' })
   }
@@ -484,20 +498,22 @@ app.post('/api/users/newplant', async (req, res) => {
         ],
       })
       const plant = await Plant.findOne({ where: { name: req.body.name } })
-      const countExists = await Count.findOne({
-        where: [{ userId: user.id }, { plantId: plant.id }],
-      })
-      if (!countExists) {
-        if (req.body.count) {
-          const count = await user.addPlant(plant, {
-            through: { count: req.body.count },
-          })
-          res.send({ count, success: true })
-        } else {
-          const count = await user.addPlant(plant, { through: { count: 1 } })
-          res.send({ count, success: true })
-        }
-      } else res.send('You already have this plant in your database!')
+      if (user && plant) {
+        const countExists = await Count.findOne({
+          where: [{ userId: user.id }, { plantId: plant.id }],
+        })
+        if (!countExists) {
+          if (req.body.count) {
+            const count = await user.addPlant(plant, {
+              through: { count: req.body.count },
+            })
+            res.send({ count, success: true })
+          } else {
+            const count = await user.addPlant(plant, { through: { count: 1 } })
+            res.send({ count, success: true })
+          }
+        } else res.send('You already have this plant in your database!')
+      }
     } catch {
       res.status(400).send({ success: false })
     }
@@ -518,22 +534,28 @@ app.post('/api/count/update', async (req, res) => {
     where: { id: userId },
     include: { model: Plant, attributes: ['id'], where: { name: plantName } },
   })
-  const count = await Count.findOne({
-    where: { userId, plantId: user.plants[0].id },
-  })
+  if (user) {
+    const count = await Count.findOne({
+      where: { userId, plantId: user.plants[0].id },
+    })
 
-  count.count = Number(num)
-  await count.save()
-  res.send({ success: true, count })
+    if (count) {
+      count.count = Number(num)
+      await count.save()
+      res.send({ success: true, count })
+    }
+  }
 })
 
 app.post('/api/count/delete', async (req, res) => {
   if (req.session.userId) {
     const plant = await Plant.findOne({ where: { name: req.body.name } })
-    const count = await Count.findOne({
-      where: { userId: req.session.userId, plantId: plant.id },
-    })
-    await count.destroy()
+    if (plant) {
+      const count = await Count.findOne({
+        where: { userId: req.session.userId, plantId: plant.id },
+      })
+      if (count) await count.destroy()
+    }
     res.send({ Success: true })
   } else {
     res.send({ Error: 'Please login.' })
@@ -561,19 +583,21 @@ app.get('/api/plantsByType/:type', async (req, res) => {
   res.send(plants)
 })
 
-app.get('/api/plants/hottest', async (req, res) => {
-  const counts = await Count.findAll()
-  let highestCount = { count: 0 }
-  counts.forEach(e => {
-    if (e.count > highestCount.count) highestCount = { ...e }
-  })
-  const user = await User.findAll({
-    attributes: ['uname'],
-    where: { id: highestCount.dataValues.userId },
-  })
-  const plant = await Plant.findByPk(highestCount.dataValues.plantId)
-  res.send({ user, plant })
-})
+// MAYBE TODO *********************************
+// app.get('/api/plants/hottest', async (req, res) => {
+//   const counts = await Count.findAll()
+//   let highestCount = { count: 0 }
+//   counts.forEach(e => {
+//     if (e.count > highestCount.count) highestCount = { ...e }
+//   })
+//   const user = await User.findAll({
+//     attributes: ['uname'],
+//     where: { id: highestCount.dataValues.userId },
+//   })
+//   const plant = await Plant.findByPk(highestCount.dataValues.plantId)
+//   res.send({ user, plant })
+// })
+// ***********************************************
 
 app.post('/api/plants/newplant/request', async (req, res) => {
   if (req.session.passwordHash) {
@@ -634,7 +658,7 @@ app.post('/api/Aiur/deny/', async (req, res) => {
   if (req.session.isAdmin) {
     const { id, name, type, imageURL } = req.body
     const request = await Request.findByPk(id)
-    await request.destroy()
+    if (request) await request.destroy()
     res.send('Success!')
   } else {
     res.send(false)
