@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const SaveButton = ({ counts }) => {
+const SaveButton = ({ counts, setHasEdited }) => {
   const [isSaved, setIsSaved] = useState(false)
 
   async function save(counts) {
@@ -28,6 +28,7 @@ const SaveButton = ({ counts }) => {
           }
           setTimeout(() => {
             setIsSaved(false)
+            setHasEdited(false)
           }, 1000)
         }}
       >

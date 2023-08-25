@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const [plants, setPlants] = useState([])
   const [counts, setCounts] = useState([])
   const [loggedIn, setLoggedIn] = useState(true)
+  const [hasEdited, setHasEdited] = useState(false)
 
   const nav = useNavigate()
 
@@ -41,6 +42,7 @@ const ProfilePage = () => {
           img={e.imageURL}
           increment={increment}
           decrement={decrement}
+          setHasEdited={setHasEdited}
         />
       )
     })
@@ -48,11 +50,13 @@ const ProfilePage = () => {
     arr = 'No plants yet!'
   }
   function increment(name) {
+    setHasEdited(true)
     const tmp = { ...counts }
     tmp[`${name}`]++
     setCounts({ ...tmp })
   }
   function decrement(name) {
+    setHasEdited(true)
     const tmp = { ...counts }
     tmp[`${name}`]--
     setCounts({ ...tmp })
@@ -63,6 +67,8 @@ const ProfilePage = () => {
         user={user}
         counts={counts}
         setLoggedIn={setLoggedIn}
+        hasEdited={hasEdited}
+        setHasEdited={setHasEdited}
       ></HomePageHeader>
       <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>{arr}</div>
     </>
