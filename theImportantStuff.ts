@@ -12,6 +12,7 @@ const quotes = [
   "Come on. I'm a racecar, you're… a much older racecar, but under the hood, you and I are the same.",
   'Oh, take a carwash, hippie.',
   'Pitstop!',
+  'He did WHAT in his cup?',
 ]
 
 function getQuote() {
