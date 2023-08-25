@@ -8,7 +8,13 @@ import AdminButton from '../AdminPageComponents/AdminButton'
 import SaveButton from './HeaderComponents/SaveButton'
 import EditAccount from './HeaderComponents/EditAccount'
 
-const HomePageHeader = ({ user, counts, setLoggedIn }) => {
+const HomePageHeader = ({
+  user,
+  counts,
+  setLoggedIn,
+  hasEdited,
+  setHasEdited,
+}) => {
   const [admin, setAdmin] = useState(false)
 
   useEffect(() => {
@@ -23,7 +29,7 @@ const HomePageHeader = ({ user, counts, setLoggedIn }) => {
     <div style={{ border: '2px solid green', display: 'flex' }}>
       <NewPlantButton></NewPlantButton>
       {admin ? <AdminButton /> : <></>}
-      <SaveButton counts={counts} />
+      {hasEdited ? <SaveButton setHasEdited={setHasEdited} /> : <></>}
       <EditAccount />
       <ProfileButton user={user}></ProfileButton>
       <button

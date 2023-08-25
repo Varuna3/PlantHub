@@ -530,7 +530,9 @@ app.post('/api/count/delete', async (req, res) => {
 app.get('/api/plantsByName/:name', async (req, res) => {
   if (req.params.name.length > 0) {
     const plants = await Plant.findAll({
-      where: { name: { [Op.like]: `%${req.params.name}%` } },
+      where: sequelize.where(sequelize.fn('lower', sequelize.col('name')), {
+        [Op.like]: `%${req.params.name}%`,
+      }),
     })
     res.send(plants)
   } else {
