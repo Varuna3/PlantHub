@@ -1,9 +1,9 @@
 import Sequelize, { DataTypes, Model } from 'sequelize'
 import url from 'url'
 import util from 'util'
-
+//@ts-ignore
 const sequelize = new Sequelize('postgresql:///planthub')
-const Op = Sequelize.Op
+const Op = sequelize.Op
 
 class Plant extends Model {
   [util.inspect.custom]() {
