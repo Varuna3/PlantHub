@@ -52,7 +52,9 @@ const VisitFriendPage = () => {
         imageURL={user.imageURL}
         myImageURL={myImageURL}
       />
-      <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>{arr}</div>
+      <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
+        {arr.length > 0 ? arr : "This friend doesn't have any plants yet!"}
+      </div>
     </div>
   )
 }

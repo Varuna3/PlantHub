@@ -1,8 +1,9 @@
+import getQuote from '../../../../theImportantStuff.ts'
 import { useState, useEffect } from 'react'
 
 import axios from 'axios'
 
-const ProfileButton = ({ user }) => {
+const ProfileButton: React.FC = ({ user }: any) => {
   const [url, setUrl] = useState('')
 
   useEffect(() => {
@@ -14,7 +15,7 @@ const ProfileButton = ({ user }) => {
         style={{ width: '100px', height: '100px', borderRadius: '100%' }}
         src={url}
         onClick={() => {
-          console.log('Ping')
+          console.log(getQuote())
         }}
       />
     </>
