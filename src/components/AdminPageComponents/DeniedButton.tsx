@@ -4,7 +4,7 @@ interface props {
   setStatus: Function
 }
 
-const DeniedButton = ({ setStatus }: props) => {
+const DeniedButton: React.FC<props> = ({ setStatus }) => {
   return (
     <>
       <button

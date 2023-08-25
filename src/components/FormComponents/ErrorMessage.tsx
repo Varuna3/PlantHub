@@ -5,7 +5,7 @@ interface props {
   message: any
 }
 
-const ErrorMessage = ({ error, message }: props) => {
+const ErrorMessage: React.FC<props> = ({ error, message }) => {
   if (error) {
     return <p>{`${message}`}</p>
   } else {

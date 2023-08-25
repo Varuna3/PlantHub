@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-const PlantRequestButton = () => {
+const PlantRequestButton: React.FC = () => {
   const nav = useNavigate()
 
   return (

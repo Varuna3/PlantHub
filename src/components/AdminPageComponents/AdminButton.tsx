@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const AdminButton = () => {
+const AdminButton: React.FC = () => {
   const nav = useNavigate()
 
   return (

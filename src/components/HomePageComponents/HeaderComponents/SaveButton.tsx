@@ -1,14 +1,16 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-const SaveButton = ({ counts, setHasEdited }) => {
+interface props {
+  counts: any[]
+  setHasEdited: Function
+}
+
+const SaveButton: React.FC<props> = ({ counts, setHasEdited }) => {
   const [isSaved, setIsSaved] = useState(false)
 
-  async function save(counts) {
-    console.log(counts)
+  async function save(counts: any[]) {
     for (const key in counts) {
-      console.log('aaa')
-      console.log(key, counts)
       const res = await axios.post('/api/count/update', {
         plantName: key,
         num: counts[key],

@@ -5,7 +5,7 @@ interface props {
   setPassword: Function
 }
 
-const Password = ({ password, setPassword }: props) => {
+const Password: React.FC<props> = ({ password, setPassword }) => {
   return (
     <div>
       <label htmlFor='Password'>Password:</label>

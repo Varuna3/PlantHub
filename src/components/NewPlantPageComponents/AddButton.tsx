@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
+import { Plant } from '../../../scripts/seed'
 
-const AddButton = ({ selectedPlant }) => {
+const AddButton = ({ selectedPlant }: any): ReactElement => {
   const [error, setError] = useState(false)
 
   const nav = useNavigate()
@@ -10,7 +11,6 @@ const AddButton = ({ selectedPlant }) => {
   return (
     <>
       <button
-        // className='test-box'
         style={{
           width: '100px',
           height: '50px',

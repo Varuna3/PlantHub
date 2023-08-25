@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react'
 
-const CreateUser = () => {
+const CreateUser: React.FC = () => {
   return <button>Create User</button>
 }
 

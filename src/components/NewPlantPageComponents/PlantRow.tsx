@@ -4,7 +4,19 @@ import axios from 'axios'
 
 import SelectButton from './SelectButton'
 
-const PlantRow = ({ plantName, imageURL, selectedPlant, setSelectedPlant }) => {
+interface props {
+  plantName: string
+  imageURL: string
+  selectedPlant: any
+  setSelectedPlant: any
+}
+
+const PlantRow: React.FC<props> = ({
+  plantName,
+  imageURL,
+  selectedPlant,
+  setSelectedPlant,
+}) => {
   const [selected, setSelected] = useState(false)
 
   return (

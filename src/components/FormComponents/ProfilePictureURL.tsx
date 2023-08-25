@@ -1,11 +1,11 @@
-import React from "react"
+import React from 'react'
 
 interface props {
   imageURL: string
   setImageURL: Function
 }
 
-const ProfilePictureURL = ({ imageURL, setImageURL }: props) => (
+const ProfilePictureURL: React.FC<props> = ({ imageURL, setImageURL }) => (
   <div>
     <label htmlFor='ImageURL'>Profile Picture URL: </label>
     <input

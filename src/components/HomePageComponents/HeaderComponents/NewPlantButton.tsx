@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-const NewPlantButton = () => {
+const NewPlantButton: React.FC = () => {
   return (
     <>
       <Link to='/NewPlant'>

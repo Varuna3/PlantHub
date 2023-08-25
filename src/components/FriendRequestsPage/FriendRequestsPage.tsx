@@ -17,7 +17,7 @@ interface element {
   id: number
 }
 
-const FriendRequestsPage = ({ reqCount, setReqCount }: props) => {
+const FriendRequestsPage: React.FC<props> = ({ reqCount, setReqCount }) => {
   const [reqs, setReqs] = useState([])
 
   useEffect(() => {

@@ -8,7 +8,7 @@ interface props {
   imageURL: string
 }
 
-const FriendCard = ({ id, uname, fname, lname, imageURL }: props) => {
+const FriendCard: React.FC<props> = ({ id, uname, fname, lname, imageURL }) => {
   const nav = useNavigate()
 
   return (

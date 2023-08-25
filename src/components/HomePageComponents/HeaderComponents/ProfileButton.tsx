@@ -1,9 +1,9 @@
 import getQuote from '../../../../theImportantStuff.ts'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, ReactElement } from 'react'
 
 import axios from 'axios'
 
-const ProfileButton: React.FC = ({ user }: any) => {
+const ProfileButton = ({ user }: any): ReactElement => {
   const [url, setUrl] = useState('')
 
   useEffect(() => {

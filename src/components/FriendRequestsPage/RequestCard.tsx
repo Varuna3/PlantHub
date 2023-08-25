@@ -16,7 +16,7 @@ interface props {
   setReqCount: Function
 }
 
-const RequestCard = ({ e, reqCount, setReqCount }: props) => {
+const RequestCard: React.FC<props> = ({ e, reqCount, setReqCount }) => {
   const [status, setStatus] = useState('pending')
 
   if (status === 'pending') {

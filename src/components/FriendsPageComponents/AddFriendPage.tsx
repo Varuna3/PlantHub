@@ -1,7 +1,7 @@
 import { Component, ReactElement, useEffect, useState } from 'react'
 import axios from 'axios'
 
-const AddFriendPage = (): ReactElement => {
+const AddFriendPage: React.FC = () => {
   const [uname, setUname] = useState('')
   const [users, setUsers] = useState([])
   const [error, setError] = useState(false)

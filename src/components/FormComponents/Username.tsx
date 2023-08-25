@@ -5,7 +5,7 @@ interface props {
   setUname: Function
 }
 
-const Username = ({ uname, setUname }: props) => {
+const Username: React.FC<props> = ({ uname, setUname }) => {
   return (
     <div>
       <label htmlFor='Username'>Username:</label>

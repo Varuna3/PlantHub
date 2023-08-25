@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import axios from 'axios'
 
-const EditAccount = () => {
+const EditAccount: React.FC = () => {
   const [open, setOpen] = useState(false)
   const [editItem, setEditItem] = useState('')
   const [value, setValue] = useState('')
@@ -10,7 +10,7 @@ const EditAccount = () => {
   const [Errored, setErrored] = useState(false)
   const [Error, setError] = useState('')
 
-  function menu(open) {
+  function menu(open: boolean) {
     if (open) {
       return (
         <div
@@ -61,7 +61,7 @@ const EditAccount = () => {
     }
   }
 
-  function textBox(option) {
+  function textBox(option: string) {
     if (option.length > 0) {
       return (
         <form autoComplete='off'>

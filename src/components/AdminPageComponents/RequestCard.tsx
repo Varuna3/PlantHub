@@ -12,7 +12,7 @@ interface props {
   imageURL: string
 }
 
-const RequestCard = ({ id, name, type, imageURL }: props) => {
+const RequestCard: React.FC<props> = ({ id, name, type, imageURL }) => {
   const [status, setStatus] = useState('pending')
 
   async function approve({ id, name, type, imageURL }: props) {

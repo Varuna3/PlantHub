@@ -3,7 +3,12 @@ import { useEffect, useState } from 'react'
 import PlantRow from './PlantRow'
 import AddButton from './AddButton'
 
-const PlantRowContainer = ({ plants, setPlants }) => {
+interface props {
+  plants: any[]
+  setPlants: Function
+}
+
+const PlantRowContainer: React.FC<props> = ({ plants, setPlants }) => {
   const [selectedPlant, setSelectedPlant] = useState('')
 
   const returnPlants = plants.map(e => {

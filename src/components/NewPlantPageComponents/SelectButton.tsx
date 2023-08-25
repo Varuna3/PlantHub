@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { useState } from 'react'
 
-const SelectButton = ({ setSelectedPlant, plant }) => {
+interface props {
+  plant: any
+  setSelectedPlant: Function
+}
+
+const SelectButton: React.FC<props> = ({ setSelectedPlant, plant }) => {
   return (
     <>
       <button

@@ -8,7 +8,15 @@ import AdminButton from '../AdminPageComponents/AdminButton'
 import SaveButton from './HeaderComponents/SaveButton'
 import EditAccount from './HeaderComponents/EditAccount'
 
-const HomePageHeader = ({
+interface props {
+  user: any
+  counts: any[]
+  setLoggedIn: Function
+  hasEdited: boolean
+  setHasEdited: Function
+}
+
+const HomePageHeader: React.FC<props> = ({
   user,
   counts,
   setLoggedIn,
@@ -35,7 +43,7 @@ const HomePageHeader = ({
         <></>
       )}
       <EditAccount />
-      <ProfileButton user={user}></ProfileButton>
+      <ProfileButton user={user} />
       <button
         onClick={() => {
           nav('/Friends')

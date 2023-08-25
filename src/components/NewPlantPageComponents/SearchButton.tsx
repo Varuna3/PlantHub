@@ -1,7 +1,12 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 
-const SearchButton = ({ query, setPlants }) => {
+interface props {
+  query: any
+  setPlants: Function
+}
+
+const SearchButton: React.FC<props> = ({ query, setPlants }) => {
   useEffect(() => {
     getPlants()
   }, [])
@@ -22,7 +27,7 @@ const SearchButton = ({ query, setPlants }) => {
         style={{ width: '100px' }}
         onClick={async e => {
           e.preventDefault()
-          getPlants(query)
+          getPlants()
         }}
       >
         <img

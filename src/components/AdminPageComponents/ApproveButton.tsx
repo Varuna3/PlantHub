@@ -4,7 +4,7 @@ interface props {
   setStatus: Function
 }
 
-const ApproveButton = ({ setStatus }: props) => (
+const ApproveButton: React.FC<props> = ({ setStatus }) => (
   <>
     <button
       className='CardButton'
