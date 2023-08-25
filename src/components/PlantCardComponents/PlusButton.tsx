@@ -1,4 +1,9 @@
-const PlusButton = ({ name, increment }) => {
+interface props {
+  name: string
+  increment: Function
+}
+
+const PlusButton: React.FC<props> = ({ name, increment }) => {
   return (
     <button
       onClick={() => {

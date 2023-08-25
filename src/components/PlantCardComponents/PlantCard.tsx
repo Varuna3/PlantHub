@@ -1,17 +1,27 @@
 import PlusButton from './PlusButton'
 import MinusButton from './MinusButton'
 import axios from 'axios'
-import { useState } from 'react'
+import { ReactElement, useState } from 'react'
 
-const PlantCard = ({
+interface props {
+  name: string
+  counts: any[]
+  type: string
+  img: string
+  increment: Function
+  decrement: Function
+}
+
+const PlantCard: React.FC<props> = ({
   name,
-  counts = undefined,
+  counts,
   type,
   img,
-  increment = undefined,
-  decrement = undefined,
+  increment,
+  decrement,
 }) => {
   if (increment) {
+    //@ts-ignore
     let count = counts[`${name}`]
     const [status, setStatus] = useState('alive')
 
@@ -26,7 +36,7 @@ const PlantCard = ({
           <img className='PlantImage' src={`${img}`} />
           <p>Count: {count}</p>
           <div>
-            <PlusButton name={name} increment={increment} counts={counts} />
+            <PlusButton name={name} increment={increment} />
             <MinusButton name={name} decrement={decrement} />
           </div>
           <button
@@ -59,6 +69,7 @@ const PlantCard = ({
       )
   } else {
     if (counts) {
+      //@ts-ignore
       let count = counts[`${name}`]
       const [status, setStatus] = useState('alive')
 

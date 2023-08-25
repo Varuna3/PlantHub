@@ -27,6 +27,7 @@ const ProfilePage = () => {
           tmp[`${e.name}`] = Number(e.count.count)
         })
         setCounts({ ...tmp })
+        console.log(tmp)
       }
     })
   }, [loggedIn])

@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import Header from './VisitPageComponents/Header.jsx'
 
-import PlantCard from './PlantCardComponents/PlantCard.jsx'
+import PlantCard from './PlantCardComponents/PlantCard.tsx'
 
 const VisitFriendPage = () => {
   const [myImageURL, setMyImageURL] = useState('')
