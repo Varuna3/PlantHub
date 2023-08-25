@@ -4,8 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "devts": "nodemon --exec 'node --loader ts-node/esm app.ts' -w app.ts -w src/",
-    "devjs": "nodemon app.js -w app.js -w src/",
+    "dev": "nodemon --exec 'node --loader ts-node/esm app.ts' -w app.ts -w src/",
     "superinit": "npm run initdb && npm run seed",
     "initdb": "dropdb --if-exists planthub && createdb planthub",
     "seed": "node --loader ts-node/esm scripts/seed.ts",
@@ -15,7 +14,6 @@
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
-    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.17",
     "@types/express-session": "^1.17.7",
     "@types/jest": "^29.5.4",
@@ -49,6 +47,7 @@
     "vite-express": "^0.9.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "vite": "^4.4.5"
   }

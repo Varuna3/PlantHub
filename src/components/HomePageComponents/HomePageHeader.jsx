@@ -29,7 +29,11 @@ const HomePageHeader = ({
     <div style={{ border: '2px solid green', display: 'flex' }}>
       <NewPlantButton></NewPlantButton>
       {admin ? <AdminButton /> : <></>}
-      {hasEdited ? <SaveButton setHasEdited={setHasEdited} /> : <></>}
+      {hasEdited ? (
+        <SaveButton counts={counts} setHasEdited={setHasEdited} />
+      ) : (
+        <></>
+      )}
       <EditAccount />
       <ProfileButton user={user}></ProfileButton>
       <button

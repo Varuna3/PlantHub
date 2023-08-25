@@ -7,33 +7,33 @@ const sequelize = new Sequelize('postgresql:///planthub')
 const Op = sequelize.Op
 
 class Plant extends Model {
-  id!: number
-  name!: string
-  type!: string
-  imageURL!: string;
+  declare id: number
+  declare name: string
+  declare type: string
+  declare imageURL: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class User extends Model {
-  id!: number
-  uname!: string
-  fname!: string
-  lname!: string
-  passwordHash!: string
-  imageURL!: string
-  plants!: Plant[]
-  isAdmin!: boolean
-  addFriend!: Function
-  addPlant!: Function;
+  declare id: number
+  declare uname: string
+  declare fname: string
+  declare lname: string
+  declare passwordHash: string
+  declare imageURL: string
+  declare plants: Plant[]
+  declare isAdmin: boolean
+  declare addFriend: Function
+  declare addPlant: Function;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class Count extends Model {
-  count!: number;
+  declare count: number;
   // --> THIS IS AN ASSOCIATION TABLE
   [util.inspect.custom]() {
     return this.toJSON()
@@ -41,18 +41,18 @@ class Count extends Model {
 }
 
 class Request extends Model {
-  name!: string
-  type!: string
-  imageURL!: string;
+  declare name: string
+  declare type: string
+  declare imageURL: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }
 }
 
 class Friend extends Model {
-  userId!: number
-  friendId!: number
-  status!: string;
+  declare userId: number
+  declare friendId: number
+  declare status: string;
   [util.inspect.custom]() {
     return this.toJSON()
   }
@@ -197,7 +197,7 @@ User.belongsToMany(Plant, { through: Count })
 
 User.belongsToMany(User, { as: 'friends', through: Friend })
 
-// !! ONLY IF RUNNING SCRIPT FROM COMMAND LINE !! --> npm run superinit || node scripts/seed.js
+//  ONLY IF RUNNING SCRIPT FROM COMMAND LINE  --> npm run superinit || node scripts/seed.js
 if (process.argv[1] === url.fileURLToPath(import.meta.url)) {
   console.log('Syncing database...')
   await sequelize.sync({ force: true })
@@ -258,7 +258,7 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
         'https://www.treehugger.com/thmb/1cVkYsAm_HaZpy7F5_GasOSheMc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-946028290-0a3e92ad30be42fc90c74d223f15267b.jpg',
     },
   ])
-  console.log('Finished syncing database!')
+  console.log('Finished syncing database')
   await sequelize.close()
 }
 

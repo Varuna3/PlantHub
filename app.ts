@@ -50,7 +50,7 @@ app.post('/api/login', async (req, res) => {
     where: { uname },
     include: { model: Plant, attributes: ['id'] },
   })
-  if (user && user.uname && user.passwordHash) {
+  if (user) {
     bcrypt.compare(password, user.passwordHash, async (err, valid) => {
       if (valid) {
         const plantIds: number[] = []

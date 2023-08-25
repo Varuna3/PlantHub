@@ -5,7 +5,10 @@ const SaveButton = ({ counts, setHasEdited }) => {
   const [isSaved, setIsSaved] = useState(false)
 
   async function save(counts) {
+    console.log(counts)
     for (const key in counts) {
+      console.log('aaa')
+      console.log(key, counts)
       const res = await axios.post('/api/count/update', {
         plantName: key,
         num: counts[key],
