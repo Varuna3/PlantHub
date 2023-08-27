@@ -4,7 +4,7 @@ import util from 'util'
 //@ts-ignore
 const sequelize = new Sequelize('postgresql:///planthub')
 
-const Op = sequelize.Op
+// const Sequelize.Op = Sequelize.Sequelize.Op
 
 class Plant extends Model {
   declare id: number
@@ -262,4 +262,4 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
   await sequelize.close()
 }
 
-export { Plant, User, Count, Request, Friend, Op, sequelize }
+export { Plant, User, Count, Request, Friend, sequelize }

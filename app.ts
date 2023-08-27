@@ -3,13 +3,13 @@ import express from 'express'
 import session from 'express-session'
 import morgan from 'morgan'
 import ViteExpress from 'vite-express'
+import Sequelize from 'sequelize'
 import {
   Plant,
   User,
   Count,
   Request,
   Friend,
-  Op,
   sequelize,
 } from './scripts/seed.js'
 import bcrypt from 'bcrypt'
@@ -127,7 +127,7 @@ app.get('/api/users/:uname', async (req, res) => {
   if (req.session.isAdmin) {
     const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
-        [Op.like]: `%${req.params.uname.toLowerCase()}%`,
+        [Sequelize.Op.like]: `%${req.params.uname.toLowerCase()}%`,
       }),
       include: Plant,
     })
@@ -135,7 +135,7 @@ app.get('/api/users/:uname', async (req, res) => {
   } else {
     const users = await User.findOne({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('uname')), {
-        [Op.like]: `%${req.params.uname.toLowerCase()}%`,
+        [Sequelize.Op.like]: `%${req.params.uname.toLowerCase()}%`,
       }),
       attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
       include: Plant,
@@ -566,7 +566,7 @@ app.get('/api/plantsByName/:name', async (req, res) => {
   if (req.params.name.length > 0) {
     const plants = await Plant.findAll({
       where: sequelize.where(sequelize.fn('lower', sequelize.col('name')), {
-        [Op.like]: `%${req.params.name}%`,
+        [Sequelize.Op.like]: `%${req.params.name}%`,
       }),
     })
     res.send(plants)
@@ -578,7 +578,7 @@ app.get('/api/plantsByName/:name', async (req, res) => {
 
 app.get('/api/plantsByType/:type', async (req, res) => {
   const plants = await Plant.findAll({
-    where: { type: { [Op.like]: `%${req.params.type}%` } },
+    where: { type: { [Sequelize.Op.like]: `%${req.params.type}%` } },
   })
   res.send(plants)
 })
