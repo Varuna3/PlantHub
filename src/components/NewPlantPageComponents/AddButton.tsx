@@ -31,7 +31,7 @@ const AddButton = ({ selectedPlant }: any): ReactElement => {
           }
         }}
       >
-        Add Plant To Profile
+        Add To Profile
       </button>
     </>
   )

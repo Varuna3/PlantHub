@@ -112,7 +112,7 @@ User.init(
     },
     passwordHash: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(10000),
     },
     isAdmin: {
       allowNull: false,
@@ -235,7 +235,7 @@ BiBeem_60SLuru6xy9ywHtWLycI5l8VM`,
     },
     {
       name: 'Dandelion',
-      type: 'weed',
+      type: 'herb',
       imageURL:
         'https://images.squarespace-cdn.com/content/v1/54fbb611e4b0d7c1e151d22a/1653960196494-2YRSA0WT5Z4LS635NKFB/Dandelion+Seeds.jpg?format=1500w',
     },

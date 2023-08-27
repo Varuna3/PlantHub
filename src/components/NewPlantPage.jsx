@@ -5,8 +5,6 @@ import SearchBar from './NewPlantPageComponents/SearchBar'
 import PlantRowContainer from './NewPlantPageComponents/PlantRowContainer'
 
 const NewPlantPage = () => {
-  // const [query, setQuery] = useState('')
-  // const [selectedPlants, setSelectedPlants] = useState([])
   const [plants, setPlants] = useState([])
 
   const nav = useNavigate()
