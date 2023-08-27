@@ -56,17 +56,6 @@ const AddFriendPage: React.FC = () => {
     }
   }
 
-  async function checkIsFriend(test: element, arr: any[]): Promise<any> {
-    let tmp = false
-    arr.forEach(e => {
-      console.log(e.uname, test.uname)
-      if (e.uname === test.uname) {
-        tmp = true
-      }
-    })
-    return tmp
-  }
-
   return (
     <>
       <ToastContainer
