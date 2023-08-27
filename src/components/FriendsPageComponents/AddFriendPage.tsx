@@ -1,33 +1,22 @@
 import { Component, ReactElement, useEffect, useState } from 'react'
 import axios from 'axios'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddFriendPage: React.FC = () => {
+  const [user, setUser]: [any, Function] = useState({})
   const [uname, setUname] = useState('')
-  const [users, setUsers] = useState([])
+  const [users, setUsers]: [any[], Function] = useState([])
   const [error, setError] = useState(false)
+  const [success, setSuccess]: [string, Function] = useState('')
 
   useEffect(() => {
-    axios.get(`/api/users/${uname}`).then(({ data }) => {
-      const tmp = data.map((e: any): ReactElement => {
-        return (
-          <div key={e.id} className='user-card'>
-            <h1>{e.uname}</h1>
-            <img src={e.imageURL} />
-            <p>
-              {e.fname} {e.lname}
-            </p>
-            <button
-              onClick={() => {
-                handleClickEvent(e)
-              }}
-            >
-              Send Request
-            </button>
-          </div>
-        )
-      })
-      setUsers(tmp)
+    let tmp2: any = {}
+    axios.post('/api/users/').then(({ data }: any) => {
+      tmp2 = data
+      setUser(tmp2)
     })
+    setUsers([<p key='1'>Search for users!</p>])
   }, [])
 
   interface element {
@@ -39,58 +28,106 @@ const AddFriendPage: React.FC = () => {
   }
 
   async function handleClickEvent(e: element): Promise<any> {
-    console.log(e)
     const { data } = await axios.post('/api/friends/requests/create', {
       userId: e.id,
     })
     if (data.Error) {
-      console.log(data.Error)
+      toast.error(data.Error, {
+        position: 'top-center',
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      })
+    } else {
+      toast.success('Success!', {
+        position: 'top-center',
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      })
     }
   }
 
+  async function checkIsFriend(test: element, arr: any[]): Promise<any> {
+    let tmp = false
+    arr.forEach(e => {
+      console.log(e.uname, test.uname)
+      if (e.uname === test.uname) {
+        tmp = true
+      }
+    })
+    return tmp
+  }
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <form action=''>
-        <label htmlFor='search'>Username: </label>
-        <input
-          id='search'
-          type='text'
-          autoComplete='off'
-          value={uname}
-          onChange={e => {
-            setUname(e.target.value)
-          }}
-        />
-        <button
-          onClick={async e => {
-            e.preventDefault()
-            const { data } = await axios.get(`/api/users/${uname}`)
-            const tmp = data.map((e: element) => {
-              return (
-                <div key={e.id} className='user-card'>
-                  <h1>{e.uname}</h1>
-                  <img src={e.imageURL} />
-                  <p>
-                    {e.fname} {e.lname}
-                  </p>
-                  <button
-                    onClick={() => {
-                      handleClickEvent(e)
-                    }}
-                  >
-                    Send Request
-                  </button>
-                </div>
-              )
-            })
-            setUsers(tmp)
-          }}
-        >
-          Search
-        </button>
-      </form>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>{users}</div>
-    </div>
+    <>
+      <ToastContainer
+        position='top-center'
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme='colored'
+      />
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <form action=''>
+          <label htmlFor='search'>Username: </label>
+          <input
+            id='search'
+            type='text'
+            autoComplete='off'
+            value={uname}
+            onChange={e => {
+              setUname(e.target.value)
+            }}
+          />
+          <button
+            onClick={async e => {
+              e.preventDefault()
+              const { data } = await axios.get(`/api/users/${uname}`)
+              const tmp = data.map((e: element) => {
+                //@ts-ignore
+                if (e.uname !== user.uname) {
+                  return (
+                    <div key={e.id} className='user-card'>
+                      <h1>{e.uname}</h1>
+                      <img src={e.imageURL} />
+                      <p>
+                        {e.fname} {e.lname}
+                      </p>
+                      <button
+                        onClick={() => {
+                          handleClickEvent(e)
+                        }}
+                      >
+                        Send Request
+                      </button>
+                    </div>
+                  )
+                }
+              })
+              setUsers(tmp)
+            }}
+          >
+            Search
+          </button>
+        </form>
+        <div style={error ? { border: '2px solid red' } : {}}>{error}</div>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>{users}</div>
+      </div>
+    </>
   )
 }
 

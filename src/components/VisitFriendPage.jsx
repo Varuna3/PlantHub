@@ -23,7 +23,6 @@ const VisitFriendPage = () => {
         tmp[`${e.name}`] = Number(e.count.count)
       })
       setCounts({ ...tmp })
-      console.log(tmp)
     })
     axios.post('/api/users').then(({ data }) => {
       setMyImageURL(data.imageURL)

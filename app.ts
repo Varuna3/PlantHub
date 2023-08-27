@@ -238,6 +238,7 @@ app.post('/api/friends/requests/create', async (req, res) => {
           const user2 = await User.findByPk(req.body.userId)
           if (user && user2)
             await user.addFriend(user2, { through: { status: 'approved' } })
+          res.send({ success: true })
         } else {
           const user = await User.findByPk(req.session.userId)
           const user2 = await User.findByPk(req.body.userId)

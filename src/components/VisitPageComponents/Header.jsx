@@ -10,15 +10,13 @@ const Header = ({ uname, fname, lname, imageURL, myImageURL }) => {
         {fname} {lname}
       </p>
       <img src={imageURL} alt='' />
-      <button style={{ height: 'auto' }}>
-        <img
-          src={myImageURL}
-          alt=''
-          style={{ width: '100%', height: '80%' }}
-          onClick={() => {
-            nav('/')
-          }}
-        />
+      <button
+        style={{ height: 'auto' }}
+        onMouseUp={() => {
+          nav('/')
+        }}
+      >
+        <img style={{ width: '100%', height: '80%' }} src={myImageURL} alt='' />
         <p>Home</p>
       </button>
     </div>
