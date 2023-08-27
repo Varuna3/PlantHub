@@ -6,7 +6,7 @@ import Username from './components/FormComponents/Username.tsx'
 import Password from './components/FormComponents/Password.tsx'
 import SignIn from './components/FormComponents/SignIn.tsx'
 
-const LoginPage = () => {
+const LoginPage: React.FC = () => {
   const [uname, setUname] = useState('')
   const [password, setPassword] = useState('')
   const [authFailed, setAuthFailed] = useState(false)
@@ -24,7 +24,7 @@ const LoginPage = () => {
       <form
         onSubmit={async e => {
           e.preventDefault()
-          let res = ''
+          let res: any = ''
           try {
             res = await axios.post('/api/login', { uname, password })
           } catch {
@@ -46,7 +46,7 @@ const LoginPage = () => {
         }}
       >
         <Username uname={uname} setUname={setUname} />
-        <Password pasword={password} setPassword={setPassword} />
+        <Password password={password} setPassword={setPassword} />
         <p style={{ margin: 0, color: 'red' }}>
           {authFailed ? `Error: Auth failed` : ''}
         </p>

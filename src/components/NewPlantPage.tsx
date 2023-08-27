@@ -4,7 +4,7 @@ import axios from 'axios'
 import SearchBar from './NewPlantPageComponents/SearchBar'
 import PlantRowContainer from './NewPlantPageComponents/PlantRowContainer'
 
-const NewPlantPage = () => {
+const NewPlantPage: React.FC = () => {
   const [plants, setPlants] = useState([])
 
   const nav = useNavigate()

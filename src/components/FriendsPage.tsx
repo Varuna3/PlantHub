@@ -6,8 +6,8 @@ import AddFriendPage from './FriendsPageComponents/AddFriendPage'
 import FriendRequestsPage from './FriendRequestsPage/FriendRequestsPage'
 import FriendCard from './FriendsPageComponents/FriendCard'
 
-const FriendsPage = () => {
-  const [friends, setFriends] = useState([])
+const FriendsPage: React.FC = () => {
+  const [friends, setFriends]: [any[], Function] = useState([])
   const [content, setContent] = useState('friends')
   const [reqCount, setReqCount] = useState(0)
   const [error, setError] = useState('')

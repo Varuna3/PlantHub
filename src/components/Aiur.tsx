@@ -4,8 +4,8 @@ import axios from 'axios'
 
 import RequestCard from './AdminPageComponents/RequestCard'
 
-const Aiur = () => {
-  const [reqs, setReqs] = useState([])
+const Aiur: React.FC = () => {
+  const [reqs, setReqs]: [any[], Function] = useState([])
 
   const nav = useNavigate()
 
@@ -14,9 +14,7 @@ const Aiur = () => {
       if (!data) {
         nav('/')
       }
-      axios.post('/api/Aiur/requests').then(({ data }) => {
-        setReqs([...data])
-      })
+      axios.post('/api/Aiur/requests').then(({ data }) => setReqs([...data]))
     })
   }, [])
 

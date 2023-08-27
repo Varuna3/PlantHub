@@ -10,7 +10,7 @@ import ProfilePictureURL from './FormComponents/ProfilePictureURL.tsx'
 import CreateUser from './FormComponents/CreateUser.tsx'
 import ErrorMessage from './FormComponents/ErrorMessage.tsx'
 
-const SignUpPage = () => {
+const SignUpPage: React.FC = () => {
   const [fname, setFname] = useState('')
   const [lname, setLname] = useState('')
   const [imageURL, setImageURL] = useState('')
@@ -57,7 +57,7 @@ const SignUpPage = () => {
         <LastName lname={lname} setLname={setLname} />
         <ProfilePictureURL imageURL={imageURL} setImageURL={setImageURL} />
         <Username uname={uname} setUname={setUname} />
-        <Password pasword={password} setPassword={setPassword} />
+        <Password password={password} setPassword={setPassword} />
         <ErrorMessage error={error} message={message} />
         <CreateUser />
       </form>

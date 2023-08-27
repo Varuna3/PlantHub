@@ -1,6 +1,20 @@
 import { useNavigate } from 'react-router-dom'
 
-const Header = ({ uname, fname, lname, imageURL, myImageURL }) => {
+interface props {
+  uname: string
+  fname: string
+  lname: string
+  imageURL: string
+  myImageURL: string
+}
+
+const Header: React.FC<props> = ({
+  uname,
+  fname,
+  lname,
+  imageURL,
+  myImageURL,
+}) => {
   const nav = useNavigate()
 
   return (

@@ -6,9 +6,9 @@ import { ToastContainer } from 'react-toastify'
 import HomePageHeader from './HomePageComponents/HomePageHeader'
 import PlantCard from './PlantCardComponents/PlantCard'
 
-const ProfilePage = () => {
+const ProfilePage: React.FC = () => {
   const [user, setUser] = useState([])
-  const [plants, setPlants] = useState([])
+  const [plants, setPlants]: [any[], Function] = useState([])
   const [counts, setCounts] = useState([])
   const [loggedIn, setLoggedIn] = useState(true)
   const [hasEdited, setHasEdited] = useState(false)
@@ -23,8 +23,8 @@ const ProfilePage = () => {
       setUser(data)
       if (data.plants) {
         setPlants([...data.plants])
-        const tmp = {}
-        data.plants.forEach(e => {
+        const tmp: any = {}
+        data.plants.forEach((e: any) => {
           tmp[`${e.name}`] = Number(e.count.count)
         })
         setCounts({ ...tmp })
@@ -43,22 +43,21 @@ const ProfilePage = () => {
           img={e.imageURL}
           increment={increment}
           decrement={decrement}
-          setHasEdited={setHasEdited}
         />
       )
     })
   } else {
     arr = 'No plants yet!'
   }
-  function increment(name) {
+  function increment(name: string) {
     setHasEdited(true)
-    const tmp = { ...counts }
+    const tmp: any = { ...counts }
     tmp[`${name}`]++
     setCounts({ ...tmp })
   }
-  function decrement(name) {
+  function decrement(name: string) {
     setHasEdited(true)
-    const tmp = { ...counts }
+    const tmp: any = { ...counts }
     tmp[`${name}`]--
     setCounts({ ...tmp })
   }

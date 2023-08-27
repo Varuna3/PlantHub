@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const PlantRequestPage = () => {
+const PlantRequestPage: React.FC = () => {
   const [name, setName] = useState('')
   const [type, setType] = useState('')
   const [imageURL, setImageURL] = useState('')

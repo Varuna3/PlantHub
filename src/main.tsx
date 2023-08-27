@@ -56,7 +56,8 @@ const router = createBrowserRouter([
     element: <VisitFriendPage />,
   },
 ])
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />
-)
+const rootElement = document.getElementById('root')
+if (rootElement) {
+  const root: any = ReactDOM.createRoot(rootElement)
+  root.render(<RouterProvider router={router} />)
+}

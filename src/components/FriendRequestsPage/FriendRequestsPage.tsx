@@ -6,7 +6,6 @@ import React from 'react'
 interface props {
   reqCount: number
   setReqCount: Function
-  data: any
 }
 
 interface element {

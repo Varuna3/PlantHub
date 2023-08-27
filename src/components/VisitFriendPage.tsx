@@ -2,14 +2,14 @@ import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-import Header from './VisitPageComponents/Header.jsx'
+import Header from './VisitPageComponents/Header'
 
-import PlantCard from './PlantCardComponents/PlantCard.tsx'
+import PlantCard from './PlantCardComponents/PlantCard'
 
-const VisitFriendPage = () => {
+const VisitFriendPage: React.FC = () => {
   const [myImageURL, setMyImageURL] = useState('')
-  const [user, setUser] = useState({})
-  const [plants, setPlants] = useState([])
+  const [user, setUser]: [any, Function] = useState({})
+  const [plants, setPlants]: [any[], Function] = useState([])
   const [counts, setCounts] = useState([])
 
   const { uname } = useParams()
@@ -18,8 +18,8 @@ const VisitFriendPage = () => {
     axios.get(`/api/users/${uname}`).then(({ data }) => {
       setUser(data)
       setPlants([...data.plants])
-      const tmp = {}
-      data.plants.forEach(e => {
+      const tmp: any = {}
+      data.plants.forEach((e: any) => {
         tmp[`${e.name}`] = Number(e.count.count)
       })
       setCounts({ ...tmp })
@@ -32,6 +32,7 @@ const VisitFriendPage = () => {
   const arr = plants.map(e => {
     // console.log(e)
     return (
+      //@ts-ignore
       <PlantCard
         key={e.id}
         name={e.name}
@@ -45,7 +46,7 @@ const VisitFriendPage = () => {
   return (
     <div>
       <Header
-        uname={uname}
+        uname={user.uname}
         fname={user.fname}
         lname={user.lname}
         imageURL={user.imageURL}
