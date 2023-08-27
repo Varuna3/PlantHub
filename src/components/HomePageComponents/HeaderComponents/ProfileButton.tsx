@@ -1,6 +1,8 @@
 import getQuote from '../../../../theImportantStuff.ts'
 import { useState, useEffect, ReactElement } from 'react'
 
+import { toast } from 'react-toastify'
+
 import axios from 'axios'
 
 const ProfileButton = ({ user }: any): ReactElement => {
@@ -15,7 +17,7 @@ const ProfileButton = ({ user }: any): ReactElement => {
         style={{ width: '100px', height: '100px', borderRadius: '100%' }}
         src={url}
         onClick={() => {
-          console.log(getQuote())
+          toast.info(getQuote())
         }}
       />
     </>

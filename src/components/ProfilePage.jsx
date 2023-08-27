@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { ToastContainer } from 'react-toastify'
 
 import HomePageHeader from './HomePageComponents/HomePageHeader'
 import PlantCard from './PlantCardComponents/PlantCard'
@@ -63,6 +64,18 @@ const ProfilePage = () => {
   }
   return (
     <>
+      <ToastContainer
+        position='top-center'
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme='colored'
+      />
       <HomePageHeader
         user={user}
         counts={counts}
