@@ -78,6 +78,7 @@ const LoginPage: React.FC = () => {
           <SignIn />
         </form>
       </div>
+      <div id='mobile-footer-margin'></div>
     </div>
   )
 }

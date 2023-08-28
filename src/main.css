@@ -104,6 +104,10 @@ button {
     width: 100%;
   }
 
+  #mobile-footer-margin {
+    margin-top: 100px;
+  }
+
   #login-page {
     height: 100vh;
     width: 100vw;
