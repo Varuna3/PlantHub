@@ -7,10 +7,11 @@ interface props {
 
 const Username: React.FC<props> = ({ uname, setUname }) => {
   return (
-    <div>
-      <label htmlFor='Username'>Username:</label>
+    <div className='input-field'>
+      <label htmlFor='Username'>Username</label>
       <input
         id='Username'
+        className='round input-box'
         type='text'
         value={uname}
         onChange={e => setUname(e.target.value)}

@@ -7,10 +7,11 @@ interface props {
 
 const Password: React.FC<props> = ({ password, setPassword }) => {
   return (
-    <div>
-      <label htmlFor='Password'>Password:</label>
+    <div className='input-field'>
+      <label htmlFor='Password'>Password</label>
       <input
         id='Password'
+        className='round input-box'
         type='password'
         value={password}
         onChange={e => setPassword(e.target.value)}

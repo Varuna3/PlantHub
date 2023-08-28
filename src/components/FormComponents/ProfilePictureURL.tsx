@@ -6,10 +6,11 @@ interface props {
 }
 
 const ProfilePictureURL: React.FC<props> = ({ imageURL, setImageURL }) => (
-  <div>
-    <label htmlFor='ImageURL'>Profile Picture URL: </label>
+  <div className='input-field'>
+    <label htmlFor='ImageURL'>Profile Picture URL</label>
     <input
       id='ImageURL'
+      className='round input-box'
       type='text'
       value={imageURL}
       onChange={e => setImageURL(e.target.value)}
