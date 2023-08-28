@@ -99,6 +99,7 @@ const SignUpPage: React.FC = () => {
           Back
         </button>
       </div>
+      <div id='mobile-footer-margin'></div>
     </div>
   )
 }
