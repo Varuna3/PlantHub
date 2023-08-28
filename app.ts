@@ -584,22 +584,6 @@ app.get('/api/plantsByType/:type', async (req, res) => {
   res.send(plants)
 })
 
-// MAYBE TODO *********************************
-// app.get('/api/plants/hottest', async (req, res) => {
-//   const counts = await Count.findAll()
-//   let highestCount = { count: 0 }
-//   counts.forEach(e => {
-//     if (e.count > highestCount.count) highestCount = { ...e }
-//   })
-//   const user = await User.findAll({
-//     attributes: ['uname'],
-//     where: { id: highestCount.dataValues.userId },
-//   })
-//   const plant = await Plant.findByPk(highestCount.dataValues.plantId)
-//   res.send({ user, plant })
-// })
-// ***********************************************
-
 app.post('/api/plants/newplant/request', async (req, res) => {
   if (req.session.passwordHash) {
     const check = await Plant.findOne({ where: { name: `${req.body.name}` } })

@@ -39,17 +39,12 @@ const LoginPage: React.FC = () => {
           }
         }}
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
           border: authFailed ? 'solid red 2px' : undefined,
         }}
       >
         <Username uname={uname} setUname={setUname} />
         <Password password={password} setPassword={setPassword} />
-        <p style={{ margin: 0, color: 'red' }}>
-          {authFailed ? `Error: Auth failed` : ''}
-        </p>
+        <p>{authFailed ? `Error: Auth failed` : ''}</p>
         <SignIn />
       </form>
       <Link to='./SignUp'>
