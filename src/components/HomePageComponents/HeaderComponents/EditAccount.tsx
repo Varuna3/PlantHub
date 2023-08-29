@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const EditAccount: React.FC = () => {
   const [open, setOpen] = useState(false)
@@ -8,57 +9,52 @@ const EditAccount: React.FC = () => {
   const [value, setValue] = useState('')
   const [oldPass, setOldPass] = useState('')
   const [Errored, setErrored] = useState(false)
-  const [Error, setError] = useState('')
 
-  function menu(open: boolean) {
-    if (open) {
-      return (
-        <div
-          style={{
-            width: '250px',
-            height: 'auto',
-            border: Errored ? '4px solid red' : '2px solid green',
-            background: Errored ? 'rgb(255, 240, 240)' : 'rgb(240, 255, 240)',
-          }}
-        >
-          <p style={{ margin: 0, color: Errored ? 'red' : 'black' }}>
-            {Errored ? `${Error}` : 'Select an option.'}
-          </p>
-          <div style={{ width: '200px', display: 'flex' }}>
-            <button
-              className='menuButton'
-              onClick={() => {
-                setValue('')
-                setEditItem('Username')
-              }}
-            >
-              Username
-            </button>
-            <button
-              className='menuButton'
-              onClick={() => {
-                setValue('')
-                setEditItem('Password')
-              }}
-            >
-              Password
-            </button>
-            <button
-              className='menuButton'
-              onClick={() => {
-                setValue('')
-                setEditItem('ImageURL')
-              }}
-            >
-              Picture
-            </button>
-          </div>
-          {textBox(editItem)}
+  function menu() {
+    return (
+      <div
+        className='round-container edit-account-box'
+        style={{
+          background: Errored ? 'rgb(255, 240, 240)' : 'rgb(240, 255, 240)',
+          width: open ? '48vw' : '0',
+          height: open ? '150px' : '0',
+          marginLeft: open ? '0' : '24vw',
+          padding: open ? '' : '0',
+          border: open ? '2px solid green' : '0px solid green',
+        }}
+      >
+        <div style={{ width: '200px', display: 'flex' }}>
+          <button
+            className='menuButton'
+            onClick={() => {
+              setValue('')
+              setEditItem('Username')
+            }}
+          >
+            Username
+          </button>
+          <button
+            className='menuButton'
+            onClick={() => {
+              setValue('')
+              setEditItem('Password')
+            }}
+          >
+            Password
+          </button>
+          <button
+            className='menuButton'
+            onClick={() => {
+              setValue('')
+              setEditItem('ImageURL')
+            }}
+          >
+            Picture
+          </button>
         </div>
-      )
-    } else {
-      return <div>{open}</div>
-    }
+        {textBox(editItem)}
+      </div>
+    )
   }
 
   function textBox(option: string) {
@@ -87,7 +83,7 @@ const EditAccount: React.FC = () => {
                   )
                   if (data.Error) {
                     setErrored(true)
-                    setError(data.Error)
+                    toast.error(data.Error)
                   } else {
                     setOpen(false)
                   }
@@ -103,7 +99,7 @@ const EditAccount: React.FC = () => {
                   )
                   if (data.Error) {
                     setErrored(true)
-                    setError(data.Error)
+                    toast.error(data.Error)
                   } else {
                     setOpen(false)
                   }
@@ -117,7 +113,7 @@ const EditAccount: React.FC = () => {
                     )
                     if (data.Error) {
                       setErrored(true)
-                      setError(data.Error)
+                      toast.error(data.error)
                     } else {
                       setOpen(false)
                     }
@@ -161,14 +157,13 @@ const EditAccount: React.FC = () => {
           className='round header-button'
           onClick={() => {
             setErrored(false)
-            setError('')
             setEditItem('')
             setOpen(!open)
           }}
         >
           Edit Account
         </button>
-        {menu(open)}
+        {menu()}
       </div>
     </>
   )
