@@ -121,6 +121,7 @@ button {
 .header-sub-container {
   display: flex;
   justify-content: space-around;
+  gap: 10px;
 }
 
 .profile-picture {
@@ -185,6 +186,11 @@ button {
     flex-wrap: wrap;
     justify-content: space-around;
     align-items: center;
+  }
+
+  .header-sub-container {
+    padding-top: 5px;
+    gap: 5px;
   }
 
   .header-button {
