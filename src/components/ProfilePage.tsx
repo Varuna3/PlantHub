@@ -82,7 +82,8 @@ const ProfilePage: React.FC = () => {
         hasEdited={hasEdited}
         setHasEdited={setHasEdited}
       ></HomePageHeader>
-      <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>{arr}</div>
+      <div className='plant-container'>{arr}</div>
+      <div id='mobile-footer-margin'></div>
     </>
   )
 }

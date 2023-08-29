@@ -8,6 +8,7 @@ interface props {
 const MinusButton = ({ name, decrement }: props): ReactElement => {
   return (
     <button
+      className='round count-button'
       onClick={() => {
         decrement(name)
       }}
