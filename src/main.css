@@ -99,9 +99,50 @@ button {
   gap: 20px;
 }
 
+#header-container {
+  margin-top: 10px;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#home-page-header {
+  width: 50%;
+  padding: 10px;
+  margin: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 2px solid green;
+}
+
+.header-sub-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.profile-picture {
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  border: 5px solid #1c7c54;
+  border-radius: 100%;
+}
+
+.header-button {
+  width: 100px;
+  height: 50px;
+}
+
 @media screen and (orientation: portrait) {
   .input-box {
     width: 100%;
+  }
+
+  .form-button {
+    width: 30vw;
   }
 
   #mobile-footer-margin {
@@ -133,7 +174,21 @@ button {
     width: 50vw;
   }
 
-  .form-button {
-    width: 30vw;
+  #header-container {
+    margin-top: 10px;
+  }
+
+  #home-page-header {
+    width: 90vw;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .header-button {
+    width: 75px;
+    height: 50px;
   }
 }

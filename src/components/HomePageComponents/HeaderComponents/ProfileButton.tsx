@@ -14,7 +14,7 @@ const ProfileButton = ({ user }: any): ReactElement => {
   return (
     <>
       <img
-        style={{ width: '100px', height: '100px', borderRadius: '100%' }}
+        className='profile-picture'
         src={url}
         onClick={() => {
           toast.info(getQuote())

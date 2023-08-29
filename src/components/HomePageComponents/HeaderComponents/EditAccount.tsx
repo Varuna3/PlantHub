@@ -158,6 +158,7 @@ const EditAccount: React.FC = () => {
     <>
       <div>
         <button
+          className='round header-button'
           onClick={() => {
             setErrored(false)
             setError('')

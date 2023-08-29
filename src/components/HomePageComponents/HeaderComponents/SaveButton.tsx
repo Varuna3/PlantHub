@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 interface props {
   counts: any[]
@@ -21,20 +22,19 @@ const SaveButton: React.FC<props> = ({ counts, setHasEdited }) => {
   return (
     <>
       <button
-        style={{
-          backgroundColor: isSaved
-            ? 'rgb(100, 255, 100)'
-            : 'rgb(220, 220, 220)',
-        }}
+        className='round header-button'
         onClick={async () => {
           const res = await save(counts)
           if (res.success) {
-            setIsSaved(true)
-          }
-          setTimeout(() => {
-            setIsSaved(false)
+            toast.success('Success!', {
+              style: { background: '#73e2a7' },
+            })
             setHasEdited(false)
-          }, 1000)
+          } else {
+            toast.error('Something went wrong.', {
+              style: { background: '#d52941' },
+            })
+          }
         }}
       >
         Save
