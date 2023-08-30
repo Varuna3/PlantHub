@@ -12,13 +12,14 @@ const FriendCard: React.FC<props> = ({ id, uname, fname, lname, imageURL }) => {
   const nav = useNavigate()
 
   return (
-    <div className='user-card'>
+    <div className='round-container user-card'>
       <h1>{uname}</h1>
       <p>
-        {fname}, {lname}
+        {fname} {lname}
       </p>
-      <img src={imageURL} alt='' />
+      <img src={imageURL} alt='' className='round-container' />
       <button
+        className='round form-button'
         onClick={() => {
           nav(`/Visit/${uname}`)
         }}

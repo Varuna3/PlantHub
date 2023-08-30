@@ -2,32 +2,33 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { ReactElement, useState } from 'react'
 import { Plant } from '../../../scripts/seed'
+import { toast } from 'react-toastify'
 
 const AddButton = ({ selectedPlant }: any): ReactElement => {
-  const [error, setError] = useState(false)
-
   const nav = useNavigate()
 
   return (
     <>
       <button
-        style={{
-          width: '100px',
-          height: '50px',
-          backgroundColor: error ? 'red' : '',
-        }}
+        className='round form-button'
         onClick={async () => {
           if (selectedPlant.length > 0) {
             const res = await axios.post('/api/users/newplant', {
               name: selectedPlant,
             })
             if (res.data.success) {
-              nav('/Profile')
+              toast.success('Plant successfully added!', {
+                style: { background: '#73e2a7' },
+              })
             } else {
-              setError(true)
+              toast.error('You already have one of these!', {
+                style: { background: '#d52941' },
+              })
             }
           } else {
-            setError(true)
+            toast.error('Please select a plant.', {
+              style: { background: '#d52941' },
+            })
           }
         }}
       >

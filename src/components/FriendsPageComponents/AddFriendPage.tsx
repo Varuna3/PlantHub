@@ -12,11 +12,33 @@ const AddFriendPage: React.FC = () => {
 
   useEffect(() => {
     let tmp2: any = {}
-    axios.post('/api/users/').then(({ data }: any) => {
+    axios.post('/api/users/').then(({ data }) => {
       tmp2 = data
       setUser(tmp2)
     })
-    setUsers([<p key='1'>Search for users!</p>])
+    axios.get('/api/users').then(({ data }) => {
+      const tmp = data.map((e: element) => {
+        if (e.uname !== tmp2.uname) {
+          return (
+            <div key={e.id} className='user-card'>
+              <h1>{e.uname}</h1>
+              <img src={e.imageURL} />
+              <p>
+                {e.fname} {e.lname}
+              </p>
+              <button
+                onClick={() => {
+                  handleClickEvent(e)
+                }}
+              >
+                Send Request
+              </button>
+            </div>
+          )
+        }
+      })
+      setUsers(tmp)
+    })
   }, [])
 
   interface element {
@@ -41,6 +63,7 @@ const AddFriendPage: React.FC = () => {
         draggable: true,
         progress: undefined,
         theme: 'colored',
+        style: { background: '#d52941' },
       })
     } else {
       toast.success('Success!', {
@@ -52,6 +75,7 @@ const AddFriendPage: React.FC = () => {
         draggable: true,
         progress: undefined,
         theme: 'colored',
+        style: { background: '#73e2a7' },
       })
     }
   }
@@ -72,7 +96,7 @@ const AddFriendPage: React.FC = () => {
       />
       <div style={{ display: 'flex', flexDirection: 'column' }}>
         <form action=''>
-          <label htmlFor='search'>Username: </label>
+          <label htmlFor='search'>Username</label>
           <input
             id='search'
             type='text'

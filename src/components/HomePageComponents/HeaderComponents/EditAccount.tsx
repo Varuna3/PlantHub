@@ -72,7 +72,7 @@ const EditAccount: React.FC = () => {
             <input
               id={`${option}`}
               className='round input-box'
-              type='text'
+              type='password'
               value={value}
               onChange={e => {
                 setValue(e.target.value)
@@ -159,7 +159,7 @@ const EditAccount: React.FC = () => {
         <input
           id='oldpass'
           className='round input-box'
-          type='text'
+          type='password'
           value={oldPass}
           onChange={e => {
             setOldPass(e.target.value)

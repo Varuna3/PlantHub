@@ -24,7 +24,7 @@ const SearchButton: React.FC<props> = ({ query, setPlants }) => {
   return (
     <>
       <button
-        style={{ width: '100px' }}
+        className='round'
         onClick={async e => {
           e.preventDefault()
           getPlants()

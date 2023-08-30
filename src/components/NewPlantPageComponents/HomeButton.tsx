@@ -5,12 +5,12 @@ const HomeButton: React.FC = () => {
   return (
     <>
       <button
-        style={{ width: '100px', height: '50px' }}
+        className='round header-button'
         onClick={() => {
           nav('/Profile')
         }}
       >
-        Home
+        Back
       </button>
     </>
   )

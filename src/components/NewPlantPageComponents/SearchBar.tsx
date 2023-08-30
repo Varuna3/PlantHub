@@ -3,15 +3,24 @@ import { useState } from 'react'
 import HomeButton from './HomeButton'
 import PlantRequestButton from './PlantRequestButton'
 
-const SearchBar = ({ plants, setPlants }) => {
+interface props {
+  setPlants: Function
+}
+
+const SearchBar: React.FC<props> = ({ setPlants }) => {
   const [query, setQuery] = useState('')
 
   return (
-    <div id='searchBar'>
-      <form>
-        <label htmlFor='query'>Search for Plants: </label>
+    <div id='search-bar'>
+      <div id='newplant-header-container'>
+        <HomeButton />
+        <PlantRequestButton />
+      </div>
+      <form className='input-field'>
+        <label htmlFor='query'>Search for Plants</label>
         <input
           id='query'
+          className='round input-box'
           type='text'
           value={query}
           onChange={e => {
@@ -20,8 +29,6 @@ const SearchBar = ({ plants, setPlants }) => {
         />
         <SearchButton query={query} setPlants={setPlants} />
       </form>
-      <HomeButton />
-      <PlantRequestButton />
     </div>
   )
 }

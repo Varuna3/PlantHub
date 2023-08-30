@@ -24,7 +24,7 @@ const PlantRowContainer: React.FC<props> = ({ plants, setPlants }) => {
   })
 
   return (
-    <div>
+    <div id='newplant-page-container'>
       <AddButton selectedPlant={selectedPlant} />
       <div className='plant-row-container'>{returnPlants}</div>
     </div>

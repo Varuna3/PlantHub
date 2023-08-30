@@ -6,6 +6,7 @@ const PlantRequestButton: React.FC = () => {
   return (
     <>
       <button
+        className='round header-button'
         onClick={() => {
           nav('/PlantRequest')
         }}
