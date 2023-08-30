@@ -3,3 +3,8 @@ export async function seedPlants(Plant: any, arr: any[]) {
     await Plant.create(arr[i])
   }
 }
+
+export async function resetUsers(User: any) {
+  const users = await User.findall()
+  await users.destroy()
+}
