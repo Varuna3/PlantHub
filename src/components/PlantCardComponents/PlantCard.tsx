@@ -35,7 +35,7 @@ const PlantCard: React.FC<props> = ({
             <h1>{name}</h1>
             <h2>{type}</h2>
           </div>
-          <img className='round-container' src={`${img}`} />
+          <img className='round-container card-image' src={`${img}`} />
           <p>{count}</p>
           <div className='count-button-wrapper'>
             <PlusButton name={name} increment={increment} />
@@ -87,7 +87,7 @@ const PlantCard: React.FC<props> = ({
               <h1>{name}</h1>
               <h2>{type}</h2>
             </div>
-            <img className='PlantImage' src={`${img}`} />
+            <img className='round-container card-image' src={`${img}`} />
             <p>{count}</p>
           </div>
         )

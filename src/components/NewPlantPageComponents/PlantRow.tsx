@@ -21,15 +21,15 @@ const PlantRow: React.FC<props> = ({
 
   return (
     <div
-      className='PlantRow'
+      className='round-container plant-card'
       style={
         selectedPlant === plantName
-          ? { border: '5px green solid' }
-          : { border: '2px purple solid' }
+          ? { border: '10px solid #1c7c54' }
+          : { border: '2px solid #1b512d' }
       }
     >
-      <img style={{ height: '100px' }} src={`${imageURL}`} />
-      <p>{`${plantName}`}</p>
+      <h1>{`${plantName}`}</h1>
+      <img className='round-container card-image' src={`${imageURL}`} />
       <SelectButton setSelectedPlant={setSelectedPlant} plant={plantName} />
     </div>
   )
