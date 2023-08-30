@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec 'node --loader ts-node/esm app.ts' -w app.ts -w src/",
     "superinit": "npm run initdb && npm run seed",
+    "resetPlants": "node --loader ts-node/esm scripts/resetPlants.ts",
     "initdb": "dropdb --if-exists planthub && createdb planthub",
     "seed": "node --loader ts-node/esm scripts/seed.ts",
     "start": "node --loader ts-node/esm app.ts"

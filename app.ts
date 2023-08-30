@@ -639,6 +639,7 @@ app.post('/api/Aiur/approve/', async (req, res) => {
     res.send(false)
   }
 })
+
 app.post('/api/Aiur/deny/', async (req, res) => {
   if (req.session.isAdmin) {
     const { id, name, type, imageURL } = req.body
@@ -647,6 +648,28 @@ app.post('/api/Aiur/deny/', async (req, res) => {
     res.send('Success!')
   } else {
     res.send(false)
+  }
+})
+
+app.post('/api/Aiur/plants/delete', async (req, res) => {
+  if (req.session.isAdmin) {
+    const { plantId } = req.body.plantId
+    const plant = await Plant.findByPk(plantId)
+    await plant?.destroy()
+    res.send({ Success: `Successfully deleted plant ${plantId}` })
+  } else {
+    res.send({ Error: "You're not an admin." })
+  }
+})
+
+app.post('/api/Aiur/users/delete', async (req, res) => {
+  if (req.session.isAdmin) {
+    const { userId } = req.body.userId
+    const user = await User.findByPk(userId)
+    await user?.destroy()
+    res.send({ Success: `Successfully deleted user ${userId}` })
+  } else {
+    res.send({ Error: "You're not an admin." })
   }
 })
 
