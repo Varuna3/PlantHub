@@ -7,7 +7,8 @@ const AdminButton: React.FC = () => {
   return (
     <>
       <button
-        style={{ width: 100, height: 50 }}
+        id='aiur-button'
+        className='round header-button'
         onClick={() => {
           nav('/Aiur')
         }}

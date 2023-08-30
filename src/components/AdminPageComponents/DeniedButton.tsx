@@ -8,8 +8,8 @@ const DeniedButton: React.FC<props> = ({ setStatus }) => {
   return (
     <>
       <button
-        className='CardButton'
-        style={{ backgroundColor: 'red' }}
+        className='round admin-button'
+        style={{ backgroundColor: '#d52941' }}
         onClick={async () => {
           setStatus('Denied')
         }}

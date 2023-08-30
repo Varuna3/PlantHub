@@ -10,22 +10,27 @@ const EditAccount: React.FC = () => {
   const [oldPass, setOldPass] = useState('')
   const [Errored, setErrored] = useState(false)
 
+  const orientation: any = window.matchMedia('(orientation: portrait)').matches
+
+  const width: string = orientation ? '75vw' : '48vw'
+  const height: string = orientation ? '300px' : '150px'
+
   function menu() {
     return (
       <div
         className='round-container edit-account-box'
         style={{
           background: Errored ? 'rgb(255, 240, 240)' : 'rgb(240, 255, 240)',
-          width: open ? '48vw' : '0',
-          height: open ? '150px' : '0',
+          width: open ? width : '0',
+          height: open ? height : '0',
           marginLeft: open ? '0' : '24vw',
           padding: open ? '' : '0',
           border: open ? '2px solid green' : '0px solid green',
         }}
       >
-        <div style={{ width: '200px', display: 'flex' }}>
+        <div style={{ width: '100%', display: 'flex' }}>
           <button
-            className='menuButton'
+            className='round form-button'
             onClick={() => {
               setValue('')
               setEditItem('Username')
@@ -34,7 +39,7 @@ const EditAccount: React.FC = () => {
             Username
           </button>
           <button
-            className='menuButton'
+            className='round form-button'
             onClick={() => {
               setValue('')
               setEditItem('Password')
@@ -43,7 +48,7 @@ const EditAccount: React.FC = () => {
             Password
           </button>
           <button
-            className='menuButton'
+            className='round form-button'
             onClick={() => {
               setValue('')
               setEditItem('ImageURL')
@@ -60,19 +65,23 @@ const EditAccount: React.FC = () => {
   function textBox(option: string) {
     if (option.length > 0) {
       return (
-        <form autoComplete='off'>
-          {option === 'Password' ? oldPassword() : <></>}
-          <label htmlFor={`${option}`}>{`New ${option}:`}</label>
-          <input
-            id={`${option}`}
-            type='text'
-            value={value}
-            onChange={e => {
-              setValue(e.target.value)
-            }}
-          />
+        <form autoComplete='off' id='edit-form'>
+          <div className='input-field'>
+            {option === 'Password' ? oldPassword() : <></>}
+            <label htmlFor={`${option}`}>{`New ${option}`}</label>
+            <input
+              id={`${option}`}
+              className='round input-box'
+              type='text'
+              value={value}
+              onChange={e => {
+                setValue(e.target.value)
+              }}
+            />
+          </div>
           <button
-            style={{ width: 65, height: 20 }}
+            className='round form-button'
+            style={{ width: '100%' }}
             onClick={async e => {
               e.preventDefault()
               switch (option) {
@@ -86,6 +95,9 @@ const EditAccount: React.FC = () => {
                     toast.error(data.Error)
                   } else {
                     setOpen(false)
+                    toast.success('Success!', {
+                      style: { background: '#73e2a7' },
+                    })
                   }
                   break
                 }
@@ -102,6 +114,9 @@ const EditAccount: React.FC = () => {
                     toast.error(data.Error)
                   } else {
                     setOpen(false)
+                    toast.success('Success!', {
+                      style: { background: '#73e2a7' },
+                    })
                   }
                   break
                 }
@@ -116,6 +131,9 @@ const EditAccount: React.FC = () => {
                       toast.error(data.error)
                     } else {
                       setOpen(false)
+                      toast.success('Success!', {
+                        style: { background: '#73e2a7' },
+                      })
                     }
                   }
                   break
@@ -140,6 +158,7 @@ const EditAccount: React.FC = () => {
         <label htmlFor='oldpass'>{`Old Password`}</label>
         <input
           id='oldpass'
+          className='round input-box'
           type='text'
           value={oldPass}
           onChange={e => {

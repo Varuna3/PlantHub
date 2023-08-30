@@ -7,8 +7,8 @@ interface props {
 const ApproveButton: React.FC<props> = ({ setStatus }) => (
   <>
     <button
-      className='CardButton'
-      style={{ backgroundColor: 'green' }}
+      className='round admin-button'
+      style={{ backgroundColor: '#73e2a7' }}
       onClick={async () => {
         setStatus('Approved')
       }}

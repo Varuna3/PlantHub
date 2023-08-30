@@ -28,15 +28,15 @@ const RequestCard: React.FC<props> = ({ id, name, type, imageURL }) => {
   }, [status])
 
   return status === 'Approved' ? (
-    <div style={{ border: '2px solid green' }}>
+    <div style={{ border: '2px solid #1c7c54' }}>
       <p>Approved</p>
     </div>
   ) : status === 'Denied' ? (
     <div style={{ border: '2px solid red' }}>
-      <p>Denid</p>
+      <p>Denied</p>
     </div>
   ) : (
-    <div style={{ border: '2px solid green' }}>
+    <div style={{ border: '2px solid #1c7c54' }}>
       <p>{name}</p>
       <p>{type}</p>
       <img src={`${imageURL}`} />
