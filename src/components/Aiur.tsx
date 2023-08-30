@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import RequestCard from './AdminPageComponents/RequestCard'
+import { ToastContainer } from 'react-toastify'
 
 const Aiur: React.FC = () => {
   const [reqs, setReqs]: [any[], Function] = useState([])
@@ -32,15 +33,51 @@ const Aiur: React.FC = () => {
 
   if (arr.length > 0) {
     return (
-      <div style={{ display: 'flex' }}>
-        <button onClick={() => nav('/Profile')}>Home</button>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>{arr}</div>
+      <div className='aiur-page'>
+        <ToastContainer
+          position='top-center'
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme='colored'
+        />
+        <button
+          style={{ marginTop: '20px' }}
+          className='round form-button'
+          onClick={() => nav('/Profile')}
+        >
+          Home
+        </button>
+        <div className='plant-request-container'>{arr}</div>
       </div>
     )
   } else {
     return (
       <div>
-        <button onClick={() => nav('/Profile')}>Home</button>
+        <ToastContainer
+          position='top-center'
+          autoClose={2500}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss={false}
+          draggable
+          pauseOnHover={false}
+          theme='colored'
+        />
+        <button
+          style={{ marginTop: '20px' }}
+          className='round form-button'
+          onClick={() => nav('/Profile')}
+        >
+          Home
+        </button>
         <p>Nothing to do!</p>
       </div>
     )

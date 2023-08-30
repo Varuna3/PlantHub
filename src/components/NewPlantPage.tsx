@@ -17,7 +17,7 @@ const NewPlantPage: React.FC = () => {
 
   return (
     <>
-      <div>
+      <div className='newplant-page'>
         <SearchBar plants={plants} setPlants={setPlants} />
         <PlantRowContainer plants={plants} setPlants={setPlants} />
       </div>
