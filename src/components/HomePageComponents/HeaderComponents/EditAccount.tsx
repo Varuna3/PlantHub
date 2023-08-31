@@ -72,7 +72,7 @@ const EditAccount: React.FC = () => {
             <input
               id={`${option}`}
               className='round input-box'
-              type='password'
+              type={option === 'Password' ? 'password' : 'text'}
               value={value}
               onChange={e => {
                 setValue(e.target.value)
