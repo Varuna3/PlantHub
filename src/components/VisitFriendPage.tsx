@@ -15,14 +15,17 @@ const VisitFriendPage: React.FC = () => {
   const { uname } = useParams()
 
   useEffect(() => {
-    axios.get(`/api/users/${uname}`).then(({ data }) => {
+    axios.get(`/api/userByName/${uname}`).then(({ data }) => {
+      console.log(data)
       setUser(data)
-      setPlants([...data.plants])
-      const tmp: any = {}
-      data.plants.forEach((e: any) => {
-        tmp[`${e.name}`] = Number(e.count.count)
-      })
-      setCounts({ ...tmp })
+      if (data.plants) {
+        setPlants([...data.plants])
+        const tmp: any = {}
+        data.plants.forEach((e: any) => {
+          tmp[`${e.name}`] = Number(e.count.count)
+        })
+        setCounts({ ...tmp })
+      }
     })
     axios.post('/api/users').then(({ data }) => {
       setMyImageURL(data.imageURL)
@@ -52,7 +55,7 @@ const VisitFriendPage: React.FC = () => {
         imageURL={user.imageURL}
         myImageURL={myImageURL}
       />
-      <div style={{ display: 'flex', gap: '10px', padding: '10px' }}>
+      <div className='plant-container'>
         {arr.length > 0 ? arr : "This friend doesn't have any plants yet!"}
       </div>
     </div>

@@ -21,21 +21,16 @@ const Header: React.FC<props> = ({
     <div id='header-container'>
       <div id='home-page-header' className='round-container'>
         <h1>{uname}</h1>
-        <p>
+        <h2>
           {fname} {lname}
-        </p>
-        <img src={imageURL} alt='' />
+        </h2>
+        <img src={imageURL} alt='' className='profile-picture' />
         <button
-          style={{ height: 'auto' }}
+          className='round header-button'
           onMouseUp={() => {
             nav('/friends')
           }}
         >
-          <img
-            style={{ width: '100%', height: '80%' }}
-            src={myImageURL}
-            alt=''
-          />
           <p>Back</p>
         </button>
       </div>

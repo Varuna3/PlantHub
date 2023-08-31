@@ -144,6 +144,15 @@ app.get('/api/users/:uname', async (req, res) => {
   }
 })
 
+app.get('/api/userByName/:uname', async (req, res) => {
+  const user = await User.findOne({
+    where: { uname: req.params.uname },
+    attributes: ['id', 'uname', 'fname', 'lname', 'imageURL'],
+    include: Plant,
+  })
+  res.send(user)
+})
+
 app.post('/api/users/', async (req, res) => {
   if (req.session.userId) {
     if (req.session.isAdmin) {

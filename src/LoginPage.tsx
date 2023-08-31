@@ -66,7 +66,6 @@ const LoginPage: React.FC = () => {
             }
             if (res.data && res.data.success === true) {
               setAuthFailed(false)
-              console.log({ poweroverwhelming: res.data.poweroverwhelming })
               nav('/Profile')
             } else {
               setAuthFailed(true)

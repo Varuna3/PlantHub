@@ -92,16 +92,7 @@ const AddFriendPage: React.FC = () => {
         theme='colored'
       />
       <div id='add-friend-page'>
-        <form
-          action=''
-          className='user-search-field'
-          // style={{
-          //   marginLeft: '10%',
-          //   display: 'flex',
-          //   justifyContent: 'center',
-          //   width: '80%',
-          // }}
-        >
+        <form action='' className='user-search-field'>
           <label htmlFor='search'>Username</label>
           <input
             id='search'
@@ -127,7 +118,10 @@ const AddFriendPage: React.FC = () => {
                     <div key={e.id} className='round-container user-card'>
                       <h1>{e.uname}</h1>
                       <h2>{e.fname}</h2>
-                      <img className='round-container' src={e.imageURL} />
+                      <img
+                        className='round-container card-image'
+                        src={e.imageURL}
+                      />
                       <button
                         className='round form-button'
                         onClick={() => {

@@ -55,7 +55,7 @@ const RequestCard: React.FC<props> = ({ e, reqCount, setReqCount }) => {
   } else if (status === 'approved') {
     return (
       <div
-        className='user-card'
+        className='user-card round-container'
         style={{ backgroundColor: 'rgb(215, 255, 230)' }}
       >
         <p style={{ color: 'green' }}>Approved</p>
@@ -64,7 +64,7 @@ const RequestCard: React.FC<props> = ({ e, reqCount, setReqCount }) => {
   } else if (status === 'denied') {
     return (
       <div
-        className='user-card'
+        className='user-card round-container'
         style={{ backgroundColor: 'rgb(255, 215, 215)' }}
       >
         <p style={{ color: 'red' }}>Denied</p>
