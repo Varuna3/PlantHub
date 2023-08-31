@@ -18,21 +18,27 @@ const Header: React.FC<props> = ({
   const nav = useNavigate()
 
   return (
-    <div style={{ border: '2px solid green', display: 'flex' }}>
-      <h1>{uname}</h1>
-      <p>
-        {fname} {lname}
-      </p>
-      <img src={imageURL} alt='' />
-      <button
-        style={{ height: 'auto' }}
-        onMouseUp={() => {
-          nav('/')
-        }}
-      >
-        <img style={{ width: '100%', height: '80%' }} src={myImageURL} alt='' />
-        <p>Home</p>
-      </button>
+    <div id='header-container'>
+      <div id='home-page-header' className='round-container'>
+        <h1>{uname}</h1>
+        <p>
+          {fname} {lname}
+        </p>
+        <img src={imageURL} alt='' />
+        <button
+          style={{ height: 'auto' }}
+          onMouseUp={() => {
+            nav('/friends')
+          }}
+        >
+          <img
+            style={{ width: '100%', height: '80%' }}
+            src={myImageURL}
+            alt=''
+          />
+          <p>Back</p>
+        </button>
+      </div>
     </div>
   )
 }

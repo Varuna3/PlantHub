@@ -58,7 +58,7 @@ const Aiur: React.FC = () => {
     )
   } else {
     return (
-      <div>
+      <div className='aiur-page'>
         <ToastContainer
           position='top-center'
           autoClose={2500}

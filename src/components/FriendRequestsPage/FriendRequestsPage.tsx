@@ -2,6 +2,7 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import RequestCard from './RequestCard.tsx'
 import React from 'react'
+import { ToastContainer } from 'react-toastify'
 
 interface props {
   reqCount: number
@@ -40,7 +41,23 @@ const FriendRequestsPage: React.FC<props> = ({ reqCount, setReqCount }) => {
     })
   }
 
-  return <div className='users-container'>{arr}</div>
+  return (
+    <div>
+      <ToastContainer
+        position='top-center'
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover={false}
+        theme='colored'
+      />
+      <div className='users-container'>{arr}</div>
+    </div>
+  )
 }
 
 export default FriendRequestsPage

@@ -44,58 +44,64 @@ const FriendsPage: React.FC = () => {
   })
 
   return (
-    <>
-      <div style={{ display: 'flex' }}>
-        <button
-          onClick={() => {
-            nav('/')
-          }}
-        >
-          Home
-        </button>
-        <button
-          onClick={() => {
-            setContent('friends')
-          }}
-        >
-          Friends
-        </button>
-        <button
-          onClick={() => {
-            setContent('adding')
-          }}
-        >
-          Add Friend
-        </button>
-        <button
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          onClick={() => {
-            setContent('requests')
-          }}
-        >
-          <div
-            style={
-              reqCount > 0
-                ? {
-                    color: 'red',
-                    border: '2px solid red',
-                    borderRadius: 10,
-                    width: 15,
-                    height: 15,
-                    position: 'absolute',
-                    marginBottom: 25,
-                  }
-                : {}
-            }
+    <div>
+      <div id='header-container'>
+        <div id='home-page-header' className='round-container'>
+          <button
+            className='round header-button'
+            onClick={() => {
+              nav('/')
+            }}
           >
-            {reqCount > 0 ? reqCount : undefined}
-          </div>
-          Requests
-        </button>
+            Home
+          </button>
+          <button
+            className='round header-button'
+            onClick={() => {
+              setContent('friends')
+            }}
+          >
+            Friends
+          </button>
+          <button
+            className='round header-button'
+            onClick={() => {
+              setContent('adding')
+            }}
+          >
+            Add Friend
+          </button>
+          <button
+            className='round header-button'
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onClick={() => {
+              setContent('requests')
+            }}
+          >
+            <div
+              style={
+                reqCount > 0
+                  ? {
+                      color: 'red',
+                      border: '2px solid red',
+                      borderRadius: 10,
+                      width: 15,
+                      height: 15,
+                      position: 'absolute',
+                      marginBottom: 25,
+                    }
+                  : {}
+              }
+            >
+              {reqCount > 0 ? reqCount : undefined}
+            </div>
+            Requests
+          </button>
+        </div>
       </div>
       <h1 style={{ color: 'red' }}>
         {error.length > 0 ? `Error: ${error}` : undefined}
@@ -109,7 +115,7 @@ const FriendsPage: React.FC = () => {
           <FriendRequestsPage reqCount={reqCount} setReqCount={setReqCount} />
         )}
       </div>
-    </>
+    </div>
   )
 }
 

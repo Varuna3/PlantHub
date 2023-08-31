@@ -13,7 +13,7 @@ const EditAccount: React.FC = () => {
   const orientation: any = window.matchMedia('(orientation: portrait)').matches
 
   const width: string = orientation ? '75vw' : '48vw'
-  const height: string = orientation ? '300px' : '150px'
+  const height: string = orientation ? '300px' : '250px'
 
   function menu() {
     return (

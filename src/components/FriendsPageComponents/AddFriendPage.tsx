@@ -7,8 +7,6 @@ const AddFriendPage: React.FC = () => {
   const [user, setUser]: [any, Function] = useState({})
   const [uname, setUname] = useState('')
   const [users, setUsers]: [any[], Function] = useState([])
-  const [error, setError] = useState(false)
-  const [success, setSuccess]: [string, Function] = useState('')
 
   useEffect(() => {
     let tmp2: any = {}
@@ -20,13 +18,12 @@ const AddFriendPage: React.FC = () => {
       const tmp = data.map((e: element) => {
         if (e.uname !== tmp2.uname) {
           return (
-            <div key={e.id} className='user-card'>
+            <div key={e.id} className='round-container user-card'>
               <h1>{e.uname}</h1>
-              <img src={e.imageURL} />
-              <p>
-                {e.fname} {e.lname}
-              </p>
+              <h2>{e.fname}</h2>
+              <img className='round-container card-image' src={e.imageURL} />
               <button
+                className='round form-button'
                 onClick={() => {
                   handleClickEvent(e)
                 }}
@@ -94,11 +91,21 @@ const AddFriendPage: React.FC = () => {
         pauseOnHover={false}
         theme='colored'
       />
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <form action=''>
+      <div id='add-friend-page'>
+        <form
+          action=''
+          className='user-search-field'
+          // style={{
+          //   marginLeft: '10%',
+          //   display: 'flex',
+          //   justifyContent: 'center',
+          //   width: '80%',
+          // }}
+        >
           <label htmlFor='search'>Username</label>
           <input
             id='search'
+            className='round input-box'
             type='text'
             autoComplete='off'
             value={uname}
@@ -107,20 +114,22 @@ const AddFriendPage: React.FC = () => {
             }}
           />
           <button
+            className='round form-button'
+            style={{ margin: 20 }}
             onClick={async e => {
               e.preventDefault()
-              const { data } = await axios.get(`/api/users/${uname}`)
+              const { data }: any = await axios.get(`/api/users/${uname}`)
+              console.log(data)
               const tmp = data.map((e: element) => {
                 //@ts-ignore
                 if (e.uname !== user.uname) {
                   return (
-                    <div key={e.id} className='user-card'>
+                    <div key={e.id} className='round-container user-card'>
                       <h1>{e.uname}</h1>
-                      <img src={e.imageURL} />
-                      <p>
-                        {e.fname} {e.lname}
-                      </p>
+                      <h2>{e.fname}</h2>
+                      <img className='round-container' src={e.imageURL} />
                       <button
+                        className='round form-button'
                         onClick={() => {
                           handleClickEvent(e)
                         }}
@@ -137,8 +146,7 @@ const AddFriendPage: React.FC = () => {
             Search
           </button>
         </form>
-        <div style={error ? { border: '2px solid red' } : {}}>{error}</div>
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>{users}</div>
+        <div className='users-container'>{users}</div>
       </div>
     </>
   )

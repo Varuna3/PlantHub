@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
 interface element {
   id: number
@@ -21,29 +22,31 @@ const RequestCard: React.FC<props> = ({ e, reqCount, setReqCount }) => {
 
   if (status === 'pending') {
     return (
-      <div className='user-card'>
+      <div className='round-container user-card'>
         <h1>{e.uname}</h1>
-        <p>
-          {e.fname} {e.lname}
-        </p>
-        <img src={e.imageURL} alt='' />
-        <div>
+        <h2>{e.fname}</h2>
+        <img src={e.imageURL} alt='' className='round-container card-image' />
+        <div className=''>
           <button
-            style={{ width: 50, height: 50, backgroundColor: 'green' }}
+            className='round admin-button'
+            style={{ backgroundColor: 'green' }}
             onClick={async () => {
               setStatus('approved')
               setReqCount(reqCount - 1)
               await axios.post('/api/friends/requests/approve', {
                 userId: e.id,
               })
+              toast.success('Success!', { style: { background: '#73e2a7' } })
             }}
           ></button>
           <button
-            style={{ width: 50, height: 50, backgroundColor: 'red' }}
+            className='round admin-button'
+            style={{ backgroundColor: 'red' }}
             onClick={async () => {
               setStatus('denied')
               setReqCount(reqCount - 1)
               await axios.post('/api/friends/requests/deny', { userId: e.id })
+              toast.success('Success!', { style: { background: '#73e2a7' } })
             }}
           ></button>
         </div>

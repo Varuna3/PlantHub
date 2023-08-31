@@ -1,47 +1,87 @@
 [
   {
     "name": "Mugwort",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://www.outsidepride.com/images/products/detail/herbseed/mugwort.jpg"
   },
   {
     "name": "Pine",
-    "type": "tree",
+    "type": "Tree",
     "imageURL": "https://uploads-ssl.webflow.com/5f157d6a58b3e36315a5d5b5/63ecb87ffc76f0079b6d2027_2.png"
   },
   {
     "name": "Sequoia",
-    "type": "tree",
+    "type": "Tree",
     "imageURL": "https://tracks-trails.com/wp-content/uploads/2020/02/General_Sherman_tree_looking_up-scaled.jpg"
   },
   {
     "name": "Yarrow",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQ0edchxOtjHGPTMZU6HT8cW0A67ahaL0w83dvYfFLDtPwxFTzBiBeem_60SLuru6xy9ywHtWLycI5l8VM"
   },
   {
     "name": "Canna Lily",
-    "type": "flower",
+    "type": "Flower",
     "imageURL": "https://www.edenbrothers.com/cdn/shop/products/canna-lily-cleopatra-1.jpg?v=1654542216"
   },
   {
     "name": "Dandelion",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://images.squarespace-cdn.com/content/v1/54fbb611e4b0d7c1e151d22a/1653960196494-2YRSA0WT5Z4LS635NKFB/Dandelion+Seeds.jpg?format=1500w"
   },
   {
     "name": "St. John Wort",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://sowtrueseed.com/cdn/shop/products/Herb_St.JohnsWort_2_pixabay@2x.jpg?v=1595031555"
   },
   {
     "name": "Nettle",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://snakeriverseeds.com/cdn/shop/products/StingingNettle2_1200x1200.jpg?v=1621888649"
   },
   {
     "name": "Juniper",
-    "type": "herb",
+    "type": "Herb",
     "imageURL": "https://www.treehugger.com/thmb/1cVkYsAm_HaZpy7F5_GasOSheMc=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-946028290-0a3e92ad30be42fc90c74d223f15267b.jpg"
+  },
+  {
+    "name": "Sego Lilly",
+    "type": "Flower",
+    "imageURL": "https://upload.wikimedia.org/wikipedia/commons/0/01/Sego_lily_cm.jpg"
+  },
+  {
+    "name": "Kalanchoe",
+    "type": "Flower",
+    "imageURL": "https://static1.squarespace.com/static/58a73764a5790a2c65bd05e1/5969b274725e25db3a71a94e/5b8da2784d7a9cd1f8f6a6ef/1536008968641/?format=1500w"
+  },
+  {
+    "name": "Lilies of the Valley",
+    "type": "Flower",
+    "imageURL": "https://s3.amazonaws.com/assets.centralparknyc.org/media/images/_500xAUTO_crop_center-center_none/lily_of_the_valley_c_l_2020-11-11-202827.jpg"
+  },
+  {
+    "name": "Tacca Chantrieri",
+    "type": "Flower",
+    "imageURL": "https://www.nhm.ac.uk/content/dam/nhmwww/discover/weird-plants/Bat%20flower%20two-column.jpg.thumb.768.768.jpg"
+  },
+  {
+    "name": "Trachyandra",
+    "type": "Succulent",
+    "imageURL": "https://clv.h-cdn.co/assets/17/07/480x480/1487288467-square-1487199257-index-houseplants-2.jpg"
+  },
+  {
+    "name": "Dracula Simia",
+    "type": "Flower",
+    "imageURL": "https://www.eleanorpalmer.camden.sch.uk/wp-content/uploads/2017/06/980x_large.jpg"
+  },
+  {
+    "name": "Naked-Man Orchid",
+    "type": "Flower",
+    "imageURL": "https://www.flowersforeveryone.com.au/images/wp-content/uploads/2015/01/Weird-flower-4.jpg"
+  },
+  {
+    "name": "Painted-leaf Begonia",
+    "type": "Flower",
+    "imageURL": "https://i0.wp.com/theverybesttop10.com/wp-content/uploads/2020/09/Ten-Amazing-Plants-With-Weird-and-Unusual-Leaves-4.jpg?resize=600%2C400&ssl=1"
   }
 ]

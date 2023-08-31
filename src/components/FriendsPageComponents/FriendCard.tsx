@@ -14,10 +14,17 @@ const FriendCard: React.FC<props> = ({ id, uname, fname, lname, imageURL }) => {
   return (
     <div className='round-container user-card'>
       <h1>{uname}</h1>
-      <p>
-        {fname} {lname}
-      </p>
-      <img src={imageURL} alt='' className='round-container' />
+      <h2>
+        {
+          // this exists mostly just to see if i can do it.
+          // Ideally they're going to properly capitalize their names.
+          fname
+            .split('')
+            .map((e, i) => (i === 0 ? e.toUpperCase() : e))
+            .join('')
+        }
+      </h2>
+      <img src={imageURL} alt='' className='round-container card-image' />
       <button
         className='round form-button'
         onClick={() => {
