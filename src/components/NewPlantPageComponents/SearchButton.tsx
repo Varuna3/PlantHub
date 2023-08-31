@@ -13,7 +13,9 @@ const SearchButton: React.FC<props> = ({ query, setPlants }) => {
 
   const getPlants = async () => {
     if (query.length > 0) {
-      const { data } = await axios.get(`/api/plantsByName/${query}`) // <-- will eventually be a parameter, using "Pine" for now.
+      const { data } = await axios.get(
+        `/api/plantsByName/${query.toLowerCase()}`
+      ) // <-- will eventually be a parameter, using "Pine" for now.
       setPlants(data)
     } else {
       const { data } = await axios.get('/api/plants')
