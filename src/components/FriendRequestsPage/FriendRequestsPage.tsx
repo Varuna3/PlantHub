@@ -55,7 +55,11 @@ const FriendRequestsPage: React.FC<props> = ({ reqCount, setReqCount }) => {
         pauseOnHover={false}
         theme='colored'
       />
-      <div className='users-container'>{arr}</div>
+      <div className='users-container'>
+        {arr.length > 0
+          ? arr
+          : "You currently don't have any pending requests!"}
+      </div>
     </div>
   )
 }
